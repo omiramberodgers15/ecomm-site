@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Ecomm{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}?v=9999">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+<!-- ======= NAVBAR ======= -->
+<div class="nav">
+    <div class="nav-row nav-top">
+        <div class="about">
+            <span class="logo-icon">🛒</span>
+            <a href="{% url 'core:home' %}" class="brand">Ecomm</a>
+        </div>
+        <div class="search-wrapper">
+            <form method="get" action="{% url 'core:search' %}">
+                <input type="search" name="q" placeholder="Search for products, brands and more" value="{{ request.GET.q }}">
+                <button type="submit" class="search-btn">🔍</button>
+            </form>
+        </div>
+    </div>
+    <div class="nav-row nav-middle">
+    <div class="nav-right">
+        <!-- User links -->
+        <ul class="nav-links">
+            
+        <!-- Guest user -->
+        <li><a href="{% url 'core:seller-login' %}">Seller Login</a></li>
+        <li><a href="{% url 'core:seller-register' %}">Become a Seller</a></li>
+    
+        </ul>
+        <!-- Cart icon button -->
+        <button id="cartIconBtn" class="nav-link" style="background:none;border:none;cursor:pointer;">
+            🛒 Cart (<span id="cartCount">{{ request.session.cart|length|default:"0" }}</span>)
+        </button>
+    </div>
+</div>
+
+</div>
+
+<div class="page-content">
+    {% block content %}{% endblock %}
+</div>
+
+<footer>
+  <!-- Footer content here -->
+</footer>
+
+<!-- Slide Cart Sidebar -->
+<div id="cartSidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button id="closeCart" class="close-cart">&times;</button>
+  </div>
+  <div id="cartItems"></div>
+  <div class="cart-footer">
+    <p class="subtotal">Subtotal: <span id="cartSubtotal">0</span> UGX</p>
+    <a href="{% url 'cart:cart_detail' %}" class="check-btn">Go to Cart</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'cart:dpo_pay' %}" class="buy-btn">Proceed to Checkout</a>
+    {% else %}
+      <a href="{% url 'account_login' %}?next={% url 'cart:dpo_pay' %}" class="buy-btn">Sign in to Checkout</a>
+    {% endif %}
+  </div>
+</div>
+<div id="cartOverlay" class="cart-overlay"></div>
+
+<script>
+const cartSidebar = document.getElementById("cartSidebar");
+const cartOverlay = document.getElementById("cartOverlay");
+const closeCart = document.getElementById("closeCart");
+const cartBtn = document.getElementById("cartIconBtn");
+
+function openCart() {
+    cartSidebar.classList.add("open");
+    cartOverlay.classList.add("show");
+    loadCartData();
+}
+
+function closeCartFunc() {
+    cartSidebar.classList.remove("open");
+    cartOverlay.classList.remove("show");
+}
+
+closeCart.addEventListener("click", closeCartFunc);
+cartOverlay.addEventListener("click", closeCartFunc);
+
+if(cartBtn){
+    cartBtn.addEventListener("click", e => {
+        e.preventDefault();
+        openCart();
+    });
+}
+
+function loadCartData() {
+  fetch("/cart/json/")
+    .then(res => res.json())
+    .then(data => {
+        let html = "";
+        data.items.forEach(item => {
+            html += `
+              <div class="cart-item">
+                <img src="${item.image}" alt="">
+                <div class="item-info">
+                  <p>${item.name}</p>
+                  <small>UGX: ${item.price}</small><br>
+                  <small>Qty: ${item.quantity}</small><br>
+                  <span class="remove-btn" onclick="removeFromCart(${item.id})">Remove</span>
+                </div>
+              </div>
+            `;
+        });
+        document.getElementById("cartItems").innerHTML = html;
+        document.getElementById("cartSubtotal").innerText = data.subtotal;
+        document.getElementById("cartCount").innerText = data.items.length;
+    });
+}
+
+function removeFromCart(id) {
+  fetch(`/cart/remove/${id}/`)
+    .then(() => loadCartData());
+}
+</script>
+
+<!-- === EXTRA SCRIPTS FROM CHILD TEMPLATES === -->
+{% block extra_scripts %}
+<script>
+// Event delegation for chat trigger (works even if dynamically added)
+document.addEventListener("click", function(e) {
+    if (e.target.closest(".chat-trigger")) {
+        const chatWindow = document.getElementById("chatWindow");
+        if(chatWindow){
+            chatWindow.style.display = "flex";
+        }
+    }
+    if (e.target.id === "closeChat") {
+        const chatWindow = document.getElementById("chatWindow");
+        if(chatWindow){
+            chatWindow.style.display = "none";
+        }
+    }
+});
+</script>
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% block content %}
+  <h1>Order Confirmation</h1>
+  <p>Thank you, {{ user.username }}! Your order #{{ order.id }} has been placed.</p>
+
+  <h3>Order Summary</h3>
+  <ul>
+    {% for item in order.items.all %}
+      <li>{{ item.product.name }} × {{ item.quantity }} — Ush {{ item.total_price }}</li>
+    {% endfor %}
+  </ul>
+
+  <p><strong>Total:</strong> Ush {{ order.total_price }}</p>
+{% endblock %}

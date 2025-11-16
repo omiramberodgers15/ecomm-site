@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Seller Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <h2>Welcome, {{ request.user.username }}! Your seller account is active. 🎉</h2>
+
+    <h2>Seller Dashboard</h2>
+
+    <!-- Add Product -->
+    <a href="{% url 'core:seller-add-product' %}">Add Product</a>
+
+    <!-- Messages Link with Unread Badge -->
+    <p>
+        <a href="{% url 'core:seller-messages' %}">
+            Messages
+            {% if unread_count > 0 %}
+                <span class="badge">{{ unread_count }}</span>
+            {% endif %}
+        </a>
+    </p>
+
+    <hr>
+
+    <h3>Your Products</h3>
+    {% if products %}
+        {% for product in products %}
+            <div class="product-item">
+                <strong>{{ product.name }}</strong> — ${{ product.base_price }}
+                {% if not product.approved %}
+                    <span style="color: red;">(Pending Approval)</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No products yet. <a href="{% url 'core:seller-add-product' %}">Add one</a></p>
+    {% endif %}
+</div>
+
+<!-- Optional CSS for badge -->
+<style>
+.badge {
+    background-color: red;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 12px;
+    vertical-align: top;
+    margin-left: 4px;
+}
+</style>
+
+{% endblock %}

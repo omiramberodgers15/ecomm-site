@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Messages</h2>
+<p>Unread messages: {{ unread_count }}</p>
+
+<div id="messages-container">
+    {% for msg in messages %}
+        <div id="chat-box-{{ msg.id }}">
+            <b>{{ msg.sender.username }}:</b> {{ msg.content }}
+        </div>
+
+        <!-- Reply input and button -->
+        <input type="text" id="reply-input-{{ msg.id }}" placeholder="Type your reply...">
+        <button class="reply-btn" data-product-id="{{ msg.product.id }}" data-receiver-id="{{ msg.sender.id }}">
+            Reply
+        </button>
+
+    {% empty %}
+        <p>No messages yet.</p>
+    {% endfor %}
+</div>
+
+<script>
+const csrftoken = '{{ csrf_token }}';
+
+// Generic function to send a message
+function sendMessage(productId, messageContent, receiverId) {
+    if (!messageContent) return;
+
+    fetch("{% url 'core:send_message' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": csrftoken,
+        },
+        body: new URLSearchParams({
+            "product_id": productId,
+            "content": messageContent,
+            "receiver_id": receiverId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Message sent:", data);
+        // Append the new message to the container
+        const container = document.getElementById('messages-container');
+        const div = document.createElement('div');
+        div.innerHTML = `<b>${data.sender}:</b> ${data.content}`;
+        container.appendChild(div);
+    });
+}
+
+// Attach click events to all reply buttons
+document.querySelectorAll(".reply-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+        const productId = this.dataset.productId;
+        const receiverId = this.dataset.receiverId;
+
+        // The input is the previous element sibling of the button
+        const input = this.previousElementSibling;
+        if (!input) return;
+        const content = input.value.trim();
+        if (!content) return;
+
+        sendMessage(productId, content, receiverId);
+        input.value = ""; // Clear the input after sending
+    });
+});
+</script>
+{% endblock %}

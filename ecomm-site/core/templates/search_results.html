@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search results for "{{ query }}"{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <h2>Search results for "{{ query }}"</h2>
+</div>
+
+<div class="products-grid">
+    {% for product in results %}
+    <div class="product-card">
+        <a href="{% url 'core:product_detail' product.id %}">
+            {% if product.main_image %}
+                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'core/default-category.jpg' %}" alt="{{ product.name }}">
+            {% endif %}
+        </a>
+        <p><strong>UGX {{ product.base_price }}</strong></p>
+        <p>{{ product.name }}</p>
+    </div>
+    {% empty %}
+    <p>No results found for "{{ query }}".</p>
+    {% endfor %}
+</div>
+{% endblock %}

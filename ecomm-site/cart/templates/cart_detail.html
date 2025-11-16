@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="{% static 'cart/cart.css' %}">
+</head>
+<body>
+  <h1>Your Cart</h1>
+
+  {% if items %}
+    <ul>
+      {% for item in items %}
+        <li>
+          {{ item.product.name }} - {{ item.quantity }} x UGX {{ item.price|floatformat:2 }}
+          
+          <!-- Remove button -->
+          <form method="POST" action="{% url 'cart:cart_remove' item.product.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <p><strong>Total:</strong> UGX {{ total|floatformat:2 }}</p>
+
+    <!-- ✅ Proceed to Checkout button with login redirect -->
+    {% if user.is_authenticated %}
+      <p>
+        <a href="{% url 'cart:dpo_pay' %}" class="btn btn-primary">
+          Proceed to Checkout
+        </a>
+      </p>
+    {% else %}
+      <p>
+        <a href="{% url 'account_login' %}?next={% url 'cart:dpo_pay' %}" class="btn btn-primary">
+          Sign in to Checkout
+        </a>
+      </p>
+    {% endif %}
+
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+
+</body>
+</html>
