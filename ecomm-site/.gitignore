@@ -7,6 +7,17 @@ db.sqlite3
 /staticfiles/
 /media/
 
+# Virtual environment
+.venv/
+
+
+# Logs
+*.log
+
+# Mac OS / Thumbs
+.DS_Store
+
+
 # Environment variables
 .env
 

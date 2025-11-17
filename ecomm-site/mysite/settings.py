@@ -2,25 +2,38 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Load .env file if present
+# Load .env if present
+load_dotenv()
 
+# --------------------------
+# BASE DIRECTORY
+# --------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Use environment variables for secrets
+# --------------------------
+# SECURITY
+# --------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
-
 ALLOWED_HOSTS = []
 
+# --------------------------
+# URL CONFIGURATION
+# --------------------------
+ROOT_URLCONF = 'mysite.urls'
+
+# --------------------------
+# INSTALLED APPS
+# --------------------------
 INSTALLED_APPS = [
     # Django default apps
     'django.contrib.admin',
-    'django.contrib.sites',  # required by allauth
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',  # required by allauth
 
     # Your apps
     'cart',
@@ -35,31 +48,64 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-# =============================
+# --------------------------
+# MIDDLEWARE
+# --------------------------
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    # Allauth middleware (required)
+    'allauth.account.middleware.AccountMiddleware',
+
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# --------------------------
+# TEMPLATES
+# --------------------------
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],  # create 'templates' folder
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',  # required for admin & allauth
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# --------------------------
 # AUTHENTICATION / ALLAUTH
-# =============================
+# --------------------------
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # Default
-    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth
+    'django.contrib.auth.backends.ModelBackend',  # default
+    'allauth.account.auth_backends.AuthenticationBackend',  # allauth
 ]
 
 SITE_ID = 1
 
-# URLs
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/cart/checkout/'       # redirect after login
-LOGOUT_REDIRECT_URL = '/'                     # redirect after logout
+LOGIN_REDIRECT_URL = '/cart/checkout/'
+LOGOUT_REDIRECT_URL = '/'
 
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
+ACCOUNT_LOGIN_METHOD = "email"  # or "username"
+# then adjust ACCOUNT_SIGNUP_FIELDS accordingly
 
-ACCOUNT_LOGIN_METHODS = {'username', 'email'}
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 
-ACCOUNT_LOGIN_REDIRECT_URL = '/cart/checkout/'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/'
-ACCOUNT_SIGNUP_REDIRECT_URL = '/cart/checkout/'
 
 # Google OAuth
 SOCIALACCOUNT_PROVIDERS = {
@@ -72,18 +118,34 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
 
-# Email settings
+# --------------------------
+# CART SETTINGS
+# --------------------------
+CART_SESSION_ID = 'cart'
+
+# --------------------------
+# DATABASES
+# --------------------------
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+# --------------------------
+# STATIC & MEDIA FILES
+# --------------------------
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
+
+# --------------------------
+# EMAIL SETTINGS
+# --------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
@@ -92,7 +154,9 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = f"Ecomm Marketplace <{EMAIL_HOST_USER}>"
 
-# DPO Payment Settings
+# --------------------------
+# DPO PAYMENT SETTINGS
+# --------------------------
 DPO_MERCHANT_ID = os.environ.get("DPO_MERCHANT_ID", "")
 DPO_API_KEY = os.environ.get("DPO_API_KEY", "")
 DPO_SITE_NAME = os.environ.get("DPO_SITE_NAME", "")
