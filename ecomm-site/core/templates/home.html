@@ -1,2 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
 
-{% extends 'base.html' %} {% load static %} {% block title %}Home - Categories{% endblock %} {% block content %} {% for category in categories %} <div class="category-block"> <h3>{{ category.name }}</h3> <p>{{ category.description|truncatewords:15 }}</p> {% if forloop.first %} <div class="products-horizontal"> {% elif forloop.counter == 2 %} <div class="products-vertical"> {% else %} <div class="products-default"> {% endif %} {% for product in category.products.all %} <div class="product-card"> <a href="{% url 'core:product_detail' product.id %}"> {% if product.main_image %} <img src="{{ product.main_image.url }}" alt="{{ product.name }}"> {% else %} <img src="{% static 'core/default-category.jpg' %}" alt="{{ product.name }}"> {% endif %} </a> <p><strong>UGX {{ product.base_price }}</strong></p> <p>{{ product.description|truncatewords:15 }}</p> </div> {% empty %} <p>No products in this category.</p> {% endfor %} </div> </div> {% empty %} <p>No categories found.</p> {% endfor %} {% endblock %}
+{% block title %}Home - Ecomm{% endblock %}
+
+{% block content %}
+
+<!-- ============= NEW ARRIVALS ============= -->
+<h2 class="section-title">New Arrivals</h2>
+<div class="products-horizontal">
+    {% for product in new_arrivals %}
+    <div class="product-card">
+
+        <a href="{% url 'core:product_detail' product.id %}">
+            {% if product.main_image %}
+            <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <img src="{% static 'core/default-product.jpg' %}">
+            {% endif %}
+        </a>
+
+        <p class="prod-name">{{ product.name }}</p>
+
+        <div class="price-row">
+            <span class="new-price">UGX {{ product.base_price }}</span>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No new arrivals yet.</p>
+    {% endfor %}
+</div>
+
+
+
+<!-- ============= TOP DEALS ============= -->
+<h2 class="section-title">Top Deals</h2>
+<div class="products-default">
+    {% for product in top_deals %}
+    <div class="product-card">
+
+        <a href="{% url 'core:product_detail' product.id %}">
+            {% if product.main_image %}
+            <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <img src="{% static 'core/default-product.jpg' %}">
+            {% endif %}
+        </a>
+
+        <p class="prod-name">{{ product.name }}</p>
+
+        <div class="price-row">
+            {% if product.initial_price %}
+            <span class="old-price">UGX {{ product.initial_price }}</span>
+            {% endif %}
+            <span class="new-price">UGX {{ product.base_price }}</span>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No top deals right now.</p>
+    {% endfor %}
+</div>
+
+
+
+<!-- ============= BEST SELLERS ============= -->
+<h2 class="section-title">Best Sellers</h2>
+<div class="products-vertical">
+    {% for product in best_sellers %}
+    <div class="product-card">
+
+        <a href="{% url 'core:product_detail' product.id %}">
+            {% if product.main_image %}
+            <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <img src="{% static 'core/default-product.jpg' %}">
+            {% endif %}
+        </a>
+
+        <p class="prod-name">{{ product.name }}</p>
+        <p class="prod-review">{{ product.review_count }} reviews</p>
+
+        <div class="price-row">
+            <span class="new-price">UGX {{ product.base_price }}</span>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No best sellers yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

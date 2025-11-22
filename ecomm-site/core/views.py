@@ -23,12 +23,38 @@ from django.http import JsonResponse
 from .models import Message
 from django.views.decorators.csrf import csrf_exempt
 
+from django.db.models import F, Count
+
+
 
 # ---------- HOME & PRODUCTS ----------
 def home(request):
-    categories = Category.objects.prefetch_related('products', 'subcategories').all()
-    products = Product.objects.all()[:8]
-    return render(request, 'home.html', {'categories': categories, 'products': products})
+    # NEW ARRIVALS
+    new_arrivals = Product.objects.filter(
+        approved=True
+    ).order_by("-created_at")[:10]
+
+    # TOP DEALS
+    top_deals = Product.objects.filter(
+        approved=True,
+        initial_price__isnull=False,
+        initial_price__gt=F('base_price')
+    ).order_by("-created_at")[:10]
+
+    # BEST SELLERS
+    best_sellers = Product.objects.filter(
+        approved=True
+    ).annotate(
+        reviews_count=Count("reviews")
+    ).order_by("-reviews_count")[:10]
+
+    context = {
+        "new_arrivals": new_arrivals,
+        "top_deals": top_deals,
+        "best_sellers": best_sellers,
+    }
+
+    return render(request, "home.html", context)
 
 
 def products_by_category(request, category_id):

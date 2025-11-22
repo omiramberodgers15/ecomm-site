@@ -60,7 +60,16 @@ class Product(models.Model):
     hook = models.CharField(max_length=200, blank=True, null=True, help_text="Short marketing tagline")
 
     base_price = models.DecimalField(max_digits=10, decimal_places=2)
+    # NEW initial/original price (strike-through price)
+    initial_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        help_text="The original price before discount"
+    )
     min_order = models.PositiveIntegerField(default=1)
+
     
     color_options = models.CharField(max_length=255, blank=True, null=True, help_text="Comma-separated color names")
     shipping_info = models.TextField(blank=True, null=True)

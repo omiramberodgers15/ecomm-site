@@ -79,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',  # required for admin & allauth
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.global_categories',
+
             ],
         },
     },
