@@ -34,15 +34,29 @@ search
 <div class="menubar">
     <a href="/">All |</a>
 
-    <!-- CATEGORIES DROPDOWN -->
-    <div class="menu-dropdown">
-        <a class="menu-btn" href="javascript:void(0)">Categories |</a>
-        <div class="menu-content">
-            <a href="/categories/electronics/">Electronics</a>
-            <a href="/categories/fashion/">Fashion</a>
-            <a href="/categories/home/">Home</a>
-        </div>
+    {% for cat in all_categories %}
+<div class="menu-dropdown">
+
+    <!-- BUTTON (no navigation) -->
+    <div class="menu-btn dropdown-toggle" data-target="dropdown-{{ cat.id }}">
+        {{ cat.name }} |
     </div>
+
+    <!-- SUBCATEGORIES -->
+    <div id="dropdown-{{ cat.id }}" class="menu-content">
+        <a href="{% url 'core:products_by_category' cat.id %}">
+            All {{ cat.name }}
+        </a>
+
+        {% for sub in cat.subcategories.all %}
+        <a href="{% url 'core:products_by_subcategory' sub.id %}">
+            {{ sub.name }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
 
     <!-- DEALS DROPDOWN -->
     <div class="menu-dropdown">
@@ -95,6 +109,16 @@ search
   </div>
 </div>
 <div id="cartOverlay" class="cart-overlay"></div>
+
+<script>
+document.querySelectorAll(".dropdown-toggle").forEach(btn => {
+    btn.addEventListener("click", function () {
+        const target = document.getElementById(this.dataset.target);
+        target.classList.toggle("open");
+    });
+});
+</script>
+
 
 <script>
 const cartSidebar = document.getElementById("cartSidebar");

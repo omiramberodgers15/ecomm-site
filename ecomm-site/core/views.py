@@ -59,11 +59,23 @@ def home(request):
 
 def products_by_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
-    products = category.products.all()
-    return render(request, 'products_by_category.html', {
-        'category': category,
-        'products': products,
-        'categories': Category.objects.all(),
+    products = Product.objects.filter(category=category)
+
+    return render(request, "products_by_category.html", {
+        "current_category": category,
+        "products": products,
+        "subcategories": category.subcategories.all(),
+    })
+
+
+def products_by_subcategory(request, subcategory_id):
+    subcategory = get_object_or_404(SubCategory, id=subcategory_id)
+    products = Product.objects.filter(subcategory=subcategory)
+
+    return render(request, "products_by_subcategory.html", {
+        "subcategory": subcategory,
+        "products": products,
+        "category": subcategory.category,
     })
 
 
@@ -268,24 +280,34 @@ def seller_dashboard(request):
         "unread_count": unread_count  # Pass unread count to template
     })
 
-# ---------- ADD PRODUCT ----------
 @login_required(login_url='/seller/login/')
 def seller_add_product(request):
-    seller = request.user.seller_profile
-    if not seller.approved:
-        return redirect("core:seller-dashboard")
 
+    # --- 1. Check if user is a seller ---
+    if not hasattr(request.user, 'seller_profile'):
+        messages.error(request, "Only sellers can add products.")
+        return redirect("core:seller-login")
+
+    seller = request.user.seller_profile
+
+    # --- 2. Check if seller is approved ---
+    if not seller.approved:
+        return redirect("core:seller-pending-view")
+
+    # --- 3. Normal product creation ---
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
             product.seller = seller
-            product.approved = False
+            product.approved = False  # admin approves later
             product.save()
             return redirect("core:seller-dashboard")
     else:
         form = ProductForm()
+
     return render(request, "seller/add_product.html", {'form': form})
+
 
 
 
@@ -370,4 +392,26 @@ def seller_messages(request):
     return render(request, 'seller/messages.html', {
         'messages': messages_qs,
         'unread_count': messages_qs.filter(read=False).count()
+    })
+
+
+
+
+
+
+def get_subcategories(request, category_id):
+    subs = SubCategory.objects.filter(category_id=category_id)
+    data = {
+        "subcategories": [{"id": s.id, "name": s.name} for s in subs]
+    }
+    return JsonResponse(data)
+
+
+def products_by_subcategory(request, subcategory_id):
+    subcat = get_object_or_404(SubCategory, id=subcategory_id)
+    products = Product.objects.filter(subcategory=subcat, approved=True)
+
+    return render(request, "products_by_category.html", {
+        "current_category": subcat,
+        "products": products
     })

@@ -78,15 +78,28 @@ class SellerAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         """Send email when seller approval changes from False → True"""
+
         send_email = False
+
         if change:
             old_obj = Seller.objects.get(pk=obj.pk)
             if not old_obj.approved and obj.approved:
                 send_email = True
 
+        # Save normally first
         super().save_model(request, obj, form, change)
 
+        # --- SAFETY CHECKS ---
         if send_email:
+
+            # If seller has NO email → skip email, avoid crashing
+            if not obj.user.email:
+                messages.warning(
+                    request,
+                    f"Seller approved, but NO email address exists for user '{obj.user.username}'."
+                )
+                return
+
             subject = "🎉 Your Seller Account Has Been Approved!"
             message = (
                 f"Hi {obj.user.username},\n\n"
@@ -95,11 +108,12 @@ class SellerAdmin(admin.ModelAdmin):
                 "Dashboard: https://your-domain.com/seller/dashboard/\n\n"
                 "Welcome aboard,\nThe Ecomm Marketplace Team"
             )
+
             try:
                 send_mail(subject, message, None, [obj.user.email])
                 messages.success(request, f"Approval email sent to {obj.user.email}.")
             except Exception as e:
-                messages.warning(request, f"Seller approved but email failed: {e}")
+                messages.warning(request, f"Seller approved but email sending failed: {e}")
 
 
 @admin.register(Message)

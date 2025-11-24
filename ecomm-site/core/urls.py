@@ -46,6 +46,9 @@ urlpatterns = [
 
     # core/urls.py
     path('seller/messages/', views.seller_messages, name='seller-messages'),
+
+    path("get-subcategories/<int:category_id>/", views.get_subcategories, name="get_subcategories"),
+    path("subcategory/<int:subcategory_id>/", views.products_by_subcategory, name="products_by_subcategory"),
     
 ]
 

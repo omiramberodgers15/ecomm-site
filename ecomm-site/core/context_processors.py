@@ -1,6 +1,6 @@
 from .models import Category
 
-def global_categories(request):
+def categories_processor(request):
     return {
         "all_categories": Category.objects.all()
     }
