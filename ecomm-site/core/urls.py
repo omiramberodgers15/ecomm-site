@@ -49,6 +49,14 @@ urlpatterns = [
 
     path("get-subcategories/<int:category_id>/", views.get_subcategories, name="get_subcategories"),
     path("subcategory/<int:subcategory_id>/", views.products_by_subcategory, name="products_by_subcategory"),
+
+    # keep the base /new/ route
+    path("new/", views.new_products_page, name="new-products"),
+
+    # add the dynamic path route (captures slashes)
+    path("new/<path:slug_path>/", views.new_products_by_path, name="new-products-by-path"),
+
+
     
 ]
 

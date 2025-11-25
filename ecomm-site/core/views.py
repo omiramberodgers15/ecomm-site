@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import SellerRegistrationForm, ProductForm
 from .models import Seller
 
+from django.http import Http404
+
+
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 
@@ -415,3 +418,92 @@ def products_by_subcategory(request, subcategory_id):
         "current_category": subcat,
         "products": products
     })
+
+
+
+
+def new_products_page(request):
+    # Fetch newest products first (only approved products)
+    products = Product.objects.filter(approved=True).order_by('-created_at')[:100]
+
+    return render(request, "new_products.html", {
+        "products": products
+    })
+
+
+
+def new_products_by_category(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+
+    products = Product.objects.filter(
+        category=category,
+        approved=True
+    ).order_by('-created_at')[:100]
+
+    return render(request, "new_products.html", {
+        "products": products,
+        "current_category": category,
+    })
+
+
+
+
+def new_products_by_path(request, slug_path):
+    """
+    Dynamic resolver for /new/<...>/<...>/...
+    - First segment must match Category.slug
+    - Subsequent segments are matched against SubCategory.name (slugified)
+    - If final resolved object is Category => show category products
+    - If final resolved object is SubCategory => show subcategory products
+    """
+    # normalize trailing/leading slashes and split
+    parts = [p for p in slug_path.strip("/").split("/") if p]
+    if not parts:
+        # fallback to all new
+        return new_products_page(request)
+
+    # first segment -> category slug
+    category_slug = parts[0]
+    category = Category.objects.filter(slug__iexact=category_slug).first()
+    if not category:
+        raise Http404("Category not found")
+
+    # if there are no further parts, show category products
+    if len(parts) == 1:
+        products = Product.objects.filter(category=category, approved=True).order_by('-created_at')[:100]
+        return render(request, "new_products.html", {"products": products, "current_category": category})
+
+    # otherwise resolve subcategories one-by-one using slugified SubCategory.name
+    current_subcat = None
+    remaining = parts[1:]
+    parent_category = category
+
+    for seg in remaining:
+        # try to find a subcategory of the current parent_category whose slugified name matches seg
+        matched = None
+        for sc in parent_category.subcategories.all():
+            if slugify(sc.name) == seg:
+                matched = sc
+                break
+
+        if not matched:
+            # no matching subcategory for this segment -> 404
+            raise Http404("Category/subcategory path not found")
+
+        # set next parent: subcategory does not have children in your schema,
+        # but to support deeper URLs we treat matched as new parent_category when searching next seg.
+        # If you later add a parent relationship, adapt this loop.
+        current_subcat = matched
+        # when looking for deeper levels, parent_category becomes the category of the subcategory
+        # (your current model doesn't support deeper nesting, so keep parent_category as category)
+        # this loop allows multi-segment matching (e.g., fashion/men/shoes) by matching each seg
+        # against top-level subcategories of the original category.
+        # (If you later add nested SubCategory parent field, update logic accordingly.)
+
+    # final resolved object: current_subcat
+    if current_subcat:
+        products = Product.objects.filter(subcategory=current_subcat, approved=True).order_by('-created_at')[:100]
+        return render(request, "new_products.html", {"products": products, "current_category": category, "current_subcategory": current_subcat})
+
+    # fallback
+    raise Http404("Not found")

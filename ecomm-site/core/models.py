@@ -3,6 +3,8 @@ from django.db import models
 from django.db.models import Avg
 from django.contrib.auth.models import User
 
+from django.utils.text import slugify
+
 # core/models.py
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -13,17 +15,31 @@ from django.conf import settings
 # ---------- CATEGORY ----------
 class Category(models.Model):
     name = models.CharField(max_length=150)
+    slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='categories/', blank=True, null=True)  # 👈 Add this
+    image = models.ImageField(upload_to='categories/', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+            # Ensure unique slug
+            base_slug = self.slug
+            counter = 1
+            while Category.objects.filter(slug=self.slug).exclude(id=self.id).exists():
+                self.slug = f"{base_slug}-{counter}"
+                counter += 1
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
-
 
 # ---------- SUBCATEGORY ----------
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="subcategories")
     name = models.CharField(max_length=150)
+    slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
