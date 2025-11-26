@@ -95,12 +95,24 @@ search
 
     <a href="/contact">
         <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">call</span><br>
-        <span>Talk to Support</span>
+        <span>Contact Us</span>
     </a>
 
     <a href="{% url 'cart:cart_detail' %}">
         <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">shopping_cart</span><br>
-        <span>Your Cart</span>
+        <span>Cart</span>
+    </a>
+    <hr>
+    <!-- ⭐ Seller Register -->
+    <a href="{% url 'core:seller-register' %}">
+        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">storefront</span><br>
+        <span>Sell With Us</span>
+    </a>
+
+    <!-- ⭐ Seller Login -->
+    <a href="{% url 'core:seller-login' %}">
+        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">login</span><br>
+        <span>Seller Login</span>
     </a>
 </footer>
 {% endblock %}

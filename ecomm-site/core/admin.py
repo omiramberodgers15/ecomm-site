@@ -7,6 +7,11 @@ from .models import (
 )
 from .models import Message
 
+from .models import SupportTicket
+
+
+from .models import SupportTicket, TicketReply
+
 # ---------------------
 # INLINE ADMIN CLASSES
 # ---------------------
@@ -121,3 +126,42 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('sender', 'receiver', 'product', 'timestamp', 'read')
     list_filter = ('read', 'timestamp')
     search_fields = ('sender__username', 'receiver__username', 'content')
+
+
+
+
+class TicketReplyInline(admin.StackedInline):
+    model = TicketReply
+    extra = 1
+
+
+@admin.register(SupportTicket)
+class SupportTicketAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'email', 'subject', 'status', 'created_at')
+    list_filter = ('status',)
+    search_fields = ('email', 'name', 'subject')
+    inlines = [TicketReplyInline]
+
+    def save_formset(self, request, form, formset, change):
+        """Send email when admin adds a reply"""
+        instances = formset.save(commit=False)
+
+        for obj in instances:
+            if isinstance(obj, TicketReply):
+                obj.save()
+
+                # EMAIL NOTIFICATION
+                send_mail(
+                    subject=f"Reply to your support ticket #{obj.ticket.id}",
+                    message=obj.reply_text,
+                    from_email='yourgmail@gmail.com',
+                    recipient_list=[obj.ticket.email],
+                    fail_silently=True,
+                )
+
+                # Set ticket to pending or resolved
+                ticket = obj.ticket
+                ticket.status = 'pending'
+                ticket.save()
+
+        formset.save_m2m()

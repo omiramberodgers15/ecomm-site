@@ -896,3 +896,72 @@ body.product-page .prod-container {
     min-width: 150px;
 }
 
+
+
+/* Contact Page - Mobile First (optimized for 320px screens) */
+
+/* Wrapper */
+.contact-wrapper {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 15px;
+    margin-bottom: 80px;
+}
+
+/* Headings */
+.contact-wrapper h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.intro-text {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Form */
+form label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Button */
+.contact-btn {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 12px;
+    font-size: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Contact details */
+.contact-details {
+    margin-top: 25px;
+}
+
+.contact-details h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.contact-details p {
+    font-size: 14px;
+}
+

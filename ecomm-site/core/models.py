@@ -74,7 +74,7 @@ class Product(models.Model):
     # other fields...
     description = models.TextField()
     hook = models.CharField(max_length=200, blank=True, null=True, help_text="Short marketing tagline")
-
+    is_clearance = models.BooleanField(default=False)
     base_price = models.DecimalField(max_digits=10, decimal_places=2)
     # NEW initial/original price (strike-through price)
     initial_price = models.DecimalField(
@@ -237,3 +237,33 @@ class Deal(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+class SupportTicket(models.Model):
+    STATUS_CHOICES = (
+        ('open', 'Open'),
+        ('pending', 'Pending'),
+        ('resolved', 'Resolved'),
+    )
+
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Ticket #{self.id} - {self.subject}"
+
+
+
+class TicketReply(models.Model):
+    ticket = models.ForeignKey('SupportTicket', on_delete=models.CASCADE, related_name='replies')
+    reply_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Reply to Ticket #{self.ticket.id}"
+

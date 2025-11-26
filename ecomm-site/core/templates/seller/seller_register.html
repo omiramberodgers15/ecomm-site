@@ -5,14 +5,14 @@
 {% block content %}
 <h2>Register as Seller</h2>
 
-<form method="POST" action="">
+<form method="POST" action="" style="margin-bottom: 90px;">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Register</button>
+    <button type="submit" style="padding: 8px 12px ;border-radius: 8px;background: #febd69;border: none;">Register</button>
 </form>
 
 
 {% for message in messages %}
-<p>{{ message }}</p>
+<p >{{ message }}</p>
 {% endfor %}
 {% endblock %}

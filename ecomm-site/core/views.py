@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.utils.text import slugify
 
+from .models import SupportTicket
+
 
 from .forms import SellerRegistrationForm, ProductForm
 from .models import Seller
@@ -584,3 +586,18 @@ def best_sellers(request):
     cache.set(cache_key, top_list, 600)
 
     return render(request, "best_sellers.html", {"top_products": top_list})
+
+
+def contact_page(request):
+    if request.method == 'POST':
+        SupportTicket.objects.create(
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+            subject="Customer Support Request",
+            message=request.POST.get('message')
+        )
+
+        messages.success(request, "Your message has been received. Our support team will contact you.")
+        return redirect('core:contact')
+
+    return render(request, 'contact.html')
