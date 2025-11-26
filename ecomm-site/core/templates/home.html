@@ -7,29 +7,39 @@
 
 <!-- ============= NEW ARRIVALS ============= -->
 <h2 class="section-title">New Arrivals</h2>
-<div class="products-horizontal">
-    {% for product in new_arrivals %}
-    <div class="product-card">
 
-        <a href="{% url 'core:product_detail' product.id %}">
-            {% if product.main_image %}
-            <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
-            {% else %}
-            <img src="{% static 'core/default-product.jpg' %}">
-            {% endif %}
-        </a>
+<div class="scroll-wrapper">
 
-        <p class="prod-name">{{ product.name }}</p>
+    <button class="scroll-btn left">‹</button>
 
-        <div class="price-row">
-            <span class="new-price">UGX {{ product.base_price }}</span>
+    <div class="products-horizontal scroll-container">
+        {% for product in new_arrivals %}
+        <div class="product-card">
+
+            <a href="{% url 'core:product_detail' product.id %}">
+                {% if product.main_image %}
+                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                {% else %}
+                <img src="{% static 'core/default-product.jpg' %}">
+                {% endif %}
+            </a>
+
+            <p class="prod-name">{{ product.name }}</p>
+
+            <div class="price-row">
+                <span class="new-price">UGX {{ product.base_price }}</span>
+            </div>
+
         </div>
-
+        {% empty %}
+        <p>No new arrivals yet.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p>No new arrivals yet.</p>
-    {% endfor %}
+
+    <button class="scroll-btn right">›</button>
+
 </div>
+
 
 
 
@@ -91,4 +101,27 @@
     {% endfor %}
 </div>
 
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const containers = document.querySelectorAll(".scroll-wrapper");
+
+    containers.forEach(wrapper => {
+        const container = wrapper.querySelector(".scroll-container");
+        const left = wrapper.querySelector(".scroll-btn.left");
+        const right = wrapper.querySelector(".scroll-btn.right");
+
+        left.addEventListener("click", () => {
+            container.scrollBy({ left: -250, behavior: "smooth" });
+        });
+
+        right.addEventListener("click", () => {
+            container.scrollBy({ left: 250, behavior: "smooth" });
+        });
+    });
+});
+</script>
 {% endblock %}

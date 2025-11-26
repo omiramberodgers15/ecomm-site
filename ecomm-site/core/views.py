@@ -7,6 +7,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+# core/views.py — replace your new_products_by_path with this
+
+from django.utils.text import slugify
+
+
 from .forms import SellerRegistrationForm, ProductForm
 from .models import Seller
 
@@ -27,6 +32,16 @@ from .models import Message
 from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import F, Count
+
+
+from django.db.models import Sum, Q
+from django.core.cache import cache
+from django.utils import timezone
+
+
+# ---------- DEALS (Dynamic) ----------
+
+from .models import Deal
 
 
 
@@ -107,15 +122,41 @@ def cart_detail(request):
     return render(request, 'cart_detail.html')
 
 
-# ---------- DEALS ----------
-def todays_deals(request):
-    products = Product.objects.all()[:20]
-    return render(request, "deals.html", {"current_deal": "Today's Deals", "products": products, "categories": Category.objects.all()})
+def deals_page(request, slug):
 
+    # Static deal definitions (since you don't have Deal model slugs)
+    deal_map = {
+        "today": {
+            "name": "Today's Deals",
+            "filter": {"is_today_deal": True},
+        },
+        "clearance": {
+            "name": "Clearance Deals",
+            "filter": {"is_clearance": True},
+        },
+        "hot": {
+            "name": "Hot Discounts",
+            "filter": {"is_hot_deal": True},
+        },
+    }
 
-def clearance_deals(request):
-    products = Product.objects.filter(base_price__lt=50000)
-    return render(request, "deals.html", {"current_deal": "Clearance Deals", "products": products, "categories": Category.objects.all()})
+    # If slug is invalid → 404
+    if slug not in deal_map:
+        return HttpResponseNotFound("Invalid deal type")
+
+    deal_info = deal_map[slug]
+
+    # Get products using the correct filter
+    products = Product.objects.filter(**deal_info["filter"])
+
+    context = {
+        "deal": {"name": deal_info["name"], "slug": slug},
+        "products": products,
+        "categories": Category.objects.all(),
+    }
+
+    return render(request, "deal_page.html", context)
+
 
 
 # ---------- SEARCH ----------
@@ -448,62 +489,98 @@ def new_products_by_category(request, category_slug):
 
 
 
+
+
 def new_products_by_path(request, slug_path):
     """
-    Dynamic resolver for /new/<...>/<...>/...
-    - First segment must match Category.slug
-    - Subsequent segments are matched against SubCategory.name (slugified)
-    - If final resolved object is Category => show category products
-    - If final resolved object is SubCategory => show subcategory products
+    Dynamic resolver for /new/<...>/<...>/
+    - tolerant: tries slug, slug+'s', slug stripped 's', name matches, etc.
     """
-    # normalize trailing/leading slashes and split
     parts = [p for p in slug_path.strip("/").split("/") if p]
     if not parts:
-        # fallback to all new
         return new_products_page(request)
 
-    # first segment -> category slug
-    category_slug = parts[0]
-    category = Category.objects.filter(slug__iexact=category_slug).first()
+    # first segment -> category slug (tolerant lookup)
+    raw = parts[0].strip()
+    # try multiple possibilities
+    category = Category.objects.filter(Q(slug__iexact=raw) |
+                                       Q(slug__iexact=f"{raw}s") |
+                                       Q(slug__iexact=raw.rstrip('s')) |
+                                       Q(name__iexact=raw.replace('-', ' ')) |
+                                       Q(name__iexact=raw.replace('-', ' ').rstrip('s'))
+                                      ).first()
+
+    # fallback: try slugify(name) match
+    if not category:
+        for c in Category.objects.all():
+            if slugify(c.name) == raw:
+                category = c
+                break
+
     if not category:
         raise Http404("Category not found")
 
-    # if there are no further parts, show category products
+    # if only category: show category products
     if len(parts) == 1:
         products = Product.objects.filter(category=category, approved=True).order_by('-created_at')[:100]
         return render(request, "new_products.html", {"products": products, "current_category": category})
 
-    # otherwise resolve subcategories one-by-one using slugified SubCategory.name
-    current_subcat = None
+    # resolve subcategory segments (as before) but slugify matching
     remaining = parts[1:]
-    parent_category = category
+    current_subcat = None
 
+    # treat top-level subcategories as candidates for each subsequent segment
     for seg in remaining:
-        # try to find a subcategory of the current parent_category whose slugified name matches seg
         matched = None
-        for sc in parent_category.subcategories.all():
-            if slugify(sc.name) == seg:
+        for sc in category.subcategories.all():
+            if slugify(sc.name) == seg or sc.slug == seg:
                 matched = sc
                 break
 
         if not matched:
-            # no matching subcategory for this segment -> 404
             raise Http404("Category/subcategory path not found")
 
-        # set next parent: subcategory does not have children in your schema,
-        # but to support deeper URLs we treat matched as new parent_category when searching next seg.
-        # If you later add a parent relationship, adapt this loop.
         current_subcat = matched
-        # when looking for deeper levels, parent_category becomes the category of the subcategory
-        # (your current model doesn't support deeper nesting, so keep parent_category as category)
-        # this loop allows multi-segment matching (e.g., fashion/men/shoes) by matching each seg
-        # against top-level subcategories of the original category.
-        # (If you later add nested SubCategory parent field, update logic accordingly.)
 
-    # final resolved object: current_subcat
     if current_subcat:
         products = Product.objects.filter(subcategory=current_subcat, approved=True).order_by('-created_at')[:100]
         return render(request, "new_products.html", {"products": products, "current_category": category, "current_subcategory": current_subcat})
 
-    # fallback
     raise Http404("Not found")
+
+
+
+
+
+def best_sellers(request):
+    """
+    Show automatic best sellers. Uses Order.items -> CartItem.quantity summed
+    only for paid orders. Cached for 10 minutes.
+    """
+    cache_key = "core:best_sellers_v1"
+    cached = cache.get(cache_key)
+    if cached is not None:
+        return render(request, "best_sellers.html", {"top_products": cached})
+
+    # annotate each product with sold_count = sum of quantities for cartitems that belong to paid orders
+    products_qs = Product.objects.filter(approved=True).annotate(
+        sold_count=Sum(
+            "cart_items__quantity",
+            filter=Q(cart_items__orders__paid=True)
+        ),
+        reviews_count=Count("reviews")
+    )
+
+    # Ensure sold_count default 0 and order
+    products = products_qs.order_by("-sold_count", "-reviews_count", "-created_at")[:100]
+
+    # normalise sold_count to 0 where None (so template doesn't show None)
+    top_list = []
+    for p in products:
+        p.sold_count = p.sold_count or 0
+        top_list.append(p)
+
+    # cache for 10 minutes (600s)
+    cache.set(cache_key, top_list, 600)
+
+    return render(request, "best_sellers.html", {"top_products": top_list})

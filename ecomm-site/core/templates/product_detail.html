@@ -98,14 +98,14 @@
     <!-- Add to Cart -->
     <form method="post" action="{% url 'cart:cart_add' product.id %}" class="add-cart">
       {% csrf_token %}
-      <button type="submit" class="btn">Add to Cart</button>
+      <button type="submit" class="btn" style="border:1px solid hsl(0, 100%, 50%);background-color: white;">Add to Cart</button>
     </form>
 
     {% if user.is_authenticated %}
       <!-- Buy Now goes directly to DPO payment -->
       <form action="{% url 'cart:dpo_pay' %}" method="post" class="buy-now">
           {% csrf_token %}
-          <button type="submit" class="btn">Buy Now</button>
+          <button type="submit" class="btn" style="background-color: hsl(0, 100%, 50%);color: hsl(0, 0%, 100%);">Buy Now</button>
       </form>
     {% else %}
       <!-- Redirect to login first, then DPO -->
@@ -141,6 +141,9 @@
 
 
 {% endblock %}
+
+{% block mobile_footer %}{% endblock %}
+
 
 {% block extra_scripts %}
 <script>

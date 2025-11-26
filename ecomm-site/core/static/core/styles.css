@@ -19,7 +19,7 @@
 .products-horizontal {
   display: flex;
   column-gap: 8px;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   margin-bottom: 30px;      /* only vertical padding */
   scroll-snap-type: x mandatory;
@@ -663,7 +663,7 @@ body.product-page .prod-container {
 }
 
 .buy-btn {
-  background: #ff9900;
+  background-color: hsl(0, 100%, 50%);
   color: #000;
 }
 
@@ -793,10 +793,106 @@ body.product-page .prod-container {
 
 .material-symbols-outlined {
   font-variation-settings:
-  'FILL' hsl(0,0%,45%),
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 16,
-   
-
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
+
+
+
+
+/* Floating Footer*/
+
+.mobile-footer-floating {
+    position: fixed;
+    bottom: 12px;
+    margin: 0 auto;   
+    
+    width: 100%;
+    background: #ffffff;
+    height: 60px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    border-radius: 15px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+
+    z-index: 20000;
+}
+
+
+/* Footer item */
+.mobile-footer-floating a {
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+    display:inline-block;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+/* Icons */
+.mobile-footer-floating .material-symbols-outlined {
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 1px;
+}
+
+
+
+
+
+/* Horizontal Scroll Wrapper */
+.scroll-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Scrollable row */
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    gap: 12px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+/* Arrow Buttons */
+.scroll-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    border: none;
+    background: rgba(255,255,255,0.9);
+    padding: 8px 12px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.scroll-btn.left {
+    left: 0;
+}
+
+.scroll-btn.right {
+    right: 0;
+}
+
+/* Optional: Adjust your product card spacing */
+.products-horizontal .product-card {
+    min-width: 150px;
+}
+

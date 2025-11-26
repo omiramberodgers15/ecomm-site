@@ -6,7 +6,7 @@
     <title>{% block title %}Ecomm{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/styles.css' %}?v=9999">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body class="{% block body_class %}{% endblock %}">
 
@@ -24,15 +24,12 @@ search
 </span></button>
     </form>
 
-    <button id="cartIconBtn" class="topbar-cart">
-        🛒 <span id="cartCount">{{ request.session.cart|length|default:"0" }}</span>
-    </button>
+    
 </nav>
 
 
 <!-- ======= COMPACT NAV MENU ======= -->
 <div class="menubar">
-    <a href="/">All |</a>
 
     {% for cat in all_categories %}
 <div class="menu-dropdown">
@@ -58,15 +55,16 @@ search
 {% endfor %}
 
 
-    <!-- DEALS DROPDOWN -->
-    <div class="menu-dropdown">
-        <a class="menu-btn" href="javascript:void(0)">Deals |</a>
-        <div class="menu-content">
-            <a href="/deals/today/">Today's Deals</a>
-            <a href="/deals/clearance/">Clearance</a>
-            <a href="/deals/hot/">Hot Discounts</a>
-        </div>
+   <!-- DEALS DROPDOWN -->
+<div class="menu-dropdown">
+    <a class="menu-btn" href="javascript:void(0)">Deals |</a>
+    <div class="menu-content">
+        <a href="{% url 'core:deals-page' 'today' %}">Today's Deals</a>
+        <a href="{% url 'core:deals-page' 'clearance' %}">Clearance</a>
+        <a href="{% url 'core:deals-page' 'hot' %}">Hot Discounts</a>
     </div>
+</div>
+
 
     <!-- NEW ARRIVALS DROPDOWN -->
     <div class="menu-dropdown">
@@ -87,9 +85,27 @@ search
     {% block content %}{% endblock %}
 </div>
 
-<footer>
-  <!-- Footer content here -->
+<!-- ======= MOBILE FOOTER NAV ======= -->
+{% block mobile_footer %}
+<footer class="mobile-footer-floating">
+    <a href="/">
+        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">home</span><br>
+        <span>Home</span>
+    </a>
+
+    <a href="/contact">
+        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">call</span><br>
+        <span>Talk to Support</span>
+    </a>
+
+    <a href="{% url 'cart:cart_detail' %}">
+        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">shopping_cart</span><br>
+        <span>Your Cart</span>
+    </a>
 </footer>
+{% endblock %}
+
+
 
 <!-- Slide Cart Sidebar -->
 <div id="cartSidebar" class="cart-sidebar">

@@ -228,3 +228,12 @@ class Message(models.Model):
     def __str__(self):
         return f"{self.sender} → {self.receiver} ({self.read})"
 
+
+
+class Deal(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    products = models.ManyToManyField(Product, blank=True)
+
+    def __str__(self):
+        return self.name

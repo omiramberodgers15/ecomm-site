@@ -10,9 +10,8 @@ urlpatterns = [
     path("product/<int:product_id>/", views.product_detail, name="product_detail"),
     path("search/", views.search, name="search"),
 
-    # ---------- DEALS ----------
-    path("deals/today/", views.todays_deals, name="todays_deals"),
-    path("deals/clearance/", views.clearance_deals, name="clearance_deals"),
+    path("deals/<slug:slug>/", views.deals_page, name="deals-page"),
+    
 
     # ---------- NORMAL USER AUTH ----------
     path("login/", views.custom_login, name="login"),
@@ -56,6 +55,8 @@ urlpatterns = [
     # add the dynamic path route (captures slashes)
     path("new/<path:slug_path>/", views.new_products_by_path, name="new-products-by-path"),
 
+
+    path("best-sellers/", views.best_sellers, name="best-sellers"),
 
     
 ]
