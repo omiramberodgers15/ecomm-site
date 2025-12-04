@@ -3,26 +3,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Ecomm{% endblock %}</title>
+    <title>{% block title %}WaziTrade{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'core/styles.css' %}?v=9999">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
 <body class="{% block body_class %}{% endblock %}">
 
 <!-- ======= MOBILE COMPACT NAVBAR ======= -->
 <nav class="topbar">
     <div class="topbar-left">
-        <span class="logo-icon">🛒</span>
-        <a href="/" class="brand">Ecomm</a>
+        <span class="logo-icon"><img src="https://i.ibb.co/9mV5RSLY/1000141900-removebg-preview.png" alt="WaziTrade logo" width="45px,"></span>
+        <a href="/" class="brand">Wazi<span style="color:hsl(0, 100%, 50%);">Trade</span></a>
     </div>
 
     <form class="topbar-search" method="get" action="{% url 'core:search' %}">
-        <input type="search" name="q" placeholder="Search…" value="{{ request.GET.q }}">
-        <button type="submit"><span class="material-symbols-outlined" style="color:white">
-search
-</span></button>
-    </form>
+    <input id="searchInput" type="search" name="q" placeholder="Search…" value="{{ request.GET.q }}">
+    <button id="searchBtn" type="button">
+        <span class="material-symbols-outlined" style="color:ghostwhite">search</span>
+    </button>
+</form>
+
 
     
 </nav>
@@ -81,7 +86,7 @@ search
 
 
 
-<div class="page-content">
+<div class="page-content" style="margin-bottom: 85px;">
     {% block content %}{% endblock %}
 </div>
 
@@ -89,29 +94,29 @@ search
 {% block mobile_footer %}
 <footer class="mobile-footer-floating">
     <a href="/">
-        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">home</span><br>
+        <span class="material-symbols-outlined" style="color: goldenrod;">home</span><br>
         <span>Home</span>
     </a>
 
     <a href="/contact">
-        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">call</span><br>
+        <span class="material-symbols-outlined" style="color: goldenrod;">call</span><br>
         <span>Contact Us</span>
     </a>
 
     <a href="{% url 'cart:cart_detail' %}">
-        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">shopping_cart</span><br>
+        <span class="material-symbols-outlined" style="color: goldenrod;">shopping_cart</span><br>
         <span>Cart</span>
     </a>
     <hr>
     <!-- ⭐ Seller Register -->
     <a href="{% url 'core:seller-register' %}">
-        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">storefront</span><br>
+        <span class="material-symbols-outlined" style="color: goldenrod;">storefront</span><br>
         <span>Sell With Us</span>
     </a>
 
     <!-- ⭐ Seller Login -->
     <a href="{% url 'core:seller-login' %}">
-        <span class="material-symbols-outlined" style="color: hsl(0, 100%, 50%);">login</span><br>
+        <span class="material-symbols-outlined" style="color:#daa520;">login</span><br>
         <span>Seller Login</span>
     </a>
 </footer>
@@ -224,7 +229,26 @@ document.addEventListener("click", function(e) {
     }
 });
 </script>
+
+<script>
+document.getElementById("searchBtn").addEventListener("click", function () {
+    const input = document.getElementById("searchInput");
+
+    // If input is hidden, show it
+    if (!input.classList.contains("active")) {
+        input.classList.add("active");
+        input.focus();
+        return; // Don't submit yet
+    }
+
+    // If already visible, submit the form
+    input.closest("form").submit();
+});
+</script>
+
 {% endblock %}
+
+
 
 </body>
 </html>

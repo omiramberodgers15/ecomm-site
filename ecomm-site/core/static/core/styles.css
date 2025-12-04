@@ -2,6 +2,11 @@
   box-sizing: border-box;
   margin: 0;
   padding:0;
+  
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
 
 
@@ -50,7 +55,10 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 8px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   overflow: hidden;
   margin-bottom: 6px;
 }
@@ -95,7 +103,8 @@
   height: auto;
   aspect-ratio: 1 / 1;    /* ✅ perfectly square images */
   object-fit: cover;
-  border-radius: 6px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0px;
   margin-bottom: 16px;
   display: block; /* remove inline image spacing issues */
 }
@@ -128,8 +137,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 10px;
-    background: #febd69;
+    padding: 4px 8px;
+    background:hsl(50, 65%, 90%);
     color: white;
     height: 48px; /* small */
 }
@@ -140,35 +149,52 @@
     color:hsl(0,0%,13%);
     padding: 0;
     text-decoration: none;
-
+    font-family: Arial, Helvetica, sans-serif;
+    
 }
 
 .topbar-left {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 3px;
 }
 
 .topbar-search {
     flex: 1;
     display: flex;
-    margin: 0 8px;
-    
+    margin: 0 4px;
+    height: 32px;
+    margin-left: 16px;
 }
 
+#searchInput{
+  height:31px;
+}
 .topbar-search input {
     flex: 1;
     padding: 6px;
     border: none;
     border-radius: 4px 0 0 4px;
     width: 16px;
+    margin-left: -6px;
 }
 
+
+.topbar-search input.active {
+    width: 180px; /* size when expanded */
+    opacity: 1;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    
+}
+
+
 .topbar-search button {
-    padding: 6px 10px;
+    padding: 4px 8px;
     border: none;
     background:hsl(0,0%,45%);
     border-radius: 0 4px 4px 0;
+    margin-right: -8px;
 }
 
 #cartCount{
@@ -637,7 +663,7 @@ body.product-page .prod-container {
 }
 
 .remove-btn {
-  color: red;
+  color: hsl(0, 100%, 50%);
   cursor: pointer;
   font-size: 14px;
 }
@@ -665,6 +691,7 @@ body.product-page .prod-container {
 .buy-btn {
   background-color: hsl(0, 100%, 50%);
   color: #000;
+  
 }
 
 /* Floating chat button */
@@ -682,7 +709,7 @@ body.product-page .prod-container {
     z-index: 1000000;
     right: 20px;          /* 20px from right */
     cursor: pointer;      /* mouse pointer shows hand */
-    background: #ff9900;  /* optional: orange background like WhatsApp */
+    background: goldenrod;  /* optional: orange background like WhatsApp */
     color: #fff;          /* text color */
     padding: 10px 15px;   /* space inside button */
     border-radius: 50%;   /* round button */
@@ -763,9 +790,11 @@ body.product-page .prod-container {
 }
 
 .new-price {
-    color: #ff6600;
+    color: hsl(2, 100%, 50%);
     font-weight: bold;
     font-size: 18px;
+    margin-bottom: 6px;
+    margin-left: 6px;
 }
 
 
