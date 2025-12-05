@@ -3,6 +3,8 @@
   margin: 0;
   padding:0;
   
+  
+
   font-family: "Playfair Display", serif;
   font-optical-sizing: auto;
   font-weight: 500;
@@ -26,7 +28,7 @@
   column-gap: 8px;
   overflow-x: hidden;
   overflow-y: hidden;
-  margin-bottom: 30px;      /* only vertical padding */
+  margin-bottom: 20px;      /* only vertical padding */
   scroll-snap-type: x mandatory;
   width: 100vw;              /* full viewport width */
   box-sizing: border-box;    
@@ -37,7 +39,6 @@
 }
 
 .products-horizontal .product-card {
-  
   flex: 0 0 48%;        /* two cards visible on mobile */
   max-width: 493px;     /* optional maximum */
   height: auto;  /* remove fixed height */
@@ -49,6 +50,8 @@
   padding: 0;
   border-radius: 8px;
   background: #fff;
+  font-size: 0.8125rem;
+  
 }
 
 .products-horizontal .product-card img {
@@ -66,7 +69,6 @@
   color: hsl(0,0%,45%);
 }
 .products-horizontal .product-card p {
-  font-size: 13px;
   line-height: 1.2;
   margin: 4px 0 0;
   text-align: start;
@@ -95,6 +97,7 @@
   padding: 0px;
   height: auto;
   word-break: break-word;
+  font-size: 0.8125rem;
 }
 
 .products-vertical .product-card img {
@@ -105,16 +108,14 @@
   object-fit: cover;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0px;
-  margin-bottom: 16px;
+  margin-bottom: 6px;
   display: block; /* remove inline image spacing issues */
 }
 
 /* Text area */
 .products-vertical .product-card h4,
 .products-vertical .product-card p {
-  margin: 6px 0 0;
   font-size: 13px;
-  line-height: 1.2;
   font-weight: 700;
   text-align: start;
   padding:0 6px;
@@ -377,12 +378,18 @@
 /* Cards */
 .product-card {
     background: #fff;
-    border: 1px solid #ddd;
+    
     border-radius: 8px;
-    padding: 16px;             /* inner spacing */
+    padding: 6px;             /* inner spacing */
     text-align: center;
     overflow: hidden;         /* prevent overflowing content */
     transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 24px;
+  border: 0px;
+  box-shadow: 0 4px 6px 0 hsla(0,0%,0%,0.2);
+  height: auto;
+  word-break: break-word;
+  font-size: 0.8125rem;
 }
 
 .product-card:hover {
@@ -407,9 +414,6 @@
     line-height: 1.2;
     word-wrap: break-word;
 }
-
-
-
 
 
 
@@ -466,6 +470,7 @@
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
+    
 }
 
 .prod-cta .btn:hover {
@@ -512,15 +517,17 @@ body.product-page .fixed-prod-cta {
 
 body.product-page .fixed-prod-cta .btn {
     padding: 8px 16px;
-    background-color: #febd69;
+    background-color:hsl(2, 100%, 50%);
     border: none;
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
+
 }
 
 body.product-page .fixed-prod-cta .btn:hover {
-    background-color: #f3a847;
+    background-color: goldenrod;
 }
 
 body.product-page .fixed-prod-cta span.material-symbols-outlined {
@@ -556,7 +563,7 @@ body.product-page .footer {
 
 .fixed-prod-cta .btn {
     padding: 8px 16px;
-    background-color: #febd69;
+    background-color: goldenrod;
     border: none;
     border-radius: 5px;
     font-weight: bold;
@@ -564,7 +571,7 @@ body.product-page .footer {
 }
 
 .fixed-prod-cta .btn:hover {
-    background-color: #f3a847;
+    background-color: goldenrod;
 }
 
 .fixed-prod-cta span.material-symbols-outlined {
@@ -593,9 +600,6 @@ body.product-page .prod-container {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
-
-
 
 
 
@@ -689,7 +693,7 @@ body.product-page .prod-container {
 }
 
 .buy-btn {
-  background-color: hsl(0, 100%, 50%);
+  background-color: hsl(2, 100%, 50%);
   color: #000;
   
 }
@@ -744,7 +748,7 @@ body.product-page .prod-container {
 
 
 .chat-header {
-    background: #ff6600;
+    background: goldenrod;
     padding: 10px;
     color: white;
     display: flex;
@@ -769,8 +773,8 @@ body.product-page .prod-container {
     padding: 6px 10px;
     font-size: 14px;
     border-radius: 8px;
-    border: 1px solid #ff6600 ;
-    color: #ff6600 ;
+    border: 1px solid goldenrod ;
+    color: goldenrod ;
     background-color: white;
 }
 
@@ -881,6 +885,7 @@ body.product-page .prod-container {
     width: 100%;
     display: flex;
     align-items: center;
+    margin-bottom: -16px;
 }
 
 /* Scrollable row */
@@ -888,7 +893,7 @@ body.product-page .prod-container {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    padding-bottom: 10px;
+    padding-bottom: -20px;
     gap: 12px;
     scrollbar-width: none; /* Firefox */
 }

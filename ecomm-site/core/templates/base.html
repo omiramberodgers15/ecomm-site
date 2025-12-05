@@ -10,7 +10,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 </head>
 <body class="{% block body_class %}{% endblock %}">
 
@@ -18,7 +18,7 @@
 <nav class="topbar">
     <div class="topbar-left">
         <span class="logo-icon"><img src="https://i.ibb.co/9mV5RSLY/1000141900-removebg-preview.png" alt="WaziTrade logo" width="45px,"></span>
-        <a href="/" class="brand">Wazi<span style="color:hsl(0, 100%, 50%);">Trade</span></a>
+        <a href="/" class="brand" style="color:hsl(2, 100%, 50%);">WaziTrade</a>
     </div>
 
     <form class="topbar-search" method="get" action="{% url 'core:search' %}">
@@ -86,7 +86,7 @@
 
 
 
-<div class="page-content" style="margin-bottom: 85px;">
+<div class="page-content" style="margin-bottom: 65px;">
     {% block content %}{% endblock %}
 </div>
 

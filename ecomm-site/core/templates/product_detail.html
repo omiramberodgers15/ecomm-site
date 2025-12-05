@@ -15,7 +15,7 @@
                 "{{ product.main_image.url }}",
                 "{% if product.image2 %}{{ product.image2.url }}{% endif %}",
                 "{% if product.image3 %}{{ product.image3.url }}{% endif %}"
-             ]'>
+             ]' style="height: 250px;border-radius:0;object-fit: cover;">
     </div>
 
     <!-- PRICE OPTIONS -->
@@ -98,18 +98,18 @@
     <!-- Add to Cart -->
     <form method="post" action="{% url 'cart:cart_add' product.id %}" class="add-cart">
       {% csrf_token %}
-      <button type="submit" class="btn" style="border:1px solid hsl(0, 100%, 50%);background-color: white;border-radius: 24px;padding: 11px 14px;">Add to Cart</button>
+      <button type="submit" class="btn" style="border:1px solid hsl(0, 100%, 50%);background-color: white;border-radius: 24px;padding: 8px 12px;">Add to Cart</button>
     </form>
 
     {% if user.is_authenticated %}
       <!-- Buy Now goes directly to DPO payment -->
       <form action="{% url 'cart:dpo_pay' %}" method="post" class="buy-now">
           {% csrf_token %}
-          <button type="submit" class="btn" style="background-color: hsl(0, 100%, 50%);color: hsl(0, 0%, 100%);border-radius: 24px;padding: 12px 16px;">Buy Now</button>
+          <button type="submit" class="btn" style="background-color: hsl(2, 100%, 50%);color: hsl(0, 0%, 100%);border-radius: 24px;padding: 8px 12px;">Buy Now</button>
       </form>
     {% else %}
       <!-- Redirect to login first, then DPO -->
-      <a href="{% url 'account_login' %}?next={% url 'cart:dpo_pay' %}" class="btn">Sign in to Buy</a>
+      <a href="{% url 'account_login' %}?next={% url 'cart:dpo_pay' %}" class="btn" style="color: white;border-radius: 24px;padding: 8px 12px;">Buy Now</a>
     {% endif %}
 </div>
 
@@ -132,7 +132,7 @@
         </form>
     {% else %}
         <div class="p-2 text-center">
-            <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary">
+            <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary" >
                 Sign in to Chat
             </a>
         </div>

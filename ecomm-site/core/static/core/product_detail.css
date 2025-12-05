@@ -22,6 +22,7 @@ html, body {
 
 .image-container {
     grid-column: span 4;
+    
 }
 
 .product-image {
