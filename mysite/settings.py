@@ -3,10 +3,10 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-# Load .env if present
+# Load .env BEFORE using env variables
 load_dotenv()
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # --------------------------
 # BASE DIRECTORY
