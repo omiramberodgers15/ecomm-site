@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Best Sellers — WaziTrade{% endblock %}
+
+{% block content %}
+<h2 style="padding:10px;">🔥 Best Sellers</h2>
+
+{% if top_products %}
+<div class="product-grid">
+    {% for p in top_products %}
+    <div class="product-card">
+        <a href="{% url 'core:product_detail' p.id %}">
+            {% if p.main_image %}
+                <img src="{{ p.main_image.url }}" alt="{{ p.name }}">
+            {% else %}
+                <img src="/static/default-product.jpg" alt="No Image">
+            {% endif %}
+            <h3>{{ p.name }}</h3>
+            {% if p.initial_price %}
+                <p><del>UGX {{ p.initial_price }}</del></p>
+            {% endif %}
+            <p class="price">UGX {{ p.base_price }}</p>
+        </a>
+
+        <p style="font-size:12px;margin-top:6px;">
+            Sold: {{ p.sold_count }} • Reviews: {{ p.reviews.count }}
+        </p>
+
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p style="padding:15px;">No best sellers yet — try adding some orders (paid) or check back later.</p>
+{% endif %}
+
+<style>
+/* reuse your existing styles for .product-grid/.product-card */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 15px;
+}
+.product-card {
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.product-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+</style>
+{% endblock %}

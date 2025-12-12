@@ -1,0 +1,19 @@
+<h2>Chat about {{ session.product.name }} with {{ session.supplier.name }}</h2>
+
+<div class="chat-box" style="border:1px solid #ccc; padding:10px; max-height:400px; overflow-y:scroll;">
+    {% for msg in messages %}
+        <div style="margin-bottom:10px;">
+            <strong>{{ msg.sender.username }}</strong>: {{ msg.content }}
+            <br>
+            <small>{{ msg.timestamp|date:"H:i, d M Y" }}</small>
+        </div>
+    {% empty %}
+        <p>No messages yet.</p>
+    {% endfor %}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="message" placeholder="Type your message..." style="width:80%;" required>
+    <button type="submit">Send</button>
+</form>

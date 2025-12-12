@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - WaziTrade{% endblock %}
+
+{% block content %}
+
+<!-- ======= PRODUCT HORIZONTAL SLIDER ======= -->
+<div class="product-slider mt-2">
+    <h5 class="mb-2">Popular Products</h5>
+
+    <div class="slider-track">
+        {% for product in popular_products %}
+        <a href="{% url 'core:product_detail' product.id %}" class="slider-item">
+            {% if product.images.all %}
+                <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}">
+            {% elif product.main_image %}
+                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="/static/images/placeholder.png" alt="{{ product.name }}">
+            {% endif %}
+
+            <span class="product-title">{{ product.name|truncatechars:18 }}</span>
+            
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+<!-- ============= NEW ARRIVALS ============= -->
+<h2 class="section-title">New Arrivals</h2>
+
+<div class="scroll-wrapper">
+
+    <button class="scroll-btn left">‹</button>
+
+    <div class="products-horizontal scroll-container">
+        {% for product in new_arrivals %}
+        <div class="product-card">
+
+            <a href="{% url 'core:product_detail' product.id %}">
+                {% if product.main_image %}
+                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                {% else %}
+                <img src="{% static 'core/default-product.jpg' %}">
+                {% endif %}
+            </a>
+
+            <p class="prod-name">{{ product.name }}</p>
+
+            <div class="price-row">
+                <span class="new-price">UGX {{ product.base_price }}</span>
+            </div>
+
+        </div>
+        {% empty %}
+        <p>No new arrivals yet.</p>
+        {% endfor %}
+    </div>
+
+    <button class="scroll-btn right">›</button>
+
+</div>
+
+
+
+
+<!-- ============= TOP DEALS ============= -->
+<h2 class="section-title">Top Deals</h2>
+<div class="products-default">
+    {% for product in top_deals %}
+    <div class="product-card">
+
+        <a href="{% url 'core:product_detail' product.id %}">
+            {% if product.main_image %}
+            <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <img src="{% static 'core/default-product.jpg' %}">
+            {% endif %}
+        </a>
+
+        <p class="prod-name">{{ product.name }}</p>
+
+        <div class="price-row">
+            {% if product.initial_price %}
+            <span class="old-price">UGX {{ product.initial_price }}</span>
+            {% endif %}
+            <span class="new-price">UGX {{ product.base_price }}</span>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No top deals right now.</p>
+    {% endfor %}
+</div>
+
+
+
+<!-- ============= BEST SELLERS ============= -->
+<h2 class="section-title">Best Sellers</h2>
+<div class="products-vertical">
+    {% for product in best_sellers %}
+    <div class="product-card">
+
+        <a href="{% url 'core:product_detail' product.id %}">
+            {% if product.main_image %}
+            <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <img src="{% static 'core/default-product.jpg' %}">
+            {% endif %}
+        </a>
+
+        <p class="prod-name">{{ product.name }}</p>
+        <p class="prod-review">{{ product.review_count }} reviews</p>
+
+        <div class="price-row">
+            <span class="new-price">UGX {{ product.base_price }}</span>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No best sellers yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const containers = document.querySelectorAll(".scroll-wrapper");
+
+    containers.forEach(wrapper => {
+        const container = wrapper.querySelector(".scroll-container");
+        const left = wrapper.querySelector(".scroll-btn.left");
+        const right = wrapper.querySelector(".scroll-btn.right");
+
+        left.addEventListener("click", () => {
+            container.scrollBy({ left: -250, behavior: "smooth" });
+        });
+
+        right.addEventListener("click", () => {
+            container.scrollBy({ left: 250, behavior: "smooth" });
+        });
+    });
+});
+</script>
+{% endblock %}

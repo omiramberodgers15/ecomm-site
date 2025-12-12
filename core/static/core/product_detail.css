@@ -1,0 +1,111 @@
+
+
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+}
+
+/* Grid layout */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 12px;
+    margin-bottom: 100px; /* space for fixed CTA */
+}
+
+.image-container {
+    grid-column: span 4;
+    
+}
+
+.product-image {
+    width: 100%;
+    height: 250px;       /* uniform height */
+    object-fit: cover;   /* crop without stretching */
+    border-radius: 8px;
+    display: block;
+}
+
+/* Price options */
+.prod-price {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+.price-tier {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Description & reviews */
+.prod-description {
+    grid-column: 1 / span 2;
+}
+
+.prod-review {
+    grid-column: span 4;
+}
+
+/* Customer star ratings */
+.star-rating {
+    background-color: bisque;
+    padding: 6px;
+    display: inline-block;
+}
+
+/* CTA fixed at bottom */
+.prod-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    z-index: 1000;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+}
+
+.prod-cta .material-symbols-outlined {
+    justify-self: center;
+    align-self: center;
+    background-color: bisque;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.prod-cta .add-cart,
+.prod-cta .buy-now {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prod-cta .btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #f0c14b;
+    cursor: pointer;
+}
+
+.prod-cta .buy-now .btn {
+    background-color: #4CAF50;
+    color: white;
+}

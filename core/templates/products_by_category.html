@@ -1,0 +1,49 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ current_category.name }} - Products{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <h2>{{ current_category.name }}</h2>
+</div>
+
+<!-- Subcategories section -->
+{% if subcategories %}
+<div class="subcategory-list">
+    <h3>Browse Subcategories</h3>
+    <ul>
+        {% for sub in subcategories %}
+        <li>
+            <a href="{% url 'core:products_by_subcategory' sub.id %}">
+                {{ sub.name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<!-- Products Grid -->
+<div class="products-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <a href="{% url 'core:product_detail' product.id %}">
+            {% if product.main_image %}
+                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'core/default-category.jpg' %}" alt="{{ product.name }}">
+            {% endif %}
+        </a>
+        <p><strong>UGX {{ product.base_price }}</strong></p>
+        <p>{{ product.name }}</p>
+    </div>
+
+    {% empty %}
+    <p>No products found in this category.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

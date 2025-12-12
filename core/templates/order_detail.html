@@ -1,0 +1,16 @@
+
+<h1>Order #{{ order.id }}</h1>
+<p>Placed on: {{ order.created_at|date:"M d, Y H:i" }}</p>
+<p>Status: {{ order.status }}</p>
+
+<h3>Items:</h3>
+<ul>
+  {% for item in order.items.all %}
+    <li>{{ item.product.name }} × {{ item.quantity }} — Ush {{ item.total_price }}</li>
+  {% endfor %}
+</ul>
+
+<p><strong>Total:</strong> Ush {{ order.total_price }}</p>
+
+<a href="{% url 'order_history' %}">Back to Order History</a>
+

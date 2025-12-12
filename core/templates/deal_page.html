@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>{{ deal.name }}</h1>
+
+<div class="product-grid">
+    {% for p in products %}
+        <div class="product-card">
+            <a href="{{ p.get_absolute_url }}">
+                <img src="{{ p.image.url }}" alt="{{ p.title }}">
+                <h3>{{ p.title }}</h3>
+                <p>{{ p.price }} UGX</p>
+            </a>
+        </div>
+    {% empty %}
+        <p>No products in this deal yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

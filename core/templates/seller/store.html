@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ seller.business_name }} Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ seller.business_name }}</h2>
+    <p>{{ seller.address }}</p>
+
+    <hr>
+
+    <h3>Products</h3>
+    {% for p in products %}
+        <div>
+            <a href="{% url 'product-detail' p.id %}">{{ p.name }}</a>
+            — ${{ p.base_price }}
+        </div>
+    {% empty %}
+        <p>No products yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

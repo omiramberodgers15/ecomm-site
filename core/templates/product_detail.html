@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body_class %}product-page{% endblock %}
+
+{% block content %}
+<div class="prod-container">
+
+    <!-- PRODUCT IMAGE -->
+    <div class="image-container">
+        <img id="productImage" class="product-image" src="{{ product.main_image.url }}" alt="{{ product.name }}"
+             data-images='[
+                "{{ product.main_image.url }}",
+                "{% if product.image2 %}{{ product.image2.url }}{% endif %}",
+                "{% if product.image3 %}{{ product.image3.url }}{% endif %}"
+             ]' style="height: 250px;border-radius:0;object-fit: cover;">
+    </div>
+
+    <!-- PRICE OPTIONS -->
+    {% if product.price_options.exists %}
+    <section class="prod-price">
+        {% for option in product.price_options.all %}
+        <div class="price-tier">
+            <h4>Ush {{ option.price }}</h4>
+            {% if option.max_quantity %}
+                <p>{{ option.min_quantity }}–{{ option.max_quantity }} pcs</p>
+            {% else %}
+                <p>≥ {{ option.min_quantity }} pcs</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+<!-- DESCRIPTION -->
+    <section class="prod-description">
+    <h3>Description</h3>
+    <p>{{ product.description|default:"No description available" }}</p>
+</section>
+<!-- COLORS -->
+<section class="prod-colors">
+    <h3>Available Colors</h3>
+    <ul>
+        {% for color in colors %}
+            <li>{{ color.name }}</li>
+        {% empty %}
+            <li>No colors available</li>
+        {% endfor %}
+    </ul>
+</section>
+
+
+    <!-- TRANSPORT / DELIVERY -->
+    <section class="prod-transport">
+    <h3>Transport / Delivery</h3>
+    <p>Transport Fee: <strong>Ush {{ transport_fee|default:"N/A" }}</strong></p>
+    <ul>
+        {% for supplier in recommended_supplier %}
+            {% if supplier.phone %}
+                <li>{{ supplier.name }}: <a href="tel:{{ supplier.phone }}">{{ supplier.phone }}</a></li>
+            {% endif %}
+        {% empty %}
+            <li>No suppliers available</li>
+        {% endfor %}
+    </ul>
+</section>
+
+    <!-- CUSTOMER REVIEWS -->
+    <section class="prod-review">
+        <h3>Customer Reviews</h3>
+        {% for review in reviews %}
+        <div class="review-item">
+            {% if review.avatar %}
+                <img src="{{ review.avatar.url }}" alt="{{ review.user_name }}" class="review-avatar">
+            {% else %}
+                <img src="{% static 'default-avatar.png' %}" alt="{{ review.user_name }}" class="review-avatar">
+            {% endif %}
+            <strong>{{ review.user_name }}</strong>
+            <p>{{ review.comment }}</p>
+        </div>
+        {% empty %}
+        <p>No reviews yet.</p>
+        {% endfor %}
+    </section>
+
+</div> <!-- end prod-container -->
+
+
+<!-- FLOATING CHAT ICON -->
+<div id="floatingChat">
+    <span class="material-symbols-outlined chat-trigger">chat</span>
+</div>
+
+<!-- FIXED BOTTOM CTA -->
+<div class="fixed-prod-cta">
+    
+    <!-- Add to Cart -->
+    <form method="post" action="{% url 'cart:cart_add' product.id %}" class="add-cart">
+      {% csrf_token %}
+      <button type="submit" class="btn" style="border:1px solid hsl(0, 100%, 50%);background-color: white;border-radius: 24px;padding: 8px 12px;">Add to Cart</button>
+    </form>
+
+    {% if user.is_authenticated %}
+      <!-- Buy Now goes directly to DPO payment -->
+      <form action="{% url 'cart:dpo_pay' %}" method="post" class="buy-now">
+          {% csrf_token %}
+          <button type="submit" class="btn" style="background-color: hsl(2, 100%, 50%);color: hsl(0, 0%, 100%);border-radius: 24px;padding: 8px 12px;">Buy Now</button>
+      </form>
+    {% else %}
+      <!-- Redirect to login first, then DPO -->
+      <a href="{% url 'account_login' %}?next={% url 'cart:dpo_pay' %}" class="btn" style="color: white;border-radius: 24px;padding: 8px 12px;">Buy Now</a>
+    {% endif %}
+</div>
+
+
+
+<div class="chat-window" id="chatWindow" style="display:none;">
+    <div class="chat-header">
+        <h4>Chat With Support</h4>
+        <button id="closeChat">&times;</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages"></div>
+
+    {% if user.is_authenticated %}
+        <form id="chatForm">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input id="msgInput" type="text" placeholder="Type message..." autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    {% else %}
+        <div class="p-2 text-center">
+            <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary" >
+                Sign in to Chat
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
+{% block mobile_footer %}{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+// Cycle product images
+const img = document.getElementById("productImage");
+const images = JSON.parse(img.dataset.images.replace(/'/g, '"')).filter(Boolean);
+let currentIndex = 0;
+img.addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  img.src = images[currentIndex];
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const csrftoken = '{{ csrf_token }}';
+    const productId = "{{ product.id }}";
+    const chatBtn = document.querySelector(".chat-trigger");
+    const chatWindow = document.getElementById("chatWindow");
+    const closeChat = document.getElementById("closeChat");
+    const chatForm = document.getElementById("chatForm");
+    const msgInput = document.getElementById("msgInput");
+    const chatMessages = document.getElementById("chatMessages");
+
+    // Fetch messages between buyer & seller
+    function fetchMessages() {
+        fetch(`/chat/fetch/${productId}/`)
+        .then(res => res.json())
+        .then(data => {
+            chatMessages.innerHTML = '';
+            data.messages.forEach(msg => {
+                chatMessages.innerHTML += `<div class="chat-msg"><b>${msg.sender}:</b> ${msg.content}</div>`;
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    }
+
+    // Open chat window
+    chatBtn.addEventListener("click", () => {
+        chatWindow.style.display = "flex";
+        fetchMessages();
+    });
+
+    // Close chat window
+    closeChat.addEventListener("click", () => {
+        chatWindow.style.display = "none";
+    });
+
+    // Send message (buyer → seller)
+    if(chatForm){
+        chatForm.addEventListener("submit", function(e){
+            e.preventDefault();
+            const content = msgInput.value.trim();
+            if(!content) return;
+
+            fetch("{% url 'core:send_message' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": csrftoken,
+                },
+                body: new URLSearchParams({
+                    "product_id": productId,
+                    "content": content,
+                    "receiver_id": "" // leave empty to send to seller
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                chatMessages.innerHTML += `<div class="chat-msg"><b>${data.sender}:</b> ${data.content}</div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                msgInput.value = "";
+            });
+        });
+    }
+
+    // Poll messages every 3 seconds for real-time updates
+    setInterval(fetchMessages, 3000);
+});
+</script>
+{% endblock %}
+

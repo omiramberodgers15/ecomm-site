@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Seller Login{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Seller Login</h2>
+    <form method="POST" action="">
+    {% csrf_token %}
+    <label for="username">Email or Username</label>
+    <input type="text" name="username" id="username" required>
+
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+
+    <button type="submit" style="padding: 8px 12px ;border-radius: 8px;background: #febd69;border: none;">Login</button>
+   </form>
+
+</div>
+{% endblock %}

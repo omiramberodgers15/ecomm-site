@@ -1,0 +1,16 @@
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+*.sqlite3
+
+# Media files
+/media/
+
+# Static files (optional if you’re using collectstatic)
+staticfiles/
+
+# Environment / IDE files
+.env
+.vscode/
+*.log
