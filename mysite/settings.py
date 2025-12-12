@@ -3,26 +3,29 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
+
+
+# BASE DIRECTORY
+# --------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Load .env BEFORE using env variables
-load_dotenv()
+
+load_dotenv(BASE_DIR / '.env') 
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # --------------------------
-# BASE DIRECTORY
-# --------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # --------------------------
 # SECURITY
 # --------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
 #DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
-ALLOWED_HOSTS = ['ecomm-site-production.up.railway.app','https://ecomm-site-production.up.railway.app']
+ALLOWED_HOSTS = ['ecomm-site-production.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://ecomm-site-production.up.railway.app']
 
-DEBUG = True
-
+DEBUG = os.getenv('DEBUG') == 'True'
 
 # --------------------------
 # URL CONFIGURATION
