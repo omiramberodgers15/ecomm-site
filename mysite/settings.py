@@ -3,7 +3,9 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # BASE DIRECTORY
 # --------------------------
@@ -21,11 +23,11 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 # SECURITY
 # --------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
-#DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = [ '127.0.0.1','localhost','ecomm-site-production.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://ecomm-site-production.up.railway.app']
 
-DEBUG = os.getenv('DEBUG') == 'False'
+#DEBUG = os.getenv('DEBUG') == 'False'
 
 # --------------------------
 # URL CONFIGURATION
@@ -51,6 +53,10 @@ INSTALLED_APPS = [
     'core',
     'payments',
     'chat',
+
+    # 👇 add these
+    "cloudinary",
+    "cloudinary_storage",
 
     # Allauth apps
     'allauth',
@@ -163,8 +169,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
 
 # --------------------------
 # EMAIL SETTINGS
@@ -191,3 +195,13 @@ DPO_COMPANY_TOKEN = os.environ.get("DPO_COMPANY_TOKEN", "")
 DPO_PAYMENT_CURRENCY = "UGX"
 DPO_PAYMENT_TIME_LIMIT = 30
 DPO_SERVICE_TYPE = "express"
+
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+)
+
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
