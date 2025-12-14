@@ -4,7 +4,12 @@
   padding:0;
   
 }
-
+.navbar-brand{
+  font-family: "Roboto Flex", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 
 
 .category-block p{
@@ -549,7 +554,7 @@ body.product-page .fixed-prod-cta {
 
 body.product-page .fixed-prod-cta .btn {
     padding: 8px 16px;
-    background-color:hsl(2, 100%, 50%);
+    background-color:hsl(0, 88%, 62%);;
     border: none;
     border-radius: 5px;
     font-weight: bold;
@@ -843,7 +848,7 @@ body.product-page .prod-container {
 
 
 .prod-name{
-  font-weight: bolder;
+  font-weight:400;
   font-size: larger !important;
   margin-bottom:6px !important ;
 
@@ -1111,6 +1116,10 @@ form textarea {
     .search-input {
         height: 35px;
         font-size: 14px;
+        border-right-width: 0px;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+        border-color: #f3a847;
     }
 
     /* Make button exactly same height */
@@ -1120,11 +1129,16 @@ form textarea {
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 15px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+        border-left-width: 0px;
     }
 
     /* Reduce icon size */
     .search-btn .material-symbols-outlined {
         font-size: 20px;
         line-height: 1;
+        border: none;
     }
 }

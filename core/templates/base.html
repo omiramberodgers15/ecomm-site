@@ -38,12 +38,12 @@
         <a class="navbar-brand mb-3" href="/">WaziTrade</a>
 
        <form class="d-flex align-items-center w-100" method="get" action="{% url 'core:search' %}">
-    <input class="form-control flex-grow-1 me-2 search-input"
+    <input class="form-control flex-grow-1 search-input"
            type="search" name="q" placeholder="Search…"
            value="{{ request.GET.q }}">
            
     <button class="btn btn-outline-warning search-btn" type="submit">
-        <span class="material-symbols-outlined">search</span>
+          <span class="material-symbols-outlined">search</span>
     </button>
 </form>
 
