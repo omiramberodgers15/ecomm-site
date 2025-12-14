@@ -13,12 +13,12 @@
         {% for product in popular_products %}
         <a href="{% url 'core:product_detail' product.id %}" class="slider-item">
             {% if product.images.all %}
-                <img src="{{ product.images.all.0.image.url }}" alt="{{ product.name }}">
-            {% elif product.main_image %}
-                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
-            {% else %}
-                <img src="/static/images/placeholder.png" alt="{{ product.name }}">
-            {% endif %}
+    <img src="{{ product.images.all.0.image.url }}">
+{% elif product.main_image %}
+    <img src="{{ product.main_image.url }}">
+{% else %}
+    <img src="/static/images/placeholder.png">
+{% endif %}
 
             <span class="product-title">{{ product.name|truncatechars:18 }}</span>
             
@@ -30,7 +30,7 @@
 
 
 <!-- ============= NEW ARRIVALS ============= -->
-<h2 class="section-title">New Arrivals</h2>
+<h3 class="section-title">New Arrivals</h3>
 
 <div class="scroll-wrapper">
 
@@ -68,7 +68,7 @@
 
 
 <!-- ============= TOP DEALS ============= -->
-<h2 class="section-title">Top Deals</h2>
+<h3 class="section-title">Top Deals</h3>
 <div class="products-default">
     {% for product in top_deals %}
     <div class="product-card">
@@ -99,7 +99,7 @@
 
 
 <!-- ============= BEST SELLERS ============= -->
-<h2 class="section-title">Best Sellers</h2>
+<h3 class="section-title">Best Sellers</h3>
 <div class="products-vertical">
     {% for product in best_sellers %}
     <div class="product-card">
