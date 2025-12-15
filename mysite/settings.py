@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
 ALLOWED_HOSTS = [ '127.0.0.1','localhost','ecomm-site-production.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://ecomm-site-production.up.railway.app']
 
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = os.getenv('DEBUG') == 'False'
 
 # --------------------------
 # URL CONFIGURATION
