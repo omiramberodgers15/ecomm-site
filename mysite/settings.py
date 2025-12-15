@@ -23,11 +23,11 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 # SECURITY
 # --------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+#DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = [ '127.0.0.1','localhost','ecomm-site-production.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://ecomm-site-production.up.railway.app']
 
-#DEBUG = os.getenv('DEBUG') == 'False'
+DEBUG = os.getenv('DEBUG') == 'False'
 
 # --------------------------
 # URL CONFIGURATION
