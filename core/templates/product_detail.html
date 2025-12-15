@@ -10,18 +10,19 @@
 
     <!-- PRODUCT IMAGE -->
     <div class="image-container">
-        <img id="productImage" class="product-image"
-     src="{% if product.main_image %}{{ product.main_image.url }}{% else %}{% static 'placeholder.png' %}{% endif %}"
-     alt="{{ product.name }}"
-     data-images='[
-            {% if product.main_image %}"{{ product.main_image.url }}"{% endif %}
-            {% if product.image2 %}, "{{ product.image2.url }}"{% endif %}
-            {% if product.image3 %}, "{{ product.image3.url }}"{% endif %}
-          ]'
+    {% if product.main_image %}
+        <img id="productImage"
+             class="product-image"
+             src="{{ product.main_image.url }}"
+             alt="{{ product.name }}"
+             style="height:250px;object-fit:cover;">
+    {% else %}
+        <img class="product-image"
+             src="{% static 'placeholder.png' %}"
+             alt="No image">
+    {% endif %}
+</div>
 
-     style="height: 250px;border-radius:0;object-fit: cover;">
-
-    </div>
 
     <!-- PRICE OPTIONS -->
     {% if product.price_options.exists %}

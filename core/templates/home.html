@@ -12,12 +12,12 @@
     <div class="slider-track">
         {% for product in popular_products %}
         <a href="{% url 'core:product_detail' product.id %}" class="slider-item">
-            {% if product.images.all %}
-    <img src="{{ product.images.all.0.image.url }}">
+            {% if product.images.exists %}
+    <img src="{{ product.images.first.image.url }}">
 {% elif product.main_image %}
     <img src="{{ product.main_image.url }}">
 {% else %}
-    <img src="/static/images/placeholder.png">
+    <img src="{% static 'images/placeholder.png' %}">
 {% endif %}
 
             <span class="product-title">{{ product.name|truncatechars:18 }}</span>

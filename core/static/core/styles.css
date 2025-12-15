@@ -1116,7 +1116,7 @@ form textarea {
     .search-input {
         height: 35px;
         font-size: 14px;
-        border-right-width: 0px;
+        
         border-bottom-right-radius: 0px;
         border-top-right-radius: 0px;
         border-color: #f3a847;
@@ -1132,7 +1132,7 @@ form textarea {
         margin-bottom: 15px;
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
-        border-left-width: 0px;
+        
     }
 
     /* Reduce icon size */
