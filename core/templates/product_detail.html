@@ -15,13 +15,19 @@
              class="product-image"
              src="{{ product.main_image.url }}"
              alt="{{ product.name }}"
-             style="height:250px;object-fit:cover;">
+             style="height:250px;object-fit:cover;"
+             data-images='[
+                {% for img in product.images.all %}
+                "{{ img.image.url }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+             ]'>
     {% else %}
         <img class="product-image"
              src="{% static 'placeholder.png' %}"
              alt="No image">
     {% endif %}
 </div>
+
 
 
     <!-- PRICE OPTIONS -->
@@ -155,12 +161,28 @@
 <script>
 // Cycle product images
 const img = document.getElementById("productImage");
-const images = JSON.parse(img.dataset.images.replace(/'/g, '"')).filter(Boolean);
+
+let images = [];
+
+if (img && img.dataset.images) {
+    try {
+        images = JSON.parse(
+            img.dataset.images.replace(/'/g, '"')
+        ).filter(Boolean);
+    } catch (e) {
+        images = [];
+    }
+}
+
 let currentIndex = 0;
-img.addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % images.length;
-  img.src = images[currentIndex];
-});
+
+if (images.length > 1) {
+    img.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        img.src = images[currentIndex];
+    });
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
     const csrftoken = '{{ csrf_token }}';
