@@ -11,13 +11,18 @@ from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.conf import settings
 
+# for image storage
+from cloudinary.models import CloudinaryField
+
+
 
 # ---------- CATEGORY ----------
 class Category(models.Model):
     name = models.CharField(max_length=150)
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    image = CloudinaryField("image", blank=True, null=True)
+
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -67,7 +72,7 @@ class Product(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="products", null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
     subcategory = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, related_name="products", null=True, blank=True)
-    main_image = models.ImageField(upload_to='products/', blank=True, null=True)
+    main_image = CloudinaryField("image", blank=True, null=True)
     name = models.CharField(max_length=255)
     short_description = models.CharField(max_length=300, blank=True, null=True)
      #color_options = models.JSONField(blank=True, null=True)  # store available colors ['red','blue']
@@ -161,7 +166,7 @@ class Supplier(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='products/')
+    image = CloudinaryField("image")
     color = models.CharField(max_length=50, blank=True, null=True)  # color for this image
 
     def __str__(self):
