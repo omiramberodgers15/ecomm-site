@@ -76,13 +76,15 @@ class ProductAdmin(admin.ModelAdmin):
 # ---------------------
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
+    # Show these columns in the list view
     list_display = ("user", "business_name", "phone", "address", "approved", "created_at")
     list_filter = ("approved", "created_at")
     search_fields = ("user__username", "user__email", "business_name", "phone", "address")
     list_editable = ("approved",)
-    
-    # Only include editable fields here
-    fields = ("user", "business_name", "phone", "address", "approved")
+
+    # Fields shown in the edit form
+    fields = ("user", "business_name", "phone", "address", "approved", "created_at")
+    readonly_fields = ("created_at",)  # <-- Make created_at read-only
 
     def save_model(self, request, obj, form, change):
         """Send email when seller approval changes from False → True"""
