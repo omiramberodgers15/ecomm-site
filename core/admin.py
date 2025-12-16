@@ -76,18 +76,14 @@ class ProductAdmin(admin.ModelAdmin):
 # ---------------------
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    # Show these columns in the list view
     list_display = ("user", "business_name", "phone", "address", "approved", "created_at")
     list_filter = ("approved", "created_at")
     search_fields = ("user__username", "user__email", "business_name", "phone", "address")
     list_editable = ("approved",)
 
-    # Fields shown in the edit form
-    fields = ("user", "business_name", "phone", "address", "approved")
-    readonly_fields = ("created_at",)  # <-- Make created_at read-only
+    readonly_fields = ("created_at",)
 
     def save_model(self, request, obj, form, change):
-        """Send email when seller approval changes from False → True"""
         send_email = False
 
         if change:
@@ -98,20 +94,22 @@ class SellerAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
         if send_email and obj.user.email:
-            subject = "🎉 Your Seller Account Has Been Approved!"
-            message = (
-                f"Hi {obj.user.username},\n\n"
-                "Good news! Your seller account on WaziTrade has been approved.\n"
-                "You can now log in to your seller dashboard and start listing your products.\n\n"
-                "Dashboard: https://wazitrade.com/seller/dashboard/\n\n"
-                "Welcome aboard,\nThe WaziTrade Marketplace Team"
-            )
-
             try:
-                send_mail(subject, message, None, [obj.user.email])
+                send_mail(
+                    "🎉 Your Seller Account Has Been Approved!",
+                    (
+                        f"Hi {obj.user.username},\n\n"
+                        "Your seller account on WaziTrade has been approved.\n"
+                        "You can now start listing products.\n\n"
+                        "— WaziTrade Team"
+                    ),
+                    None,
+                    [obj.user.email],
+                    fail_silently=False,
+                )
                 messages.success(request, f"Approval email sent to {obj.user.email}.")
             except Exception as e:
-                messages.warning(request, f"Seller approved but email sending failed: {e}")
+                messages.warning(request, f"Seller approved but email failed: {e}")
 
 
 
