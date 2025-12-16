@@ -76,20 +76,13 @@ class ProductAdmin(admin.ModelAdmin):
 # ---------------------
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    # Show phone and address in the list view
     list_display = ("user", "business_name", "phone", "address", "approved", "created_at")
-    
-    # Filter by approval status and creation date
     list_filter = ("approved", "created_at")
-    
-    # Enable searching by username, email, business name, phone, and address
     search_fields = ("user__username", "user__email", "business_name", "phone", "address")
-    
-    # Allow inline editing of approval status
     list_editable = ("approved",)
     
-    # Show all relevant fields in the detail/edit page
-    fields = ("user", "business_name", "phone", "address", "approved", "created_at")
+    # Only include editable fields here
+    fields = ("user", "business_name", "phone", "address", "approved")
 
     def save_model(self, request, obj, form, change):
         """Send email when seller approval changes from False → True"""
@@ -102,14 +95,7 @@ class SellerAdmin(admin.ModelAdmin):
 
         super().save_model(request, obj, form, change)
 
-        if send_email:
-            if not obj.user.email:
-                messages.warning(
-                    request,
-                    f"Seller approved, but NO email address exists for user '{obj.user.username}'."
-                )
-                return
-
+        if send_email and obj.user.email:
             subject = "🎉 Your Seller Account Has Been Approved!"
             message = (
                 f"Hi {obj.user.username},\n\n"
@@ -124,7 +110,8 @@ class SellerAdmin(admin.ModelAdmin):
                 messages.success(request, f"Approval email sent to {obj.user.email}.")
             except Exception as e:
                 messages.warning(request, f"Seller approved but email sending failed: {e}")
-                
+
+
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
