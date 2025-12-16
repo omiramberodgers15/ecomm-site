@@ -83,7 +83,7 @@ class SellerAdmin(admin.ModelAdmin):
     list_editable = ("approved",)
 
     # Fields shown in the edit form
-    fields = ("user", "business_name", "phone", "address", "approved", "created_at")
+    fields = ("user", "business_name", "phone", "address", "approved")
     readonly_fields = ("created_at",)  # <-- Make created_at read-only
 
     def save_model(self, request, obj, form, change):
