@@ -73,17 +73,34 @@ class ProductAdmin(admin.ModelAdmin):
 
 # ---------------------
 # SELLER ADMIN (with email on approval)
-# ---------------------
+
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ("user", "business_name", "phone", "address", "approved", "created_at")
-    list_filter = ("approved", "created_at")
-    search_fields = ("user__username", "user__email", "business_name", "phone", "address")
+
+    list_display = (
+        "user",
+        "business_name",
+        "approved",
+        "created_at",
+    )
+
+    list_filter = (
+        "approved",
+        "created_at",
+    )
+
+    search_fields = (
+        "user__username",
+        "user__email",
+        "business_name",
+    )
+
     list_editable = ("approved",)
 
-    readonly_fields = ("created_at",)
-
     def save_model(self, request, obj, form, change):
+        """
+        Send email when seller approval changes from False → True
+        """
         send_email = False
 
         if change:
@@ -91,25 +108,45 @@ class SellerAdmin(admin.ModelAdmin):
             if not old_obj.approved and obj.approved:
                 send_email = True
 
+        # Save seller first
         super().save_model(request, obj, form, change)
 
-        if send_email and obj.user.email:
+        # ---- SAFETY CHECKS ----
+        if send_email:
+            if not obj.user.email:
+                messages.warning(
+                    request,
+                    f"Seller approved, but NO email address exists for user '{obj.user.username}'."
+                )
+                return
+
+            subject = "🎉 Your Seller Account Has Been Approved!"
+            message = (
+                f"Hi {obj.user.username},\n\n"
+                "Good news! Your seller account on Ecomm has been approved.\n"
+                "You can now log in to your seller dashboard and start listing your products.\n\n"
+                "Dashboard: https://your-domain.com/seller/dashboard/\n\n"
+                "Welcome aboard,\n"
+                "The Ecomm Marketplace Team"
+            )
+
             try:
                 send_mail(
-                    "🎉 Your Seller Account Has Been Approved!",
-                    (
-                        f"Hi {obj.user.username},\n\n"
-                        "Your seller account on WaziTrade has been approved.\n"
-                        "You can now start listing products.\n\n"
-                        "— WaziTrade Team"
-                    ),
+                    subject,
+                    message,
                     None,
                     [obj.user.email],
-                    fail_silently=False,
                 )
-                messages.success(request, f"Approval email sent to {obj.user.email}.")
+                messages.success(
+                    request,
+                    f"Approval email sent to {obj.user.email}."
+                )
             except Exception as e:
-                messages.warning(request, f"Seller approved but email failed: {e}")
+                messages.warning(
+                    request,
+                    f"Seller approved but email sending failed: {e}"
+                )
+
 
 
 
