@@ -76,14 +76,23 @@ class ProductAdmin(admin.ModelAdmin):
 # ---------------------
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ("user", "business_name", "approved", "created_at")
+    # Show phone and address in the list view
+    list_display = ("user", "business_name", "phone", "address", "approved", "created_at")
+    
+    # Filter by approval status and creation date
     list_filter = ("approved", "created_at")
-    search_fields = ("user__username", "business_name", "user__email")
+    
+    # Enable searching by username, email, business name, phone, and address
+    search_fields = ("user__username", "user__email", "business_name", "phone", "address")
+    
+    # Allow inline editing of approval status
     list_editable = ("approved",)
+    
+    # Show all relevant fields in the detail/edit page
+    fields = ("user", "business_name", "phone", "address", "approved", "created_at")
 
     def save_model(self, request, obj, form, change):
         """Send email when seller approval changes from False → True"""
-
         send_email = False
 
         if change:
@@ -91,13 +100,9 @@ class SellerAdmin(admin.ModelAdmin):
             if not old_obj.approved and obj.approved:
                 send_email = True
 
-        # Save normally first
         super().save_model(request, obj, form, change)
 
-        # --- SAFETY CHECKS ---
         if send_email:
-
-            # If seller has NO email → skip email, avoid crashing
             if not obj.user.email:
                 messages.warning(
                     request,
@@ -108,10 +113,10 @@ class SellerAdmin(admin.ModelAdmin):
             subject = "🎉 Your Seller Account Has Been Approved!"
             message = (
                 f"Hi {obj.user.username},\n\n"
-                "Good news! Your seller account on Ecomm has been approved.\n"
+                "Good news! Your seller account on WaziTrade has been approved.\n"
                 "You can now log in to your seller dashboard and start listing your products.\n\n"
-                "Dashboard: https://your-domain.com/seller/dashboard/\n\n"
-                "Welcome aboard,\nThe Ecomm Marketplace Team"
+                "Dashboard: https://wazitrade.com/seller/dashboard/\n\n"
+                "Welcome aboard,\nThe WaziTrade Marketplace Team"
             )
 
             try:
@@ -119,7 +124,7 @@ class SellerAdmin(admin.ModelAdmin):
                 messages.success(request, f"Approval email sent to {obj.user.email}.")
             except Exception as e:
                 messages.warning(request, f"Seller approved but email sending failed: {e}")
-
+                
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
