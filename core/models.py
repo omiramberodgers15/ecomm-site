@@ -207,21 +207,6 @@ class Order(models.Model):
 
 
 
-@receiver(post_save, sender=Seller)
-def notify_seller_approval(sender, instance, created, **kwargs):
-    if not created and instance.approved:
-        send_mail(
-            "Your Seller Account Has Been Approved!",
-            f"Hello {instance.user.username},\n\nYour seller account '{instance.business_name}' has been approved. You can now log in and start adding products.",
-            settings.DEFAULT_FROM_EMAIL,
-            [instance.user.email],
-            fail_silently=True,
-        )
-
-
-
-
-
 class Message(models.Model):
     sender = models.ForeignKey(User, related_name='core_sent_messages', on_delete=models.CASCADE)
     receiver = models.ForeignKey(User, related_name='core_received_messages', on_delete=models.CASCADE)
