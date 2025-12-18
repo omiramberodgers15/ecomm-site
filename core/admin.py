@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib import messages
 from .models import (
     Category, SubCategory, Product, PriceOption,
@@ -90,18 +91,24 @@ class SellerAdmin(admin.ModelAdmin):
         seller = form.instance
 
         if seller.approved and seller.user.email:
-            send_mail(
-                subject="🎉 Your Seller Account Has Been Approved!",
-                message=(
-                    f"Hi {seller.user.username},\n\n"
-                    "Your seller account has been approved.\n"
-                    "You can now start selling.\n\n"
-                    "WaziTrade Team"
-                ),
-                from_email=None,
-                recipient_list=[seller.user.email],
-                fail_silently=True,
-            )
+            try:
+                send_mail(
+                    subject="🎉 Your Seller Account Has Been Approved!",
+                    message=(
+                        f"Hi {seller.user.username},\n\n"
+                        "Your seller account has been approved.\n"
+                        "You can now start selling.\n\n"
+                        "WaziTrade Team"
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,  # ✅ use proper email
+                    recipient_list=[seller.user.email],
+                    fail_silently=False,  # ✅ we want to see errors locally
+                )
+            except Exception as e:
+                # Log the error so admin page won't crash
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Failed to send approval email to {seller.user.email}: {e}")
 
 
 
