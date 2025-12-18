@@ -13,6 +13,15 @@ from .models import SupportTicket
 
 from .models import SupportTicket, TicketReply
 
+
+import threading
+import logging
+from django.contrib import admin
+
+from .models import Seller
+
+logger = logging.getLogger(__name__)
+
 # ---------------------
 # INLINE ADMIN CLASSES
 # ---------------------
@@ -91,24 +100,25 @@ class SellerAdmin(admin.ModelAdmin):
         seller = form.instance
 
         if seller.approved and seller.user.email:
-            try:
-                send_mail(
-                    subject="🎉 Your Seller Account Has Been Approved!",
-                    message=(
-                        f"Hi {seller.user.username},\n\n"
-                        "Your seller account has been approved.\n"
-                        "You can now start selling.\n\n"
-                        "WaziTrade Team"
-                    ),
-                    from_email=settings.DEFAULT_FROM_EMAIL,  # ✅ use proper email
-                    recipient_list=[seller.user.email],
-                    fail_silently=False,  # ✅ we want to see errors locally
-                )
-            except Exception as e:
-                # Log the error so admin page won't crash
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.error(f"Failed to send approval email to {seller.user.email}: {e}")
+            # Use a thread so email sending doesn't block the request
+            def send_approval_email():
+                try:
+                    send_mail(
+                        subject="🎉 Your Seller Account Has Been Approved!",
+                        message=(
+                            f"Hi {seller.user.username},\n\n"
+                            "Your seller account has been approved.\n"
+                            "You can now start selling.\n\n"
+                            "WaziTrade Team"
+                        ),
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[seller.user.email],
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    logger.error(f"Failed to send approval email to {seller.user.email}: {e}")
+
+            threading.Thread(target=send_approval_email).start()
 
 
 
