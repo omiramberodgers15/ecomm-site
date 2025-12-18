@@ -198,60 +198,69 @@
 
 
 <script>
-const cartSidebar = document.getElementById("cartSidebar");
-const cartOverlay = document.getElementById("cartOverlay");
-const closeCart = document.getElementById("closeCart");
-const cartBtn = document.getElementById("cartIconBtn");
+document.addEventListener("DOMContentLoaded", function () {
 
-function openCart() {
-    cartSidebar.classList.add("open");
-    cartOverlay.classList.add("show");
-    loadCartData();
-}
+    const cartSidebar = document.getElementById("cartSidebar");
+    const cartOverlay = document.getElementById("cartOverlay");
+    const closeCart = document.getElementById("closeCart");
+    const cartBtn = document.getElementById("cartIconBtn");
 
-function closeCartFunc() {
-    cartSidebar.classList.remove("open");
-    cartOverlay.classList.remove("show");
-}
+    // Only bind events if elements exist
+    if (cartSidebar && cartOverlay && closeCart) {
+        function closeCartFunc() {
+            cartSidebar.classList.remove("open");
+            cartOverlay.classList.remove("show");
+        }
 
-closeCart.addEventListener("click", closeCartFunc);
-cartOverlay.addEventListener("click", closeCartFunc);
+        closeCart.addEventListener("click", closeCartFunc);
+        cartOverlay.addEventListener("click", closeCartFunc);
+    }
 
-if(cartBtn){
-    cartBtn.addEventListener("click", e => {
-        e.preventDefault();
-        openCart();
-    });
-}
-
-function loadCartData() {
-  fetch("/cart/json/")
-    .then(res => res.json())
-    .then(data => {
-        let html = "";
-        data.items.forEach(item => {
-            html += `
-              <div class="cart-item">
-                <img src="${item.image}" alt="">
-                <div class="item-info">
-                  <p>${item.name}</p>
-                  <small>UGX: ${item.price}</small><br>
-                  <small>Qty: ${item.quantity}</small><br>
-                  <span class="remove-btn" onclick="removeFromCart(${item.id})">Remove</span>
-                </div>
-              </div>
-            `;
+    if (cartBtn && cartSidebar && cartOverlay) {
+        cartBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            cartSidebar.classList.add("open");
+            cartOverlay.classList.add("show");
+            loadCartData();
         });
-        document.getElementById("cartItems").innerHTML = html;
-        document.getElementById("cartSubtotal").innerText = data.subtotal;
-        document.getElementById("cartCount").innerText = data.items.length;
-    });
-}
+    }
 
-function removeFromCart(id) {
-  fetch(`/cart/remove/${id}/`)
-    .then(() => loadCartData());
-}
+    // Load cart data function
+    function loadCartData() {
+        fetch("/cart/json/")
+            .then(res => res.json())
+            .then(data => {
+                let html = "";
+                data.items.forEach(item => {
+                    html += `
+                        <div class="cart-item">
+                            <img src="${item.image}" alt="">
+                            <div class="item-info">
+                                <p>${item.name}</p>
+                                <small>UGX: ${item.price}</small><br>
+                                <small>Qty: ${item.quantity}</small><br>
+                                <span class="remove-btn" onclick="removeFromCart(${item.id})">Remove</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                const cartItems = document.getElementById("cartItems");
+                const cartSubtotal = document.getElementById("cartSubtotal");
+                const cartCount = document.getElementById("cartCount");
+
+                if (cartItems) cartItems.innerHTML = html;
+                if (cartSubtotal) cartSubtotal.innerText = data.subtotal;
+                if (cartCount) cartCount.innerText = data.items.length;
+            });
+    }
+
+    // Remove item function
+    window.removeFromCart = function(id) {
+        fetch(`/cart/remove/${id}/`)
+            .then(() => loadCartData());
+    }
+
+});
 </script>
 
 <!-- === EXTRA SCRIPTS FROM CHILD TEMPLATES === -->
