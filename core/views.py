@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+
 # core/views.py — replace your new_products_by_path with this
 
 from django.utils.text import slugify
@@ -589,3 +590,12 @@ def contact_page(request):
         return redirect('core:contact')
 
     return render(request, 'contact.html')
+
+
+
+
+
+def subcategories_json(request):
+    category_id = request.GET.get('category')
+    subcategories = SubCategory.objects.filter(category_id=category_id).values('id', 'name')
+    return JsonResponse(list(subcategories), safe=False)

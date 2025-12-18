@@ -60,15 +60,18 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ("user_name", "comment", "product__name")
 
 
-# ---------------------
-# PRODUCT ADMIN
-# ---------------------
+
+# core/admin.py
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "subcategory", "base_price", "min_order", "seller", "approved")
     list_filter = ("category", "subcategory", "approved", "seller")
     search_fields = ("name", "seller__business_name")
     filter_horizontal = ("recommended_from_supplier",)
+
+    class Media:
+        js = ('core/js/product_admin.js',)
+
 
 
 # ---------------------

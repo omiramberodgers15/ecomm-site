@@ -3,6 +3,7 @@ from django import forms
 from .models import Product, SubCategory
 from django.contrib.auth.models import User
 from .models import Seller
+from .models import Category
 
 class SellerRegistrationForm(forms.ModelForm):
     username = forms.CharField(max_length=150)
@@ -37,22 +38,18 @@ class ProductForm(forms.ModelForm):
         model = Product
         exclude = ['seller', 'approved']
 
-    # Step 1: override __init__ to filter subcategories
     def __init__(self, *args, **kwargs):
-        category_id = None
-
-        # GET initial category if editing existing product
-        if "instance" in kwargs and kwargs["instance"]:
-            category_id = kwargs["instance"].category_id
-
-        # GET posted category (user changes category)
-        if "data" in kwargs:
-            category_id = kwargs["data"].get("category")
-
         super().__init__(*args, **kwargs)
 
-        # filter subcategories dynamically
-        if category_id:
-            self.fields["subcategory"].queryset = SubCategory.objects.filter(category_id=category_id)
-        else:
-            self.fields["subcategory"].queryset = SubCategory.objects.none()
+        # Always start with empty queryset for subcategory
+        self.fields['subcategory'].queryset = SubCategory.objects.none()
+
+        # Determine the category to filter subcategories
+        if 'category' in self.data:
+            try:
+                category_id = int(self.data.get('category'))
+                self.fields['subcategory'].queryset = SubCategory.objects.filter(category_id=category_id)
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk and self.instance.category:
+            self.fields['subcategory'].queryset = SubCategory.objects.filter(category=self.instance.category)

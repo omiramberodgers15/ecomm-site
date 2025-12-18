@@ -59,6 +59,8 @@ urlpatterns = [
     path("best-sellers/", views.best_sellers, name="best-sellers"),
     
     path('contact/', views.contact_page, name='contact'),
+
+    path('subcategories-json/', views.subcategories_json, name='subcategories_json'),
     
 ]
 
