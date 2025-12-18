@@ -275,18 +275,20 @@ document.addEventListener("click", function(e) {
 </script>
 
 <script>
-document.getElementById("searchBtn").addEventListener("click", function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const searchBtn = document.getElementById("searchBtn");
     const input = document.getElementById("searchInput");
 
-    // If input is hidden, show it
-    if (!input.classList.contains("active")) {
-        input.classList.add("active");
-        input.focus();
-        return; // Don't submit yet
-    }
+    if (!searchBtn || !input) return;
 
-    // If already visible, submit the form
-    input.closest("form").submit();
+    searchBtn.addEventListener("click", function () {
+        if (!input.classList.contains("active")) {
+            input.classList.add("active");
+            input.focus();
+            return;
+        }
+        input.closest("form").submit();
+    });
 });
 </script>
 
