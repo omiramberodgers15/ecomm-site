@@ -23,11 +23,13 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 # SECURITY
 # --------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
-#DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+
+DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+
 ALLOWED_HOSTS = [ '127.0.0.1','localhost','ecomm-site-production.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://ecomm-site-production.up.railway.app']
 
-DEBUG = os.getenv('DEBUG') == 'True'
+#DEBUG = os.getenv('DEBUG') == 'False'
 
 # --------------------------
 # URL CONFIGURATION
@@ -152,14 +154,33 @@ CART_SESSION_ID = 'cart'
 # DATABASES
 # --------------------------
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+#DATABASES = {
+    #'default': dj_database_url.config(
+        #default=os.environ.get("DATABASE_URL"),
+        #conn_max_age=600,
+        #ssl_require=True
+    #)
+#}
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    # Production / Railway
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # --------------------------

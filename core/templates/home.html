@@ -6,9 +6,8 @@
 {% block content %}
 
 <!-- ======= PRODUCT HORIZONTAL SLIDER ======= -->
+<h3 class="section-title">Popular Products</h3>
 <div class="product-slider mt-2">
-    <h5 class="mb-2">Popular Products</h5>
-
     <div class="slider-track">
         {% for product in popular_products %}
         <a href="{% url 'core:product_detail' product.id %}" class="slider-item">
@@ -30,7 +29,7 @@
 
 
 <!-- ============= NEW ARRIVALS ============= -->
-<h3 class="section-title" style="margin-top: 12px;">New Arrivals</h3>
+<h3 class="section-title">New Arrivals</h3>
 
 <div class="scroll-wrapper">
 

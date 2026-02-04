@@ -39,12 +39,12 @@ h5{
   color: #f3a847;
 }
 .section-title{
-  padding: 8px 12px;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-family: "Playfair Display", serif;
-  font-weight: 700;
+  font-weight: 600;
   font-style: normal;
-  
+  margin-bottom: 6px;
+  padding:12px 10px;
 }
 
 .products-horizontal .product-card {
