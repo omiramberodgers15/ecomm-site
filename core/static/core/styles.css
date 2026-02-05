@@ -1133,24 +1133,28 @@ form textarea {
 
     /* Make input height smaller like Amazon */
     .search-input {
-        height: 35px;
+        height: 34px;
         font-size: 14px;
         
-        border-bottom-right-radius: 0px;
-        border-top-right-radius: 0px;
+        border-bottom-right-radius: 17px;
+        border-top-right-radius: 17px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
         border-color: #f3a847;
     }
 
     /* Make button exactly same height */
     .search-btn {
-        height: 35px;
-        padding: 0 10px;      /* thin like Amazon */
+        height: 34px;
+        
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 15px;
-        border-bottom-left-radius: 0px;
-        border-top-left-radius: 0px;
+        margin-bottom: 6px;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 17px;
+        border-top-left-radius: 17px;
         background-color: #f3a847;
         color: #000;
         
