@@ -7,7 +7,7 @@
 
 <!-- ======= PRODUCT HORIZONTAL SLIDER ======= -->
 <h3 class="section-title">Popular Products</h3>
-<div class="product-slider mt-2">
+<div class="product-slider ">
     <div class="slider-track">
         {% for product in popular_products %}
         <a href="{% url 'core:product_detail' product.id %}" class="slider-item">
