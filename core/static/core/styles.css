@@ -1050,8 +1050,25 @@ form textarea {
 .slider-track {
     display: flex;
     gap: 15px;
-    animation: scroll-left 20s linear infinite;
+    animation: stepMove 12s infinite ease-in-out;
 }
+
+
+@keyframes stepMove {
+  0%, 20% {
+    transform: translateX(0);
+  }
+  30%, 50% {
+    transform: translateX(-33%);
+  }
+  60%, 80% {
+    transform: translateX(-66%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 
 /* Pause on hover */
 .slider-track:hover {
