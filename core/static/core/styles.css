@@ -1141,8 +1141,9 @@ form textarea {
         border-top-right-radius: 17px;
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
-        background-color: #999;
-        border-width: 0px;
+        background:transparent;
+        color: #222;
+        border: none;
     }
 
     
@@ -1169,6 +1170,6 @@ form textarea {
         font-size: 20px;
         line-height: 1;
         border: none;
-        margin-left: 8px !important;
+        margin-left: 12px !important;
     }
 }
