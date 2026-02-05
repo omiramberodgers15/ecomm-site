@@ -845,7 +845,7 @@ body.product-page .prod-container {
   
   font-size: 11px !important;
   margin-bottom:6px !important ;
-  color: #999;
+  color: #999 !important ;
   line-height: 14px;
 }
 
