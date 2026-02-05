@@ -1144,7 +1144,7 @@ form textarea {
     }
 
     .search-input::placeholder{
-        margin-left: -12px;
+        padding-left: -6px;
     }
 
     /* Make button exactly same height */
@@ -1168,6 +1168,6 @@ form textarea {
         font-size: 20px;
         line-height: 1;
         border: none;
-        margin-left: 12px;
+      
     }
 }
