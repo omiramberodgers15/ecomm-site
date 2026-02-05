@@ -1141,7 +1141,7 @@ form textarea {
         border-top-right-radius: 17px;
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
-        background:transparent;
+        background:lightgrey;
         color: #222;
         border: none;
     }
