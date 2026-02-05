@@ -825,11 +825,11 @@ body.product-page .prod-container {
 }
 
 .new-price {
-    color: hsl(2, 100%, 50%);
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 6px;
-    margin-left: 6px;
+    color: #ff6a00;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+    
 }
 
 
@@ -842,10 +842,11 @@ body.product-page .prod-container {
 
 
 .prod-name{
-  font-weight:400;
-  font-size: larger !important;
+  
+  font-size: 11px !important;
   margin-bottom:6px !important ;
-
+  color: #999;
+  line-height: 14px;
 }
 
 
