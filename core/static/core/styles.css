@@ -1140,12 +1140,11 @@ form textarea {
         border-top-right-radius: 17px;
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
-        border-color: #f3a847;
+        background-color: #999;
+        border-width: 0px;
     }
 
-    .search-input::placeholder{
-        padding-left: -6px;
-    }
+    
 
     /* Make button exactly same height */
     .search-btn {
@@ -1158,7 +1157,8 @@ form textarea {
         border-top-right-radius: 0px;
         border-bottom-left-radius: 17px;
         border-top-left-radius: 17px;
-        background-color: #f3a847;
+        background-color: #999;
+        border-width: 0px;
         color: #000;
         
     }
