@@ -1135,6 +1135,7 @@ form textarea {
     .search-input {
         height: 34px;
         font-size: 14px;
+        padding-left: 0px;
         margin-bottom: 6px;
         border-bottom-right-radius: 17px;
         border-top-right-radius: 17px;
