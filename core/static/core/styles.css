@@ -57,7 +57,6 @@ h5{
   border: 0px;
   border-radius: 6px;
   background: #fff;
-  font-size: 1em;
   
   font-family: "Roboto Flex", sans-serif;
   font-optical-sizing: auto;
@@ -68,12 +67,9 @@ h5{
 
 .products-horizontal .product-card img {
   width: 100%;
-  height: auto;
+  height: 148px;
   object-fit: cover;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   margin-bottom: 6px;
 }
@@ -82,19 +78,20 @@ h5{
 }
 .products-horizontal .product-card p {
   line-height: 1.2;
-  margin: 4px 0 0;
+  margin-bottom: 2px;
   text-align: start;
   word-break: break-word;
-  color: hsl(o,0%,13%);
+  color: #ff6a00;
   padding:0 6px;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 14px;
 }
 .products-vertical {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 8px 12px;     /* only vertical padding */
+  padding: 12px 10px;     /* only vertical padding */
   gap:8px;
-  margin-bottom: 30px;      /* only vertical padding */
+  margin-bottom: 4px;      /* only vertical padding */
   width: 100%;
   overflow-x: hidden;  /* prevent horizontal scroll */
   
@@ -102,24 +99,23 @@ h5{
 .products-vertical .product-card {
   background: #fff;
   border: 0px;
-  box-shadow: 0 4px 6px 0 hsla(0,0%,0%,0.2);
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
-  padding: 0px;
-  height: auto;
+  padding: 12px 10px;
+  height: 148px;
+  width: 148px;
   word-break: break-word;
-  font-size: 0.8125rem;
+  
 }
 
 .products-vertical .product-card img {
-  width: 100%;
-  max-width: 100%;
+  width: 148px;
+  width: 148px;
   height: auto;
   aspect-ratio: 1 / 1;    /* ✅ perfectly square images */
   object-fit: cover;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0px;
+  border-radius: 6px;
   margin-bottom: 6px;
   display: block; /* remove inline image spacing issues */
 }
@@ -127,8 +123,8 @@ h5{
 /* Text area */
 .products-vertical .product-card h4,
 .products-vertical .product-card p {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   text-align: start;
   padding:0 6px;
 }
@@ -141,6 +137,7 @@ h5{
   max-height: calc(1.3em * 2); /* 2 lines */
   text-overflow: ellipsis; /* Optional but recommended */
   padding:0 6px;
+  font-size: 11px;
 }
 
 
