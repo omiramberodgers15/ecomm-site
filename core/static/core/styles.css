@@ -1046,6 +1046,7 @@ form textarea {
     width: 100%;
     gap: 8px;
     padding-bottom: 4px;
+    
 }
 
 /* Track that moves left automatically */
@@ -1054,6 +1055,7 @@ form textarea {
     width: 74px;
     background: #fff;
     border-radius: 6px;
+    column-gap: 8px;
     flex-shrink: 0;
     animation: stepMove 12s infinite ease-in-out;
 }
