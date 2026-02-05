@@ -1143,6 +1143,10 @@ form textarea {
         border-color: #f3a847;
     }
 
+    .search-input::placeholder{
+        margin-left: -12px;
+    }
+
     /* Make button exactly same height */
     .search-btn {
         height: 34px;
@@ -1164,5 +1168,6 @@ form textarea {
         font-size: 20px;
         line-height: 1;
         border: none;
+        margin-left: 12px;
     }
 }
