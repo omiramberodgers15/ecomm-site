@@ -27,11 +27,11 @@
   column-gap: 8px;
   overflow-x: hidden;
   overflow-y: hidden;
-  margin-bottom: 8px;      /* only vertical padding */
+  padding-bottom: 4px;      /* only vertical padding */
   scroll-snap-type: x mandatory;
   width: 100vw;              /* full viewport width */
   box-sizing: border-box;    
-  padding: 8px 12px;
+  padding-left:12px;
 }
 
 h5{
