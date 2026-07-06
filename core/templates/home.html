@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}Home - WaziTrade{% endblock %}
 
@@ -18,7 +19,8 @@
 {% else %}
     <img src="{% static 'images/placeholder.png' %}">
 {% endif %}
-
+        <br>
+        <a>
             <span class="product-title">{{ product.name|truncatechars:18 }}</span>
             
         </a>
@@ -33,7 +35,6 @@
 
 <div class="scroll-wrapper">
 
-    <button class="scroll-btn left">‹</button>
 
     <div class="products-horizontal scroll-container">
         {% for product in new_arrivals %}
@@ -50,9 +51,9 @@
             <p class="prod-name">{{ product.name }}</p>
 
             <div class="price-row">
-                <span class="new-price">UGX {{ product.base_price }}</span>
+                <span class="new-price">Ugx {{ product.base_price|floatformat:0|intcomma }}</span>
             </div>
-
+            
         </div>
         {% empty %}
         <p>No new arrivals yet.</p>
@@ -115,7 +116,7 @@
         <p class="prod-review">{{ product.review_count }} reviews</p>
 
         <div class="price-row">
-            <span class="new-price">UGX {{ product.base_price }}</span>
+            <span class="new-price">Ugx {{ product.base_price|floatformat:0|intcomma }}</span>
         </div>
 
     </div>

@@ -46,9 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.sites',  # required by allauth
-    'whitenoise.runserver_nostatic',
+    'django.contrib.humanize', # making sure pricing doesnot display in decimal and it provides standard rounding
 
     # Your apps
     'cart',
@@ -56,7 +57,7 @@ INSTALLED_APPS = [
     'payments',
     'chat',
 
-    # 👇 add these
+    # 👇 add these later
     "cloudinary",
     "cloudinary_storage",
 
@@ -85,7 +86,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # --------------------------
@@ -226,3 +227,7 @@ cloudinary.config(
 
 
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
