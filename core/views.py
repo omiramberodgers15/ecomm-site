@@ -47,6 +47,12 @@ from django.utils import timezone
 from .models import Deal
 
 
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from .models import HelpCategory, HelpArticle
+
+from django.http import HttpResponse
+
 
 # ---------- HOME & PRODUCTS ----------
 def home(request):
@@ -599,3 +605,131 @@ def subcategories_json(request):
     category_id = request.GET.get('category')
     subcategories = SubCategory.objects.filter(category_id=category_id).values('id', 'name')
     return JsonResponse(list(subcategories), safe=False)
+
+
+
+
+
+
+def help_center(request):
+    categories = HelpCategory.objects.prefetch_related(
+        "articles"
+    ).order_by("order")
+
+    popular_articles = HelpArticle.objects.filter(
+        is_published=True,
+        is_popular=True
+    )[:8]
+
+    context = {
+        "categories": categories,
+        "popular_articles": popular_articles,
+    }
+
+    return render(request, "help_center.html", context)
+
+
+
+
+
+
+
+
+def help_category(request, slug):
+    category = get_object_or_404(HelpCategory, slug=slug)
+
+    articles = category.articles.filter(is_published=True)
+
+    print("VIEW EXECUTED")
+    print("Category:", category.name)
+    print("Articles:", articles.count())
+
+    return render(
+        request,
+        "help_category.html",
+        {
+            "category": category,
+            "articles": articles,
+        },
+    )
+
+
+
+def help_detail(request, slug):
+
+    article = get_object_or_404(
+        HelpArticle,
+        slug=slug,
+        is_published=True
+    )
+
+    article.views += 1
+    article.save(update_fields=["views"])
+
+    related_articles = HelpArticle.objects.filter(
+        category=article.category,
+        is_published=True
+    ).exclude(id=article.id)[:5]
+
+    return render(
+        request,
+        "help_detail.html",
+        {
+           "article": article,
+            "related_articles": related_articles,
+       }
+    )
+
+
+
+
+def search_help(request):
+
+    q = request.GET.get("q", "")
+
+    results = HelpArticle.objects.filter(
+        Q(title__icontains=q) |
+        Q(summary__icontains=q) |
+        Q(content__icontains=q),
+        is_published=True
+    )
+
+    return render(
+        request,
+        "search_results.html",
+        {
+            "query": q,
+            "results": results,
+        }
+    )
+
+
+
+
+def terms_page(request):
+    return render(request,"terms.html")
+
+
+def privacy_page(request):
+    return render(request,"privacy.html")
+
+
+def returns_page(request):
+    return render(request,"returns.html")
+
+
+def cookies_page(request):
+    return render(request,"cookies.html")
+
+
+
+from django.shortcuts import render, redirect
+
+def sell_on_wazitrade(request):
+    if request.user.is_authenticated:
+        if hasattr(request.user, "seller"):
+            if request.user.seller.is_approved:
+                return redirect("core:seller-dashboard")
+            return redirect("core:seller-pending-view")
+
+    return render(request, "sell_on_wazitrade.html")

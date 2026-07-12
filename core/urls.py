@@ -61,6 +61,47 @@ urlpatterns = [
     path('contact/', views.contact_page, name='contact'),
 
     path('subcategories-json/', views.subcategories_json, name='subcategories_json'),
+
+    # ---------- HELP CENTER ----------
+    #path("help/", views.help_center, name="help-center"),
+
+    #path("help/search/", views.search_help, name="search_help"),
+
+
+    #path("help/", views.help_center, name="help-center"),
+
+    
+
+    path("help/", views.help_center, name="help-center"),
+
+path(
+    "help/category/<slug:slug>/",
+    views.help_category,
+    name="help-category"
+),
+
+path(
+    "help/article/<slug:slug>/",
+    views.help_detail,
+    name="help-detail"
+),
+
+path(
+    "help/search/",
+    views.search_help,
+    name="search_help"
+),
+
+path("terms/", views.terms_page, name="terms"),
+path("privacy/", views.privacy_page, name="privacy"),
+path("returns/", views.returns_page, name="returns"),
+path("cookies/", views.cookies_page, name="cookies"),
+
+path(
+    "sell/",
+    views.sell_on_wazitrade,
+    name="sell-on-wazitrade"
+),
     
 ]
 

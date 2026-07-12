@@ -14,7 +14,7 @@ from django.conf import settings
 # for image storage
 from cloudinary.models import CloudinaryField
 
-
+from django.db import models
 
 # ---------- CATEGORY ----------
 class Category(models.Model):
@@ -22,6 +22,7 @@ class Category(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True, null=True)
     image = CloudinaryField("image", blank=True, null=True)
+   
 
 
     def save(self, *args, **kwargs):
@@ -257,3 +258,32 @@ class TicketReply(models.Model):
     def __str__(self):
         return f"Reply to Ticket #{self.ticket.id}"
 
+
+
+
+class HelpCategory(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    icon = models.CharField(max_length=50, default="help")
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.name
+
+
+class HelpArticle(models.Model):
+    category = models.ForeignKey(
+        HelpCategory,
+        on_delete=models.CASCADE,
+        related_name="articles"
+    )
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    summary = models.CharField(max_length=255)
+    content = models.TextField()
+    views = models.PositiveIntegerField(default=0)
+    is_popular = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title

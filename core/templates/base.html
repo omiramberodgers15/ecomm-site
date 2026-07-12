@@ -33,32 +33,31 @@
 
         <!-- Hamburger that opens sidebar -->
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMenu" aria-controls="mainMenu" >
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon" style="color: rgba(0, 0, 0, 0.65);font-size: 16px;align-self:center; "></span>
         </button>
 
-        <a class="navbar-brand" href="/">WaziTrade</a>
-        <a href="{% url 'core:seller-login' %}">
-          <span style=" font-size: 13px;font-style:normal;font-family: -apple-system,blink more system font,'segoe ui' roboto sanserif;line-height: 1.4;max-height: 36px;color:rgba(0, 0, 0, 0.65);font-weight: 400;align-self: self-end;margin-left: 96px;">Seller In></span>
+        <a class="navbar-brand" href="/" style="color:goldenrod;font-size: 18px;align-self:flex-end; ">WaziTrade</a>
+        
+        <a href="{% url 'cart:cart_detail' %}">
+          <span class="material-symbols-outlined" style="color: rgba(0, 0, 0, 0.65);font-size: 18px;align-self:flex-end;margin-left:152px; ">shopping_cart</span>
         </a>
-        <a href="{% url 'core:seller-register' %}">
-            <span class="material-symbols-outlined" style=" font-style:normal;font-family: -apple-system,blink more system font,'segoe ui' roboto sanserif;text-decoration: none !important;line-height: 1.4;max-height: 36px;color:rgba(0, 0, 0, 0.65);font-weight: 400;align-self: flex-end;">
+        <a href="{% url 'core:sell-on-wazitrade' %}">
+            <span class="material-symbols-outlined" style=" font-style:normal;font-family: -apple-system,blink more system font,'segoe ui' roboto sanserif;text-decoration: none !important;line-height: 1.4;max-height: 36px;color:rgba(0, 0, 0, 0.65);font-weight: 400;align-self:flex-end;">
          how_to_reg
         </span>
         </a>
         
-        <a href="{% url 'cart:cart_detail' %}">
-          <span class="material-symbols-outlined" style="color: goldenrod;font-size: 20px;align-self: flex-end;">shopping_cart</span>
-        </a>
+        
     
 
        <form class="d-flex align-items-center w-100" method="get" action="{% url 'core:search' %}">
           <button class="btn btn-outline-warning search-btn" type="submit">
-          <span class="material-symbols-outlined">search</span>
+          <span class="material-symbols-outlined" style="color: #777;">search</span>
        
     </button>
     
         <input class="form-control flex-grow-1 search-input"
-           type="search" name="q" placeholder="Search products, categories, brands..."
+           type="search" name="q" placeholder="Search products, categories, brands"
            value="{{ request.GET.q }}" style="color: #777;">
            
     
@@ -83,80 +82,157 @@ location_on
 
     <div class="offcanvas-body">
 
-        <!-- Dynamic categories -->
-        <div class="accordion" id="categoriesAccordion">
-            {% for cat in all_categories %}
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading-{{ cat.id }}">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapse-{{ cat.id }}">
-                        {{ cat.name }}
-                    </button>
-                </h2>
+    <!-- HOME -->
+    <a class="help-card d-flex align-items-center mb-3" href="/">
+        <span class="material-symbols-outlined me-2">home</span>
+        Home
+    </a>
 
-                <div id="collapse-{{ cat.id }}" class="accordion-collapse collapse"
-                     data-bs-parent="#categoriesAccordion">
-                    <div class="accordion-body">
+    <hr>
 
-                        <a href="{% url 'core:products_by_category' cat.id %}"
-                           class="d-block mb-2">All {{ cat.name }}</a>
+    <!-- CATEGORIES -->
+    <h5 class="mb-3">Categories</h5>
 
-                        {% for sub in cat.subcategories.all %}
-                        <a href="{% url 'core:products_by_subcategory' sub.id %}"
-                           class="d-block">{{ sub.name }}</a>
-                        {% endfor %}
+    <div class="accordion" id="categoriesAccordion">
+        {% for cat in all_categories %}
+        <div class="accordion-item border-0">
+            <h2 class="accordion-header" id="heading-{{ cat.id }}">
+                <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-{{ cat.id }}">
 
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+                    {{ cat.name }}
 
-        <hr>
+                </button>
+            </h2>
 
-        <!-- Static sections -->
-        <div class="accordion mt-3" id="staticMenu">
-            <!-- Deals -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#dealsMenu">
-                        Deals
-                    </button>
-                </h2>
-                <div id="dealsMenu" class="accordion-collapse collapse" data-bs-parent="#staticMenu">
-                    <div class="accordion-body">
-                        <a class="d-block" href="{% url 'core:deals-page' 'today' %}">Today's Deals</a>
-                        <a class="d-block" href="{% url 'core:deals-page' 'clearance' %}">Clearance</a>
-                        <a class="d-block" href="{% url 'core:deals-page' 'hot' %}">Hot Discounts</a>
-                    </div>
-                </div>
-            </div>
+            <div
+                id="collapse-{{ cat.id }}"
+                class="accordion-collapse collapse"
+                data-bs-parent="#categoriesAccordion">
 
-            <!-- New -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#newMenu">
-                        New
-                    </button>
-                </h2>
-                <div id="newMenu" class="accordion-collapse collapse" data-bs-parent="#staticMenu">
-                    <div class="accordion-body">
-                        <a class="d-block" href="/new/">All New</a>
-                        <a class="d-block" href="/new/electronics/">Electronics</a>
-                        <a class="d-block" href="/new/fashion/">Fashion</a>
-                    </div>
+                <div class="accordion-body">
+
+                    <a class="d-block mb-2"
+                       href="{% url 'core:products_by_category' cat.id %}">
+                        All {{ cat.name }}
+                    </a>
+
+                    {% for sub in cat.subcategories.all %}
+                        <a class="d-block mb-2"
+                           href="{% url 'core:products_by_subcategory' sub.id %}">
+                            {{ sub.name }}
+                        </a>
+                    {% endfor %}
+
                 </div>
             </div>
         </div>
-
-        <hr>
-
-        <a href="/best-sellers/" class="btn btn-warning w-100 mt-2">Best Sellers</a>
-
+        {% endfor %}
     </div>
+
+    <hr>
+
+    <!-- SHOP -->
+    <h5>Shop</h5>
+
+    <a class="help-card" href="{% url 'core:deals-page' 'today' %}">
+        Today's Deals
+    </a>
+
+    <a class="help-card" href="{% url 'core:deals-page' 'clearance' %}">
+        Clearance
+    </a>
+
+    <a class="help-card" href="{% url 'core:deals-page' 'hot' %}">
+        Hot Discounts
+    </a>
+
+    <a class="help-card" href="{% url 'core:new-products' %}">
+        New Arrivals
+    </a>
+
+    <a class="help-card" href="{% url 'core:best-sellers' %}">
+        Best Sellers
+    </a>
+
+    <hr>
+
+    <!-- SELLERS -->
+    <h5>For Sellers</h5>
+
+    <a class="help-card"
+       href="{% url 'core:sell-on-wazitrade' %}">
+        Sell on WaziTrade
+    </a>
+
+    <a class="help-card"
+       href="{% url 'core:seller-login' %}">
+        Seller Sign In
+    </a>
+
+    <a class="help-card"
+       href="{% url 'core:seller-register' %}">
+        Become a Seller
+    </a>
+
+    {% if user.is_authenticated %}
+        <a class="help-card"
+           href="{% url 'core:seller-dashboard' %}">
+            Seller Dashboard
+        </a>
+    {% endif %}
+
+    <hr>
+
+    <!-- CUSTOMER SERVICE -->
+    <h5>Customer Service</h5>
+
+    <a class="help-card"
+       href="{% url 'core:help-center' %}">
+        Help Center
+    </a>
+
+    <a class="help-card"
+       href="{% url 'core:contact' %}">
+        Contact Us
+    </a>
+
+    <hr>
+
+    <!-- LEGAL -->
+    <h5>Legal</h5>
+
+    <a class="help-card"
+       href="{% url 'core:terms'%}">
+        Terms & Conditions
+    </a>
+
+    <a class="help-card"
+       href="{% url 'core:privacy'%}">
+        Privacy Policy
+    </a>
+
+    <hr>
+
+    <!-- ABOUT --
+    <h5>About WaziTrade</h5>
+
+    <a class="help-card" href="#">
+        About Us
+    </a>
+
+    <a class="help-card" href="#">
+        Careers
+    </a>
+
+    <a class="help-card" href="#">
+        Our Story
+    </a>
+-->
+</div>
 </div>
 
 
@@ -166,16 +242,80 @@ location_on
 
 <!-- ======= MOBILE FOOTER NAV ======= -->
 {% block mobile_footer %}
-<footer class="mobile-footer-floating">
-    <a href="/">
-        <span class="material-symbols-outlined" style="color: goldenrod;">home</span><br>
-        <span>Home</span>
-    </a>
+<footer class="footer-mobile">
 
-    <a href="/contact">
-        <span class="material-symbols-outlined" style="color: goldenrod;">call</span><br>
-        <span>Help</span>
+    <div class="footer-section">
+        <h6>Need Help?</h6>
+
+        <a href="{% url 'core:help-center' %}">
+            Help Center
+        </a>
+
+        <a href="{% url 'core:contact' %}">
+            Contact Us
+        </a>
+    </div>
+
+
+    <div class="footer-section">
+        <h6>About WaziTrade</h6>
+        
+        <a 
+       href="{% url 'core:sell-on-wazitrade' %}">
+        Sell on WaziTrade
     </a>
+       
+    </div>
+
+
+    <div class="footer-section">
+        <h6>Legal</h6>
+
+        <a href="{% url 'core:terms' %}">
+            Terms & Conditions
+        </a>
+
+        <a href="{% url 'core:privacy'%}">
+            Privacy Policy
+        </a>
+
+        <a href="{% url 'core:returns'%}">
+            Returns & Refunds
+        </a>
+
+        <a href="{% url 'core:cookies' %}">
+            Cookie Notice
+        </a>
+    </div>
+
+
+    <div class="footer-section">
+        <h6>Follow Us</h6>
+
+        <div class="social-icons">
+
+            <a href="#">
+                <i class="bi bi-facebook"></i>
+            </a>
+
+            <a href="#">
+                <i class="bi bi-instagram"></i>
+            </a>
+
+            <a href="#">
+                <i class="bi bi-twitter-x"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        © {{ now|date:"Y" }} WaziTrade Uganda
+
+    </div>
 
 </footer>
 {% endblock %}

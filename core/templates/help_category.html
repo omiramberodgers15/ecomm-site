@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ category.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="help-page">
+
+    <div class="help-header">
+        <a href="{% url 'core:help-center' %}">
+            ← Help Center
+        </a>
+
+        <h3>{{ category.name }}</h3>
+    </div>
+
+    {% for article in articles %}
+        <a class="help-card" href="{% url 'core:help-detail' article.slug %}">
+            {{ article.title }}
+            <span>></span>
+        </a>
+    {% empty %}
+        <p>No articles yet.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

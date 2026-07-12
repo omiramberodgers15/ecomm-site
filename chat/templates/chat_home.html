@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Chat with us{% endblock %}
+
+{% block content %}
+
+<div class="chat-page">
+
+    <!-- HEADER -->
+    <div class="chat-header">
+
+        <a href="javascript:history.back()" class="back-btn">
+            ←
+        </a>
+
+        <div>
+            <h5>WaziTrade Support</h5>
+            <small>
+                <span class="online-dot"></span>
+                Usually replies within minutes
+            </small>
+        </div>
+
+    </div>
+
+
+    <!-- CHAT AREA -->
+    <div class="chat-body">
+
+
+        <div class="message support">
+
+            <div>
+                Hello 👋
+                <br>
+                Welcome to WaziTrade.
+                How can we help you today?
+            </div>
+
+            <span class="time">
+                09:20
+            </span>
+
+        </div>
+
+
+
+        {% for message in messages %}
+
+            {% if message.sender == request.user %}
+
+            <div class="message customer">
+
+                {{ message.text }}
+
+                <span class="time">
+                    {{ message.created_at|time:"H:i" }}
+                </span>
+
+            </div>
+
+            {% else %}
+
+            <div class="message support">
+
+                {{ message.text }}
+
+                <span class="time">
+                    {{ message.created_at|time:"H:i" }}
+                </span>
+
+            </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+
+    </div>
+
+
+
+    <!-- MESSAGE INPUT -->
+
+    <form 
+        class="chat-input"
+        method="POST"
+        action="{% url 'chat:send_message' %}"
+    >
+
+        {% csrf_token %}
+
+        <input
+            type="text"
+            name="message"
+            placeholder="Type your message..."
+            required
+        >
+
+
+        <button type="submit">
+
+            <span class="material-symbols-outlined">
+                send
+            </span>
+
+        </button>
+
+
+    </form>
+
+
+</div>
+
+
+{% endblock %}

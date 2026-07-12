@@ -20,6 +20,8 @@ from django.contrib import admin
 
 from .models import Seller
 
+from .models import HelpCategory, HelpArticle
+
 logger = logging.getLogger(__name__)
 
 # ---------------------
@@ -166,3 +168,29 @@ class SupportTicketAdmin(admin.ModelAdmin):
                 ticket.save()
 
         formset.save_m2m()
+
+
+
+
+
+@admin.register(HelpCategory)
+class HelpCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "order")
+    prepopulated_fields = {"slug": ("name",)}
+
+@admin.register(HelpArticle)
+class HelpArticleAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+        "category",
+        "is_published",
+        "is_popular",
+        "views",
+    )
+    list_filter = (
+        "category",
+        "is_published",
+        "is_popular",
+    )
+    search_fields = ("title", "summary", "content")
+    prepopulated_fields = {"slug": ("title",)}

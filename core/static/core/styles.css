@@ -880,7 +880,8 @@ div .new-price{
     'FILL' 0,
     'wght' 400,
     'GRAD' 0,
-    'opsz' 18;
+    'opsz' 18,
+   
 }
 
 
@@ -1186,7 +1187,8 @@ form textarea {
         border-top-right-radius: 0px;
         border-bottom-left-radius: 4px;
         border-top-left-radius: 4px;
-        background-color: #f5f5f5f5;
+        background-color: #f0f0f0f0;
+        
         border-width: 0px;
         padding: 8px;
         border: none;
@@ -1203,4 +1205,661 @@ form textarea {
         border: none;
         margin-left: 4px ;
     }
+}
+/* help center section */
+
+.help-center{
+
+    max-width:600px;
+
+    margin:auto;
+
+    background:#f5f5f5;
+
+    min-height:100vh;
+
+    padding:15px;
+
+}
+
+.help-header{
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:20px;
+
+}
+
+.help-header input{
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:30px;
+
+}
+
+.help-actions{
+
+    margin-top:20px;
+
+}
+
+.help-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+    background:white;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    color:black;
+
+}
+
+.help-card .material-symbols-outlined{
+
+    font-size:30px;
+
+    color:#f68b1e;
+
+}
+
+.topic-list{
+
+    background:white;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+.topic-list a{
+
+    display:block;
+
+    padding:16px;
+
+    color:#333;
+
+    text-decoration:none;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.topic-list a:last-child{
+
+    border:none;
+
+}
+
+.topic-list a:hover{
+
+    background:#fafafa;
+
+}
+
+
+
+
+
+
+
+
+.chat-page {
+
+    max-width:600px;
+    margin:auto;
+    min-height:100vh;
+    background:#f5f5f5;
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+
+/* HEADER */
+
+.chat-header {
+
+    background:white;
+    padding:15px;
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+
+.chat-header h5 {
+
+    margin:0;
+    font-weight:600;
+
+}
+
+
+.back-btn {
+
+    font-size:25px;
+    text-decoration:none;
+    color:#333;
+
+}
+
+
+.online-dot {
+
+    width:8px;
+    height:8px;
+    background:#20c997;
+
+    display:inline-block;
+    border-radius:50%;
+
+}
+
+
+
+/* CHAT BODY */
+
+.chat-body {
+
+    flex:1;
+    padding:15px;
+
+    overflow-y:auto;
+
+}
+
+
+
+/* MESSAGES */
+
+.message {
+
+    max-width:75%;
+    padding:12px;
+
+    margin-bottom:12px;
+
+    border-radius:15px;
+
+    font-size:14px;
+
+}
+
+
+.support {
+
+    background:white;
+
+    border-bottom-left-radius:3px;
+
+}
+
+
+.customer {
+
+    background:#d4af37;
+
+    color:white;
+
+    margin-left:auto;
+
+    border-bottom-right-radius:3px;
+
+}
+
+
+
+.time {
+
+    display:block;
+
+    font-size:11px;
+
+    opacity:.6;
+
+    margin-top:5px;
+
+}
+
+
+
+/* INPUT */
+
+.chat-input {
+
+    background:white;
+
+    padding:10px;
+
+    display:flex;
+
+    gap:10px;
+
+    border-top:1px solid #ddd;
+
+}
+
+
+.chat-input input {
+
+    flex:1;
+
+    border:1px solid #ddd;
+
+    border-radius:25px;
+
+    padding:12px 15px;
+
+}
+
+
+.chat-input button {
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#d4af37;
+
+    color:white;
+
+}
+
+
+
+
+/* ===== LEGAL PAGES ===== */
+
+.legal-page{
+    max-width:700px;
+    margin:0 auto;
+    background:#f5f5f5;
+    min-height:100vh;
+    padding-bottom:80px;
+}
+
+.legal-header{
+    background:#fff;
+    position:sticky;
+    top:0;
+    z-index:100;
+    padding:14px 16px;
+    border-bottom:1px solid #ececec;
+}
+
+.legal-header a{
+    text-decoration:none;
+    color:#444;
+    font-size:14px;
+}
+
+.legal-title{
+    margin-top:10px;
+    font-size:22px;
+    font-weight:700;
+}
+
+.legal-updated{
+    color:#888;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.legal-card{
+    background:#fff;
+    margin:14px;
+    border-radius:10px;
+    padding:18px;
+    box-shadow:0 1px 5px rgba(0,0,0,.05);
+}
+
+.legal-card h3{
+    font-size:18px;
+    margin-bottom:12px;
+    color:#222;
+}
+
+.legal-card p{
+    color:#555;
+    line-height:1.7;
+    font-size:15px;
+}
+
+.legal-card ul{
+    margin-top:10px;
+    padding-left:20px;
+}
+
+.legal-card li{
+    margin-bottom:8px;
+    color:#555;
+    line-height:1.6;
+}
+
+@media(max-width:480px){
+
+.legal-title{
+font-size:20px;
+}
+
+.legal-card{
+margin:10px;
+padding:15px;
+}
+
+}
+
+
+.help-section-title{
+    font-size:16px;
+    font-weight:700;
+    color:#444;
+    margin:18px 14px 10px;
+}
+
+
+
+.footer-mobile{
+
+    background:#313133;
+
+    color:#fff;
+
+    margin-top:40px;
+
+    padding:25px 18px;
+
+}
+
+.footer-section{
+
+    margin-bottom:24px;
+
+}
+
+.footer-section h6{
+
+    color:#f6b01e;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+.footer-section a{
+
+    display:block;
+
+    color:#ddd;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    margin-bottom:10px;
+
+}
+
+.footer-section a:hover{
+
+    color:#f6b01e;
+
+}
+
+.footer-bottom{
+
+    text-align:center;
+
+    border-top:1px solid rgba(255,255,255,.15);
+
+    padding-top:15px;
+
+    color:#bbb;
+
+    font-size:13px;
+
+}
+
+.social-icons{
+
+    display:flex;
+
+    gap:18px;
+
+}
+
+.social-icons a{
+
+    color:#fff;
+
+    font-size:22px;
+
+}
+
+.social-icons a:hover{
+
+    color:#f6b01e;
+
+}
+
+
+
+.offcanvas-body h5{
+    font-size:15px;
+    font-weight:700;
+    color:#444;
+    margin-top:18px;
+    margin-bottom:10px;
+}
+
+.help-card{
+    display:block;
+    padding:11px 0;
+    color:#333;
+    text-decoration:none;
+    font-size:15px;
+    border-bottom:1px solid #f3f3f3;
+    transition:.2s;
+}
+
+.help-card:hover{
+    color:#f68b1e;
+    padding-left:8px;
+}
+
+.accordion-button{
+    font-size:15px;
+    font-weight:500;
+    box-shadow:none !important;
+}
+
+.accordion-button:not(.collapsed){
+    background:#fff;
+    color:#f68b1e;
+}
+
+.offcanvas-body hr{
+    margin:18px 0;
+    opacity:.12;
+}
+
+
+
+
+
+
+.seller-landing{
+
+padding:16px;
+
+background:#f5f5f5;
+
+}
+
+.seller-hero{
+
+background:#fff;
+
+padding:25px;
+
+border-radius:14px;
+
+text-align:center;
+
+margin-bottom:20px;
+
+}
+
+.seller-hero h2{
+
+font-size:28px;
+
+font-weight:700;
+
+}
+
+.seller-hero p{
+
+color:#666;
+
+margin:15px 0;
+
+}
+
+.seller-btn{
+
+display:block;
+
+background:#f68b1e;
+
+color:#fff;
+
+padding:14px;
+
+text-align:center;
+
+border-radius:8px;
+
+font-weight:700;
+
+text-decoration:none;
+
+}
+
+.seller-card{
+
+display:flex;
+
+gap:16px;
+
+background:#fff;
+
+padding:16px;
+
+margin-bottom:12px;
+
+border-radius:10px;
+
+align-items:center;
+
+}
+
+.seller-card span{
+
+font-size:36px;
+
+color:#f68b1e;
+
+}
+
+.section-title{
+
+font-size:20px;
+
+font-weight:700;
+
+margin:30px 0 15px;
+
+}
+
+.steps{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:12px;
+
+}
+
+.step{
+
+background:#fff;
+
+padding:18px;
+
+border-radius:10px;
+
+text-align:center;
+
+font-weight:600;
+
+}
+
+.step span{
+
+display:block;
+
+width:36px;
+
+height:36px;
+
+line-height:36px;
+
+margin:auto;
+
+margin-bottom:10px;
+
+background:#f68b1e;
+
+color:white;
+
+border-radius:50%;
+
+font-weight:bold;
+
 }

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Help Center
+{% endblock %}
+
+{% block content %}
+
+<div class="help-page">
+
+<div class="help-header">
+
+<h3>Help Center</h3>
+
+<form action="{% url 'core:search_help' %}" method="GET">
+
+<input
+type="search"
+name="q"
+placeholder="Search Help">
+
+</form>
+
+</div>
+
+<h5 class="section-title">
+
+Popular Help
+
+</h5>
+
+{% for category in categories %}
+
+<a
+class="help-card"
+href="{% url 'core:help-category' category.slug %}">
+
+<div>
+
+<span class="material-symbols-outlined">
+
+{{ category.icon }}
+
+</span>
+
+{{ category.name }}
+
+</div>
+
+<span>
+
+>
+
+</span>
+
+</a>
+
+{% endfor %}
+
+<h5 class="section-title">
+Popular Articles
+</h5>
+
+{% for article in popular_articles %}
+
+<a
+class="article-link"
+href="{% url 'core:help-detail' article.slug %}">
+
+{{ article.title }}
+
+</a>
+
+{% endfor %}
+...
+
+<h5 class="help-section-title mt-4">Legal</h5>
+<a class="help-card" href="{% url 'core:terms' %}">
+Terms & Conditions
+</a>
+<a class="help-card" href="{% url 'core:privacy' %}">
+Privacy Policy
+</a>
+<a class="help-card" href="{% url 'core:cookies' %}">
+Cookie Notice
+</a>
+<a class="help-card" href="{% url 'core:returns' %}">
+Return & Refund Policy
+</a>
+<h5 class="help-section-title mt-4">Need More Help?</h5>
+<a class="help-card" href="{% url 'core:contact' %}">
+Contact Customer Support →
+</a>
+</div>
+
+{% endblock %}

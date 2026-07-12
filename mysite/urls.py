@@ -27,9 +27,12 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('cart/', include('cart.urls', namespace='cart')),  # ✅ namespace must match
     path('payments/', include('payments.urls', namespace='payments')),
-    path('chat/', include('chat.urls', namespace='chat')),
+    #path('chat/', include('chat.urls', namespace='chat')),
+    path("chat/", include(("chat.urls", "chat"), namespace="chat")),
 
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

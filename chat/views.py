@@ -35,3 +35,8 @@ def send_message(request):
         })
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+def chat_home(request):
+    return render(request, "chat_home.html")
