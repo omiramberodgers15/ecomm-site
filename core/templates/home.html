@@ -8,21 +8,24 @@
 
 <!-- ======= PRODUCT HORIZONTAL SLIDER ======= -->
 <h3 class="section-title">Popular Products</h3>
-<div class="product-slider ">
+
+<div class="product-slider">
     <div class="slider-track">
         {% for product in popular_products %}
         <a href="{% url 'core:product_detail' product.id %}" class="slider-item">
+
             {% if product.images.exists %}
-    <img src="{{ product.images.first.image.url }}">
-{% elif product.main_image %}
-    <img src="{{ product.main_image.url }}">
-{% else %}
-    <img src="{% static 'images/placeholder.png' %}">
-{% endif %}
-        <br>
-        <a>
-            <span class="product-title">{{ product.name|truncatechars:18 }}</span>
-            
+                <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+            {% elif product.main_image %}
+                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'images/placeholder.png' %}" alt="No image">
+            {% endif %}
+
+            <span class="product-title">
+                {{ product.name|truncatechars:18 }}
+            </span>
+
         </a>
         {% endfor %}
     </div>

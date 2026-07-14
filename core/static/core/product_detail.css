@@ -67,7 +67,7 @@ html, body {
 
 .prod-review {
     grid-column: span 4;
-    
+    color: #555;
     
 }
 

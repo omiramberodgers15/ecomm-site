@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="contact-wrapper">
-    <h2>Contact Us</h2>
+    <h2>Need Help ?</h2>
     <p class="intro-text">
         We’d love to hear from you! Send a message using the form below.
     </p>
@@ -14,24 +14,20 @@
 
     <form method="post">
         {% csrf_token %}
-
-        <label>Your Name</label>
-        <input type="text" name="name" required>
-
-        <label>Your Email</label>
-        <input type="email" name="email" required>
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
 
         <label>Your Message</label>
-        <textarea name="message" required></textarea>
+        <textarea name="message" aria-placeholder="message" required></textarea>
 
         <button type="submit" class="contact-btn">Send Message</button>
     </form>
 
     <div class="contact-details">
         <h3>Contact Details</h3>
-        <p><strong>Email:</strong> omiramberodgers05@gmail.com</p>
-        <p><strong>Phone:</strong> +256 762318421 / +256 791262558</p>
-        <p><strong>Address:</strong> Kampala, Uganda</p>
+        <p>Email:<strong> omiramberodgers05@gmail.com</strong></p>
+        <p>Phone:<strong> +256 762318421 / +256 791262558</strong></p>
+        <p>Address:<strong> Kampala, Uganda</strong></p>
     </div>
 </div>
 {% endblock %}

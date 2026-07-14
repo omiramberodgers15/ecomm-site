@@ -9,18 +9,23 @@
 .navbar-toggler{
     border: none;
     margin-top: 8px;
+    font-size: 0px;
+    text-transform:none;
+    fill: #313133;
 }
 .navbar-brand{
   align-self: center;
   font-optical-sizing: auto;
   font-weight: 600;
   color: goldenrod;
-    font-weight: 500;
-    font-size: 24px;
+    font-weight: 700;
+    font-size: 20.99px;
     font-style:normal;
     font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
-    margin-left: -16px;
+    margin:0px 4px;
+    padding: 4px;
     align-self:flex-end;
+    
 }
 
 
@@ -42,18 +47,19 @@
   scroll-snap-type: x mandatory;
   width: 100vw;              /* full viewport width */
   box-sizing: border-box;    
-  background-color: #f5f5f5f5;/* soft grey */
+
 }
 
 
 .section-title{
-  font-size: 1.125rem;
+  font-size: 20px;
   font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
-  color:rgba(0, 0, 0, 0.85);/* natural black */
-  font-weight: 600;
+  color:#313133;/* natural black */
+  font-weight: 700;
   font-style: normal;
   margin-top: 16px;
   margin-left: 16px;
+
   
 }
 
@@ -81,9 +87,7 @@
   
   
 }
-.prod-review{
-  color: hsl(0,0%,45%);
-}
+
 .products-horizontal .product-card p {
   line-height: 1.2;
   margin-bottom: 2px;
@@ -320,6 +324,7 @@ nav.navbar .navbar-dark{
   font-size: 24px;
   font-weight: 700;
   color: #222;
+  
 }
 
 
@@ -513,9 +518,7 @@ nav.navbar .navbar-dark{
     background-color: #f3a847;
 }
 
-.prod-description, .prod-review {
-    margin-bottom: 20px;
-}
+
 
 .review-item {
     display: flex;
@@ -793,11 +796,18 @@ body.product-page .prod-container {
 
 
 .chat-header {
-    background: goldenrod;
-    padding: 10px;
+    background: goldenrod !important;
     color: white;
     display: flex;
     justify-content: space-between;
+    display:flex;
+    
+}
+
+.chat-header a{
+    font-size: 14.4px;
+    font-weight: bold;
+    padding: 16px;
 }
 
 .chat-messages { 
@@ -836,39 +846,41 @@ div.product-card{
 }
 
 .old-price {
-    color: goldenrod ;
     text-decoration: line-through;
-    font-size: 1.125rem;
+    font-size: 1rem;
+    color: #313133;
+    font-weight: 100;
 }
 
 div .new-price{
-    color: goldenrod;
-    font-weight: 500;
-    font-size: 1.125rem;
+    color:#313133;
+    font-weight: 800;
+    font-size: 1rem;
     font-style:normal;
     font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
-    
+    padding: 4px 8px 0px;
+    text-transform: uppercase;
 }
 
 
 .min-order {
     font-size: 13px;
-    color: #555;
     margin-top: 4px;
     margin-bottom:6px !important ;
 }
 
 
 .prod-name {
-    
+    text-align: left;
+    font-size: 14px !important;
     line-height: 1.4;
     max-height: 36px;
-    color:rgba(0, 0, 0, 0.65) !important;/* soft black */
+    color: #555 !important;
     font-weight: 400;
-    font-size: 1.125rem;
-    font-style:normal;
-    font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
     
+    
+    font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
+    padding: 8px 8px 4px;
 }
 
  
@@ -880,7 +892,7 @@ div .new-price{
     'FILL' 0,
     'wght' 400,
     'GRAD' 0,
-    'opsz' 18,
+    'opsz' 20,
    
 }
 
@@ -943,7 +955,7 @@ div .new-price{
 /* Scrollable row */
 .scroll-container {
     display: flex;
-    background-color: #f5f5f5f5;/* soft grey */
+    
     overflow-x: auto;
     scroll-behavior: smooth;
     padding: 12px;
@@ -988,22 +1000,34 @@ div .new-price{
 /* Wrapper */
 .contact-wrapper {
     width: 100%;
-    max-width: 350px;
+    max-width: 360px;
     margin: 0 auto;
-    padding: 15px;
-    margin-bottom: 80px;
+    padding: 8px;
+    margin-bottom: 50px;
 }
 
 /* Headings */
 .contact-wrapper h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
+    font-size: 24px;
+    background-color: goldenrod;
+    color: #ffff;
+    padding: 8px;
+    width: 100%;
+   
+    margin: 6px 0px;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    
 }
 
 .intro-text {
-    font-size: 14px;
+    font-size: 14.4px;
     color: #555;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+    padding: 6px;
 }
 
 /* Form */
@@ -1018,16 +1042,18 @@ form textarea {
     width: 100%;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid #ccc;
+    border: 0px solid #ccc;
+    background-color:#f1f1f2;
     border-radius: 6px;
     margin-bottom: 15px;
     box-sizing: border-box;
+
 }
 
 /* Button */
 .contact-btn {
     width: 100%;
-    background-color: #333;
+    background-color:goldenrod;
     color: white;
     padding: 12px;
     font-size: 15px;
@@ -1042,13 +1068,20 @@ form textarea {
 }
 
 .contact-details h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 16px;
+    margin-bottom: 8px;
+    text-align: center;
 }
 
 .contact-details p {
-    font-size: 14px;
+    font-size: 14.4px;
 }
+
+
+
+
+
+
 
 
 /* Horizontal product slider container */
@@ -1158,17 +1191,17 @@ form textarea {
     .search-input {
         height: 44px;
         
-        padding:8px;
+        padding:0px 0px 0px 4px;
         margin-top: 8px;
         border-bottom-right-radius: 4px;
         border-top-right-radius: 4px;
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
-        background-color: #f0f0f0f0;
-        
+        background-color: #f1f1f2;
+        color: #313133;
         border: none;
         font-weight: 400;
-        font-size: 1.125rem;
+        font-size: 1rem;
         font-style:normal;
         font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
         border-bottom: 1px solid #f0f0f0f0;
@@ -1187,23 +1220,23 @@ form textarea {
         border-top-right-radius: 0px;
         border-bottom-left-radius: 4px;
         border-top-left-radius: 4px;
-        background-color: #f0f0f0f0;
+        background-color: #f1f1f2;
         
         border-width: 0px;
-        padding: 8px;
+        padding-right: 6px;
         border: none;
         font-weight: 400;
-        font-size: 1.125rem;
+        font-size: 18px;
         font-style:normal;
         font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
     }
 
     /* Reduce icon size */
     .search-btn .material-symbols-outlined {
-        font-size: 20px;
+        font-size: 18px;
         line-height: 1;
         border: none;
-        margin-left: 4px ;
+        margin-left: 16px;
     }
 }
 /* help center section */
@@ -1228,7 +1261,7 @@ form textarea {
 
     border-radius:12px;
 
-    padding:20px;
+    padding-left:16px;
 
 }
 
@@ -1236,7 +1269,7 @@ form textarea {
 
     width:100%;
 
-    margin-top:15px;
+    margin-top:16px;
 
     padding:12px;
 
@@ -1252,27 +1285,7 @@ form textarea {
 
 }
 
-.help-card{
 
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-    padding:16px;
-
-    margin-bottom:12px;
-
-    background:white;
-
-    border-radius:12px;
-
-    text-decoration:none;
-
-    color:black;
-
-}
 
 .help-card .material-symbols-outlined{
 
@@ -1504,9 +1517,9 @@ form textarea {
 .legal-page{
     max-width:700px;
     margin:0 auto;
-    background:#f5f5f5;
+    background:#ffffff;
     min-height:100vh;
-    padding-bottom:80px;
+    padding-bottom:50px;
 }
 
 .legal-header{
@@ -1525,9 +1538,11 @@ form textarea {
 }
 
 .legal-title{
-    margin-top:10px;
+    margin-top:8px;
     font-size:22px;
+    color: goldenrod;
     font-weight:700;
+    text-align: center;
 }
 
 .legal-updated{
@@ -1536,35 +1551,29 @@ form textarea {
     margin-top:5px;
 }
 
-.legal-card{
-    background:#fff;
-    margin:14px;
-    border-radius:10px;
-    padding:18px;
-    box-shadow:0 1px 5px rgba(0,0,0,.05);
-}
+
 
 .legal-card h3{
-    font-size:18px;
-    margin-bottom:12px;
-    color:#222;
+    font-size:16px;
+    margin-bottom:8px;
+    color:goldenrod;
 }
 
 .legal-card p{
     color:#555;
-    line-height:1.7;
-    font-size:15px;
+    line-height:1.4;
+    font-size:13px;
 }
 
 .legal-card ul{
-    margin-top:10px;
+    margin-top:8px;
     padding-left:20px;
 }
 
 .legal-card li{
     margin-bottom:8px;
     color:#555;
-    line-height:1.6;
+    line-height:1.4;
 }
 
 @media(max-width:480px){
@@ -1574,8 +1583,8 @@ font-size:20px;
 }
 
 .legal-card{
-margin:10px;
-padding:15px;
+
+padding:8px 16px;
 }
 
 }
@@ -1599,12 +1608,14 @@ padding:15px;
     margin-top:40px;
 
     padding:25px 18px;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
 
 }
 
 .footer-section{
 
-    margin-bottom:24px;
+    margin-bottom:16px;
 
 }
 
@@ -1612,7 +1623,7 @@ padding:15px;
 
     color:#f6b01e;
 
-    font-size:15px;
+    font-size:14px;
 
     font-weight:700;
 
@@ -1628,7 +1639,7 @@ padding:15px;
 
     text-decoration:none;
 
-    font-size:14px;
+    font-size:12px;
 
     margin-bottom:10px;
 
@@ -1650,7 +1661,7 @@ padding:15px;
 
     color:#bbb;
 
-    font-size:13px;
+    font-size:12px;
 
 }
 
@@ -1679,7 +1690,7 @@ padding:15px;
 
 
 .offcanvas-body h5{
-    font-size:15px;
+    font-size:14px;
     font-weight:700;
     color:#444;
     margin-top:18px;
@@ -1688,12 +1699,24 @@ padding:15px;
 
 .help-card{
     display:block;
-    padding:11px 0;
-    color:#333;
+   font-weight: 600;
+    color:#313133;
     text-decoration:none;
-    font-size:15px;
+    font-size:17.12px;
     border-bottom:1px solid #f3f3f3;
     transition:.2s;
+
+
+    margin-left: 16px;
+    cursor: pointer;
+    padding: 6px;
+    font-weight: 700;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    align-items: center;
+    display: flex;
+
+    
+  
 }
 
 .help-card:hover{
@@ -1806,15 +1829,7 @@ color:#f68b1e;
 
 }
 
-.section-title{
 
-font-size:20px;
-
-font-weight:700;
-
-margin:30px 0 15px;
-
-}
 
 .steps{
 

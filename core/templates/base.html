@@ -33,16 +33,16 @@
 
         <!-- Hamburger that opens sidebar -->
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMenu" aria-controls="mainMenu" >
-            <span class="navbar-toggler-icon" style="color: rgba(0, 0, 0, 0.65);font-size: 16px;align-self:center; "></span>
+            <span class="navbar-toggler-icon" style="color:#313133 !important;font-size: 18px;align-self:flex-end; "></span>
         </button>
 
-        <a class="navbar-brand" href="/" style="color:goldenrod;font-size: 18px;align-self:flex-end; ">WaziTrade</a>
+        <a class="navbar-brand" href="/" style="color:goldenrod;font-size: 20px;align-self:flex-end; font-weight: 600;">WaziTrade</a>
         
         <a href="{% url 'cart:cart_detail' %}">
-          <span class="material-symbols-outlined" style="color: rgba(0, 0, 0, 0.65);font-size: 18px;align-self:flex-end;margin-left:152px; ">shopping_cart</span>
+          <span class="material-symbols-outlined" style="color: rgba(0, 0, 0, 0.65);font-size: 20px;align-self:flex-end;margin-left:152px; font-weight: 600;">shopping_cart</span>
         </a>
         <a href="{% url 'core:sell-on-wazitrade' %}">
-            <span class="material-symbols-outlined" style=" font-style:normal;font-family: -apple-system,blink more system font,'segoe ui' roboto sanserif;text-decoration: none !important;line-height: 1.4;max-height: 36px;color:rgba(0, 0, 0, 0.65);font-weight: 400;align-self:flex-end;">
+            <span class="material-symbols-outlined" style=" font-style:normal;font-family: -apple-system,blink more system font,'segoe ui' roboto sanserif;text-decoration: none !important;line-height: 1.4;max-height: 36px;color:rgba(0, 0, 0, 0.65);font-weight: 600;align-self:flex-end;font-size: 20px;">
          how_to_reg
         </span>
         </a>
@@ -58,23 +58,18 @@
     
         <input class="form-control flex-grow-1 search-input"
            type="search" name="q" placeholder="Search products, categories, brands"
-           value="{{ request.GET.q }}" style="color: #777;">
+           value="{{ request.GET.q }}" style="color: #313133;">
            
     
 </form>
 
     </div>
-    <span class="material-symbols-outlined" style="color: goldenrod;padding-left: 24px;">
-location_on 
-
-</span>
-<span style=" margin-right: 36px;font-family:-apple-system,blink more system font,'segoe ui' roboto sanserif;color:rgba(0, 0, 0, 0.85);font-weight: 400;font-style: normal;">Best electronic products,services to Uganda</span>
-    
+   
 </nav>
 
 
 <!-- ======= BOOTSTRAP SIDEBAR OFFCANVAS ======= -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mainMenu">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mainMenu" style="width: 75%;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">Menu</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
@@ -199,7 +194,10 @@ location_on
        href="{% url 'core:contact' %}">
         Contact Us
     </a>
-
+    <a class="help-card"
+       href="{% url 'chat:chat' %}">
+        Chat with Us
+    </a>
     <hr>
 
     <!-- LEGAL -->
@@ -254,6 +252,10 @@ location_on
         <a href="{% url 'core:contact' %}">
             Contact Us
         </a>
+        <a
+       href="{% url 'chat:chat' %}">
+        Chat with Us
+    </a>
     </div>
 
 
