@@ -2,32 +2,26 @@
 
 {% block content %}
 <div class="contact-wrapper">
-    <h2>Need Help ?</h2>
-    <p class="intro-text">
-        We’d love to hear from you! Send a message using the form below.
-    </p>
-    {% if messages %}
-    {% for msg in messages %}
-        <p class="success">{{ msg }}</p>
-    {% endfor %}
-{% endif %}
-
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-
-        <label>Your Message</label>
-        <textarea name="message" aria-placeholder="message" required></textarea>
-
-        <button type="submit" class="contact-btn">Send Message</button>
-    </form>
-
-    <div class="contact-details">
-        <h3>Contact Details</h3>
-        <p>Email:<strong> omiramberodgers05@gmail.com</strong></p>
-        <p>Phone:<strong> +256 762318421 / +256 791262558</strong></p>
-        <p>Address:<strong> Kampala, Uganda</strong></p>
+    <h2 style="margin-bottom: 16px;margin-top: 8px;">Need Help ?</h2>
+    <div class="content" style="display: flex;flex-direction: column;align-items: center;">
+        <div class="watsapp" style="padding: 6px; text-align: center;"><b>
+            For any inquiries,
+           do not hesitate to chat with us via our LiveChat or Whatsapp on 0762318421
+        </b>
+        </div>
+        <div class="watsapp" style="padding: 6px;text-align: center;">
+           <b>We are open at any time -monday to friday from 8:00am to 7:30pm and on saturday to sunday we are available from 9am to 6pm</b> 
+        </div>
+        <div class="chat-contact"  style="margin-top: 16px;margin-bottom: 16px;">
+          <a href="{% url 'chat:chat' %}" style="color: #ffffff;font-size: 16px;text-transform: uppercase;text-decoration: none;background-color: goldenrod;border-radius: 24px;padding: 12px;">
+            Chat with Us
+          </a>
+          </div>
+          <div class="watsapp" style="text-align: center;">
+           <b style="padding: 6px;">Place your order on wazitrade easy,simply call us on (+256) 791262558 or WhatsApp us 0762318421 or Email us omiramberodgers05@gmail.com from Monday to Friday 8am - 7:30pm and Saturday to Sunday 9am - 7pm & Holidays</b> 
+        </div>
+        
     </div>
+    
 </div>
 {% endblock %}
