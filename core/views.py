@@ -103,6 +103,12 @@ def product_detail(request, product_id):
         color_images.setdefault("default", []).insert(0, product.main_image.url)
 
     colors = [c.strip() for c in product.color_options.split(',')] if product.color_options else []
+    related_products = Product.objects.filter(
+    category=product.category,
+    approved=True
+        ).exclude(
+         id=product.id
+       )[:8]
     context = {
         'product': product,
         'color_images_json': json.dumps(color_images),
@@ -111,8 +117,11 @@ def product_detail(request, product_id):
         'price_options': product.price_options.all(),
         'related_searches': product.related_searches.all(),
         'recommended_supplier': product.recommended_from_supplier.all(),
+        "colors": colors,
+        "transport_fee": getattr(product, "transport_fee", 0),
+        "related_products": related_products,
     }
-    return render(request, 'product_detail.html', context)
+    return render(request, "product_detail.html", context)
 
 
 def cart_detail(request):

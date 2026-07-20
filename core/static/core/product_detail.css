@@ -27,7 +27,7 @@ html, body {
 
 .product-image {
     width: 100%;
-    aspect-ratio:1/1;      /* uniform height */
+    aspect-ratio:3/4;      /* uniform height */
     object-fit: cover;   /* crop without stretching */
     border-radius: 4px;
     display: block;
@@ -45,7 +45,6 @@ html, body {
 .price-tier {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 12px;
     text-align: center;
     
 }

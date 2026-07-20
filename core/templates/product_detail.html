@@ -1,257 +1,294 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% block content %}
 
-{% block title %}{{ product.name }}{% endblock %}
+<div class="product-page">
+  <!-- ========================= -->
+  <!-- IMAGE GALLERY -->
+  <!-- ========================= -->
 
-{% block body_class %}product-page{% endblock %}
+  <section class="gallery-section">
+    <div class="gallery-container">
+      <button class="gallery-btn prev">&#10094;</button>
 
-{% block content %}
-<div class="prod-container">
-
-    <!-- PRODUCT IMAGE -->
-    <div class="image-container">
-    {% if product.main_image %}
-        <img id="productImage"
-             class="product-image"
-             src="{{ product.main_image.url }}"
-             alt="{{ product.name }}"
-             style="height:250px;object-fit:cover;"
-             data-images='[
-                {% for img in product.images.all %}
-                "{{ img.image.url }}"{% if not forloop.last %},{% endif %}
-                {% endfor %}
-             ]'>
-    {% else %}
-        <img class="product-image"
-             src="{% static 'placeholder.png' %}"
-             alt="No image">
-    {% endif %}
-</div>
-
-<!-- DESCRIPTION -->
-    <section class="product-description" >
-       <h3>{{ product.name }} {{product.description|default:"No description available" }}</h3>
-    
-    </section>
-    <!-- CUSTOMER REVIEWS -->
-    <section class="prod-review" style="margin-top:0px;color:#2162A1;border-bottom:1px solid #2162A1;">
-        {% for review in reviews %}
-        <div class="review-item">
-            {% if review.avatar %}
-                <img src="{{ review.avatar.url }}" alt="{{ review.user_name }}" class="review-avatar">
-            {% else %}
-                <img src="{% static 'default-avatar.png' %}" alt="{{ review.user_name }}" class="review-avatar">
-            {% endif %}
-            <strong>{{ review.user_name }}</strong>
-            <strong>{{review.comment}}</strong>
+      <div class="gallery-slider" id="gallerySlider">
+        {% if product.main_image %}
+        <div class="gallery-slide">
+          <img
+            src="{{ product.main_image.url }}"
+            id="mainImage"
+            alt="{{ product.name }}"
+          />
         </div>
-        {% empty %}
-        <p>No reviews yet.</p>
-        {% endfor %}
-    </section>
-
-    <!-- PRICE OPTIONS -->
-     
-     {% if product.price_options.exists %}
-    <section class="prod-price">
-        {% for option in product.price_options.all %}
-        <div class="price-tier">
-            <h4 style="font-size: 18px;font-weight: 500;color:goldenrod;">Ush {{ option.price }}</h4>
-            {% if option.max_quantity %}
-                <p>({{ option.min_quantity }}–{{ option.max_quantity }} pcs)</p>
-            {% else %}
-                <p>(≥ {{ option.min_quantity }} pcs)</p>
-            {% endif %}
+        {% endif %} {% for image in product.images.all %}
+        <div class="gallery-slide">
+          <img
+            src="{{ image.image.url }}"
+            data-color="{{ image.color }}"
+            alt="{{ product.name }}"
+          />
         </div>
         {% endfor %}
-    </section>
-    {% endif %}
-    
-   
+      </div>
 
-<!-- COLORS -->
-<section class="prod-colors">
-    
-    <ul>
-        <span>Color:</span>
-        {% for color in colors %}
-            <li>{{ color.name }}</li>
-        {% empty %}
-            <li>No colors available</li>
-        {% endfor %}
-    </ul>
-</section>
- <h1 class="a-size-base-plus a-text-bold"> About this item </h1>
-    
-    <!-- TRANSPORT / DELIVERY -->
-    <section class="prod-transport">
-    <p>Transport Fee: <strong>Ush {{ transport_fee|default:"N/A" }}</strong></p>
-    <ul>
-        {% for supplier in recommended_supplier %}
-            {% if supplier.phone %}
-                <li>{{ supplier.name }}: <a href="tel:{{ supplier.phone }}">{{ supplier.phone }}</a></li>
-            {% endif %}
-        {% empty %}
-            <li>No suppliers available</li>
-        {% endfor %}
-    </ul>
-</section>
-
-   
-
-</div> <!-- end prod-container -->
-
-
-<!-- FLOATING CHAT ICON -->
-<div id="floatingChat">
-    <span class="material-symbols-outlined chat-trigger">chat</span>
-</div>
-
-<!-- FIXED BOTTOM CTA -->
-<div class="fixed-prod-cta">
-    
-    <!-- Add to Cart -->
-    <form method="post" action="{% url 'cart:cart_add' product.id %}" class="add-cart">
-      {% csrf_token %}
-      <button type="submit" class="btn" style="width: 100%;height: 44px;color:rgb(0,0,0,0.85);font-size: 13px;font-weight: 500;background: #ffe4ad;;border-radius: 8px;display: inline-flex;align-items: center;justify-content: center;margin-top: 8px;text-transform: capitalize;">Add to Cart</button>
-    </form>
-
-    {% if user.is_authenticated %}
-      <!-- Buy Now goes directly to DPO payment -->
-      <form action="{% url 'cart:dpo_pay' %}" method="post" class="buy-now">
-          {% csrf_token %}
-          <button type="submit" class="btn" style="width: 100%;height: 44px;color:#ffffff;font-size: 13px;font-weight: 500;background-color: goldenrod;border-radius: 8px;display: inline-flex;align-items: center;justify-content: center;margin-top: 8px;text-transform: capitalize;">Buy Now</button>
-      </form>
-    {% else %}
-      <!-- Redirect to login first, then DPO -->
-      <a href="{% url 'account_login' %}?next={% url 'cart:dpo_pay' %}" class="btn" style="color: white;border-radius: 8px;padding: 8px 12px;">Buy Now</a>
-    {% endif %}
-</div>
-
-
-
-<div class="chat-window" id="chatWindow" style="display:none;">
-    <div class="chat-header">
-        <h4>Chat With Support</h4>
-        <button id="closeChat">&times;</button>
+      <button class="gallery-btn next">&#10095;</button>
     </div>
 
-    <div class="chat-messages" id="chatMessages"></div>
+    <div class="gallery-dots">
+      {% if product.main_image %}
+      <span class="dot active"></span>
+      {% endif %} {% for image in product.images.all %}
+      <span class="dot"></span>
+      {% endfor %}
+    </div>
+  </section>
 
-    {% if user.is_authenticated %}
-        <form id="chatForm">
-            {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{ product.id }}">
-            <input id="msgInput" type="text" placeholder="Type message..." autocomplete="off">
-            <button type="submit">Send</button>
-        </form>
-    {% else %}
-        <div class="p-2 text-center">
-            <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn btn-primary" >
-                Sign in to Chat
-            </a>
-        </div>
-    {% endif %}
+  <!-- ========================= -->
+  <!-- PRODUCT INFO -->
+  <!-- ========================= -->
+
+  <section class="product-info">
+    <h1>{{ product.name }}</h1>
+
+    <div class="rating-row">
+      ⭐⭐⭐⭐⭐
+
+      <span> {{ reviews.count }} Reviews </span>
+    </div>
+
+    <div class="price-box">
+      <div class="current-price">UGX {{ product.base_price }}</div>
+
+      {% if product.initial_price %}
+
+      <div class="old-price">UGX {{ product.initial_price }}</div>
+
+      <div class="discount">SAVE</div>
+
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ========================= -->
+  <!-- COLORS -->
+  <!-- ========================= -->
+
+  {% if colors %}
+
+  <section class="color-section">
+    <h3>Select Color</h3>
+
+    <div class="color-list">
+      {% for color in colors %}
+
+      <button class="color-btn" data-color="{{ color|lower }}">
+        {{ color }}
+      </button>
+
+      {% endfor %}
+    </div>
+  </section>
+
+  {% endif %}
+
+  <section class="delivery-card">
+    <h3>🚚 Delivery</h3>
+
+    <div class="delivery-item">
+      <span>Destination</span>
+
+      <strong>Uganda</strong>
+    </div>
+
+    <div class="delivery-item">
+      <span>Estimated</span>
+
+      <strong>Tomorrow - 3 Days</strong>
+    </div>
+
+    <div class="delivery-item">
+      <span>Shipping Fee</span>
+
+      <strong> UGX {{ transport_fee }} </strong>
+    </div>
+  </section>
+  <section class="seller-card">
+    <h3>Sold By</h3>
+
+    <div class="seller-info">
+      <div class="seller-avatar">🏪</div>
+
+      <div>
+        <h4>{{ product.seller.business_name }}</h4>
+
+        <p>Verified Seller</p>
+      </div>
+    </div>
+
+    <div class="seller-buttons">
+      <a href="#" class="visit-store"> Visit Store </a>
+
+      <button class="chat-seller">Chat Seller</button>
+    </div>
+  </section>
+  <section class="description-card">
+    <h2>Product Description</h2>
+
+    <p>{{ product.description|linebreaks }}</p>
+  </section>
+
+  <section class="description-card">
+    <h2>Shipping Information</h2>
+
+    <p>{{ product.shipping_info }}</p>
+  </section>
+  <section class="description-card">
+    <h2>Product Protection</h2>
+
+    <p>{{ product.product_protection }}</p>
+  </section>
+
+  <section class="related-products">
+    <h2>Related Products</h2>
+
+    <div class="related-slider">
+      {% for item in related_products %}
+
+      <a href="{% url 'core:product_detail' item.id %}" class="related-card">
+        {% if item.main_image %}
+
+        <img src="{{ item.main_image.url }}" />
+
+        {% endif %}
+
+        <h4>{{ item.name }}</h4>
+
+        <p>UGX {{ item.base_price }}</p>
+      </a>
+
+      {% endfor %}
+    </div>
+  </section>
 </div>
 
+<!-- ========================= -->
+<!-- STICKY ACTION BAR -->
+<!-- ========================= -->
 
-{% endblock %}
+<div class="sticky-cart">
+  <a href="{% url 'cart:cart_add' product.id %}" class="cart-btn">
+    🛒 Add to Cart
+  </a>
 
-{% block mobile_footer %}{% endblock %}
+  {% if user.is_authenticated %}
+  <a href="{% url 'core:buy_now' product.id %}" class="buy-btn"> Buy Now </a>
+  {% else %}
+  <a
+    href="{% url 'core:login' %}?next={% url 'core:buy_now' product.id %}"
+    class="buy-btn"
+  >
+    Buy Now
+  </a>
+  {% endif %}
+</div>
 
-
-{% block extra_scripts %}
 <script>
-// Cycle product images
-const img = document.getElementById("productImage");
+  document.addEventListener("DOMContentLoaded", function () {
+    const slider = document.querySelector(".gallery-slider");
 
-let images = [];
+    const slides = document.querySelectorAll(".gallery-slide");
 
-if (img && img.dataset.images) {
-    try {
-        images = JSON.parse(
-            img.dataset.images.replace(/'/g, '"')
-        ).filter(Boolean);
-    } catch (e) {
-        images = [];
-    }
-}
+    const dots = document.querySelectorAll(".dot");
 
-let currentIndex = 0;
+    const next = document.querySelector(".next");
 
-if (images.length > 1) {
-    img.addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % images.length;
-        img.src = images[currentIndex];
-    });
-}
+    const prev = document.querySelector(".prev");
 
+    let index = 0;
 
-document.addEventListener("DOMContentLoaded", function() {
-    const csrftoken = '{{ csrf_token }}';
-    const productId = "{{ product.id }}";
-    const chatBtn = document.querySelector(".chat-trigger");
-    const chatWindow = document.getElementById("chatWindow");
-    const closeChat = document.getElementById("closeChat");
-    const chatForm = document.getElementById("chatForm");
-    const msgInput = document.getElementById("msgInput");
-    const chatMessages = document.getElementById("chatMessages");
+    function updateGallery() {
+      slider.scrollTo({
+        left: index * slider.clientWidth,
 
-    // Fetch messages between buyer & seller
-    function fetchMessages() {
-        fetch(`/chat/fetch/${productId}/`)
-        .then(res => res.json())
-        .then(data => {
-            chatMessages.innerHTML = '';
-            data.messages.forEach(msg => {
-                chatMessages.innerHTML += `<div class="chat-msg"><b>${msg.sender}:</b> ${msg.content}</div>`;
-            });
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
+        behavior: "smooth",
+      });
+
+      dots.forEach((d) => d.classList.remove("active"));
+
+      if (dots[index]) {
+        dots[index].classList.add("active");
+      }
     }
 
-    // Open chat window
-    chatBtn.addEventListener("click", () => {
-        chatWindow.style.display = "flex";
-        fetchMessages();
+    next.addEventListener("click", () => {
+      if (index < slides.length - 1) {
+        index++;
+      }
+
+      updateGallery();
     });
 
-    // Close chat window
-    closeChat.addEventListener("click", () => {
-        chatWindow.style.display = "none";
+    prev.addEventListener("click", () => {
+      if (index > 0) {
+        index--;
+      }
+
+      updateGallery();
     });
 
-    // Send message (buyer → seller)
-    if(chatForm){
-        chatForm.addEventListener("submit", function(e){
-            e.preventDefault();
-            const content = msgInput.value.trim();
-            if(!content) return;
+    slider.addEventListener("scroll", () => {
+      const width = slider.clientWidth;
 
-            fetch("{% url 'core:send_message' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": csrftoken,
-                },
-                body: new URLSearchParams({
-                    "product_id": productId,
-                    "content": content,
-                    "receiver_id": "" // leave empty to send to seller
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                chatMessages.innerHTML += `<div class="chat-msg"><b>${data.sender}:</b> ${data.content}</div>`;
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                msgInput.value = "";
-            });
-        });
-    }
+      index = Math.round(slider.scrollLeft / width);
 
-    // Poll messages every 3 seconds for real-time updates
-    setInterval(fetchMessages, 3000);
-});
+      dots.forEach((d) => d.classList.remove("active"));
+
+      if (dots[index]) {
+        dots[index].classList.add("active");
+      }
+    });
+  });
 </script>
-{% endblock %}
 
+<script>
+
+  const colorImages={{ color_images_json|safe }};
+
+  const colorButtons=document.querySelectorAll(".color-btn");
+
+  const gallery=document.querySelector(".gallery-slider");
+
+  colorButtons.forEach(btn=>{
+
+  btn.onclick=function(){
+
+  colorButtons.forEach(b=>b.classList.remove("active"));
+
+  this.classList.add("active");
+
+  const color=this.dataset.color;
+
+  if(colorImages[color]){
+
+  gallery.innerHTML="";
+
+  colorImages[color].forEach(img=>{
+
+  gallery.innerHTML+=`
+
+  <div class="gallery-slide">
+
+  <img src="${img}">
+
+  </div>
+
+  `;
+
+  });
+
+  }
+
+  };
+
+  });
+</script>
+
+{% endblock %}

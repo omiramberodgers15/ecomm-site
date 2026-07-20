@@ -32,10 +32,9 @@ class SubCategoryInline(admin.TabularInline):
     extra = 1
 
 
-class ProductInline(admin.TabularInline):
-    model = Product
-    extra = 1
-
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ("product", "color")
 
 # ---------------------
 # CATEGORY ADMIN
@@ -71,18 +70,42 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ("product", "rating", "created_at")
     search_fields = ("user_name", "comment", "product__name")
 
-
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 5
 
 # core/admin.py
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "category", "subcategory", "base_price", "min_order", "seller", "approved")
-    list_filter = ("category", "subcategory", "approved", "seller")
-    search_fields = ("name", "seller__business_name")
-    filter_horizontal = ("recommended_from_supplier",)
+    list_display = (
+        "name",
+        "category",
+        "subcategory",
+        "base_price",
+        "seller",
+        "approved",
+    )
+
+    list_filter = (
+        "category",
+        "subcategory",
+        "approved",
+        "seller",
+    )
+
+    search_fields = (
+        "name",
+        "seller__business_name",
+    )
+
+    filter_horizontal = (
+        "recommended_from_supplier",
+    )
+
+    inlines = [ProductImageInline]
 
     class Media:
-        js = ('core/js/product_admin.js',)
+        js = ("core/js/product_admin.js",)
 
 
 
