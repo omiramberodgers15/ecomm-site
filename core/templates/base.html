@@ -55,8 +55,8 @@
   </head>
   <body class="{% block body_class %}{% endblock %}">
     <!-- ======= BOOTSTRAP TOP NAVBAR (FULLY WORKING) ======= -->
-
-    <nav class="navbar navbar-light bg-white py-7">
+   {% block navbar %}
+    <nav class="navbar navbar-light bg-white py-9">
       <div class="container-fluid">
         <!-- Hamburger that opens sidebar -->
         <button
@@ -81,9 +81,9 @@
           href="/"
           style="
             color: goldenrod;
-            font-size: 20px;
-            align-self: flex-end;
-            font-weight: 600;
+            font-size: 20.28px;
+            align-self: center;
+            font-weight: 700;
           "
           >WaziTrade</a
         >
@@ -93,10 +93,12 @@
             class="material-symbols-outlined"
             style="
               color: rgba(0, 0, 0, 0.65);
-              font-size: 20px;
+              font-size: 24px;
+              padding-left: 6px;
               align-self: flex-end;
-              margin-left: 152px;
-              font-weight: 600;
+              margin-left: 122px;
+              font-weight: 400;
+              align-self: center;
             "
             >shopping_cart</span
           >
@@ -111,12 +113,13 @@
                 blink more system font,
                 &quot;segoe ui&quot; roboto sanserif;
               text-decoration: none !important;
-              line-height: 1.4;
+              align-self: center;
               max-height: 36px;
               color: rgba(0, 0, 0, 0.65);
-              font-weight: 600;
+              font-weight: 400;
               align-self: flex-end;
-              font-size: 20px;
+              font-size: 24px;
+              padding-left: 6px;
             "
           >
             how_to_reg
@@ -140,12 +143,12 @@
             name="q"
             placeholder="Search products, categories, brands"
             value="{{ request.GET.q }}"
-            style="color: #313133"
+            style="color: #313133;"
           />
         </form>
       </div>
     </nav>
-
+  
     <!-- ======= BOOTSTRAP SIDEBAR OFFCANVAS ======= -->
     <div
       class="offcanvas offcanvas-start"
@@ -296,6 +299,7 @@
 -->
       </div>
     </div>
+   {% endblock %} 
 
     <div class="page-content" style="margin-bottom: 65px">
       {% block content %}{% endblock %}

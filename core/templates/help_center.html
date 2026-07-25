@@ -1,3 +1,5 @@
+
+
 {% extends "base.html" %}
 {% load static %}
 
@@ -8,84 +10,130 @@ Help Center
 {% block content %}
 
 <div class="help-page">
+  <div class="help-header">
+    <h3
+      style="
+        font-size: 14px;
+        margin-bottom: unset;
+      "
+    >
+      Help Center
+    </h3>
+    <p
+      style="
+        font-size: 14px;
+        margin-bottom: unset;
+      "
+    >
+      Do you still need help ?
+    </p>
+    <form action="{% url 'core:search_help' %}" method="GET">
+      <input
+        type="search"
+        name="q"
+        placeholder="Search Help"
+        style="
+          height: 40px;
+          border-radius: 6px;
+          width: 100%;
+          outline: unset;
+          border: 1px solid #313133;
+        "
+      />
+    </form>
+  </div>
 
-<div class="help-header">
+  <h5
+    class="section-title"
+    style="font-size: 16px; color: rgba(0, 0, 0, 0.65); padding-top: 8px"
+  >
+    Popular Help
+  </h5>
 
-<h3 style="font-size:17.28px;color: #313133;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;font-weight: 600;">Help Center</h3>
-<p style="font-size: 22px;font-weight: 700;color: #313133;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">Do you still need help ?</p>
-<form action="{% url 'core:search_help' %}" method="GET">
-
-<input
-type="search"
-name="q"
-placeholder="Search Help" style="height: 40px;border-radius: 6px;width: 100%;outline: unset;border: 1px solid #313133;">
-
-</form>
-
-</div>
-
-<h5 class="section-title" style="font-size: 16px;color: rgba(0,0,0,0.65);padding-top: 8px;">
-
-Popular Help
-
-</h5>
-
-{% for category in categories %}
-
-<a href="{% url 'core:help-category' category.slug %}">
-
-<div style="padding-left: 16px;cursor: pointer;font-size: 1.07em;font-weight: 600;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;align-items: center;display: flex;">
-
-<span class="material-symbols-outlined" style="font-size: 24px;">
-
-{{ category.icon }}
-
-</span>
-
-  {{ category.name }} >
-
-</div>
-
-</a>
-
-{% endfor %}
-
-<h5 class="section-title">
-Popular Articles
-</h5 style="font-size: 16px;color: rgba(0,0,0,0.65);padding-top: 8px;">
-
-{% for article in popular_articles %}
-
+      {% for category in categories %}
+<div class="help-category-container">
 <a
-class="article-link"
-href="{% url 'core:help-detail' article.slug %}" style="padding-left: 16px;cursor: pointer;font-size: 1.07em;font-weight: 600;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;align-items: center;display: flex;">
+  href="{% url 'core:help-category' category.slug %}"
+  class="help-category-card"
+>
+  <span class="material-symbols-outlined" style="font-size:32px; margin-right:8px;">
+    {{ category.icon }}
+  </span>
 
-{{ article.title }}
+  <span style="flex:1;">{{ category.name }}</span>
 
+  <span>&gt;</span>
 </a>
-
+</div>
 {% endfor %}
 
 
-<h5 class="help-section-title mt-4" style="font-size: 16px;color: rgba(0,0,0,0.65);padding-top: 8px;">Legal</h5>
+  <h5
+    class="section-title"
+    style="font-size: 16px; color: rgba(0, 0, 0, 0.65); padding-top: 8px"
+  >
+    Popular Articles
+  </h5>
 
-<a class="help-card" href="{% url 'core:terms' %}">
-Terms & Conditions
-</a>
-<a class="help-card" href="{% url 'core:privacy' %}">
-Privacy Policy
-</a>
-<a class="help-card" href="{% url 'core:cookies' %}">
-Cookie Notice
-</a>
-<a class="help-card" href="{% url 'core:returns' %}">
-Return & Refund Policy
-</a>
+  {% for article in popular_articles %}
+  <div class="help-category-container">
+  <a
+    class="article-link"
+    href="{% url 'core:help-detail' article.slug %}"
+    style="
+      padding-left: 16px;
+      padding-bottom:8px ;
+      color: #313133;
+      cursor: pointer;
+      font-size:14px;
+      font-weight: 400;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        &quot;Segoe UI&quot;,
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        &quot;Open Sans&quot;,
+        &quot;Helvetica Neue&quot;,
+        sans-serif;
+      align-items: center;
+      display: flex;
+      
+    "
+  >
+    {{ article.title }}
+  </a>
+</div>
+  {% endfor %}
 
-<h5 class="help-section-title mt-4">Need More Help?</h5>
-<a class="help-card" href="{% url 'core:contact' %}">
-Contact Customer Support →
-</a>
+  <h5
+    class="help-section-title"
+    style="font-size: 16px; color: rgba(0, 0, 0, 0.65); padding-top: 8px"
+  > 
+    Legal
+  </h5>
+  <div class="legal-container">
+    <div class="legal-card">
+        <a class="help-card" href="{% url 'core:terms' %}"> Terms & Conditions ></a>
+  <a class="help-card" href="{% url 'core:privacy' %}"> Privacy Policy ></a>
+  <a class="help-card" href="{% url 'core:cookies' %}"> Cookie Notice ></a>
+  <a class="help-card" href="{% url 'core:returns' %}">
+    Return & Refund Policy >
+  </a>
+    </div>
+
+  <h5 class="help-section-title">Need More Help?</h5>
+  <div class="legal-card">
+     <a class="help-card" href="{% url 'core:contact' %}">
+    Contact Customer Support →
+  </a>
+  </div>
+  
+  
+  </div>
 </div>
 
 {% endblock %}
