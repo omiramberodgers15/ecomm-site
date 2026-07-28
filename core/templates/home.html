@@ -40,13 +40,12 @@ Home - WaziTrade {% endblock %}{% block content %}
         {% endif %}
       </a>
 
-      <p class="prod-name">{{ product.name }}</p>
-
       <div class="price-row">
-        <span class="new-price"
-          >Ugx {{ product.base_price|floatformat:0|intcomma }}</span
+        <span class="new-price" style="color:goldenrod;font-weight: 700;font-size: 14px;"
+          >Ush {{ product.base_price|floatformat:0|intcomma }}</span
         >
       </div>
+      <p class="prod-name" style="margin-left: 0px;padding-left: 0px;color:#666;" >{{ product.name }}</p>
     </div>
     {% empty %}
     <p>No new arrivals yet.</p>
@@ -99,15 +98,18 @@ Home - WaziTrade {% endblock %}{% block content %}
       <img src="{% static 'core/default-product.jpg' %}" />
       {% endif %}
     </a>
-
-    <p class="prod-name">{{ product.name }}</p>
-    <p class="prod-review">{{ product.review_count }} reviews</p>
-
     <div class="price-row">
       <span class="new-price"
-        >Ugx {{ product.base_price|floatformat:0|intcomma }}</span
+        >Ush {{ product.base_price|floatformat:0|intcomma }}</span
       >
     </div>
+    <div class="prod-name-row">
+        <p class="prod-name">{{ product.name }}</p>
+        <p class="prod-review">{{ product.review_count }} reviews</p>
+    </div>
+    
+
+    
   </div>
   {% empty %}
   <p>No best sellers yet.</p>

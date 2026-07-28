@@ -424,7 +424,7 @@ nav.navbar .navbar-dark{
     flex-direction: column;
     overflow: hidden;         /* prevent overflowing content */
     transition: transform 0.2s, box-shadow 0.2s;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
   border: 0px;
   word-break: break-word;
   font-size: 0.8125rem;
@@ -437,9 +437,10 @@ nav.navbar .navbar-dark{
 
 /* Images */
 .product-card img {
+    display: block;
     width: 100%;
-    height: auto;   
-    aspect-ratio: auto 104 / 104;          /* maintain aspect ratio */       /* optional, keep uniform ratio */
+    height: 100%;   
+    aspect-ratio: 1 / 1;         /* maintain aspect ratio */       /* optional, keep uniform ratio */
     object-fit: cover;
     border-radius: 4px;
     border-style: none;
@@ -452,15 +453,27 @@ nav.navbar .navbar-dark{
     
 }
 
+
+img[loading="lazy"] {
+    min-height: 1px;
+    min-width: 1px;
+}
+img {
+    border-style: none;
+}
+user agent stylesheet
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
 /* Text spacing */
 .product-card p {
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 8px;
+   
     text-overflow: ellipsis;
-    white-space: nowrap;
+    text-wrap: wrap;
     overflow: hidden;
-    font-size: .75rem;
+    font-size: 14px;
     text-align: left;
     font-weight: 400;
 }
@@ -871,8 +884,8 @@ div.product-card{
 
 div .new-price{
     color:#313133;
-    font-weight: 500;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 14px;
     font-style:normal;
     font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
     text-transform: uppercase;
@@ -893,7 +906,7 @@ div .new-price{
     color: #555 !important;
     font-weight: 400;
     font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
-    
+   
 }
 
  
@@ -1114,12 +1127,14 @@ form textarea {
 
 /* Horizontal product slider container */
 .product-slider {
-    overflow-x: auto;
+    overflow-x:none;
     display: flex;
     gap: 4px;
     padding-top: 8px;
     padding-left: 4px;
     background-color: #ffffff;
+    padding-bottom: 4px;
+    text-decoration: none;
     
 }
 
@@ -1168,6 +1183,7 @@ form textarea {
     position: relative;
     font-size: .875rem;
     color: #313133;
+    text-decoration: none;
         
 }
 
@@ -1189,10 +1205,13 @@ form textarea {
 /* Product text */
 .product-title {
     text-align: left;
-    font-size: 13px;
+    font-size: 14px;
+    text-decoration: none !important;
     line-height: 1.4;
     max-height: 36px;
-    color:rgba(0, 0, 0, 0.65);
+    
+    padding-top: 6px;
+    padding-bottom: 6px;
     font-weight: 400;
     
 }
@@ -1240,6 +1259,9 @@ form textarea {
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
         background-color: #f1f1f2;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+            overflow: hidden;
         color: #313133;
         border: none;
         font-weight: 400;
@@ -1249,7 +1271,7 @@ form textarea {
         border-bottom: 1px solid #f0f0f0f0;
     }
 
-    
+   
 
     /* Make button exactly same height */
     .search-btn {
@@ -1263,10 +1285,9 @@ form textarea {
         border-bottom-left-radius: 24px;
         border-top-left-radius: 24px;
         background-color: #f1f1f2;
-        
-        border-width: 0px;
-        padding-top: 14px;
-        padding-bottom: 14px;
+        border-width: 11px;
+        padding-top: 12px;
+        padding-bottom: 12px;
         border: none;
         font-weight: 400;
         font-size: 18px;
@@ -1276,10 +1297,11 @@ form textarea {
 
     /* Reduce icon size */
     .search-btn .material-symbols-outlined {
-        font-size: 20px;
+        font-size: 24px;
         line-height: 1;
         border: none;
-        margin-left: 32px;
+        
+        margin-left: 16px;
     }
 }
 /* help center section */
@@ -1538,7 +1560,7 @@ form textarea {
     margin:0 auto;
     background:#ffffff;
     min-height:100vh;
-    padding-bottom:50px;
+    
 }
 
 .legal-header{
@@ -1581,10 +1603,10 @@ form textarea {
 .legal-card p{
     color:#555;
     line-height:1.4;
-    font-size:13px;
+    font-size:14px;
 }
 
-.legal-card ul{
+.card ul{
     margin-top:8px;
     padding-left:20px;
 }
@@ -1598,7 +1620,7 @@ form textarea {
 @media(max-width:480px){
 
 .legal-title{
-font-size:20px;
+font-size:22px;
 }
 
 .legal-card{
@@ -1744,7 +1766,7 @@ padding:8px 16px;
 }
 
 .accordion-button{
-    font-size:15px;
+    font-size:14px;
     font-weight:500;
     box-shadow:none !important;
 }
@@ -1776,19 +1798,19 @@ background:#f5f5f5;
 
 background:#fff;
 
-padding:25px;
+padding:16px;
 
-border-radius:14px;
+border-radius:6px;
 
 text-align:center;
 
-margin-bottom:20px;
+margin-bottom:16px;
 
 }
 
 .seller-hero h2{
 
-font-size:28px;
+font-size:22px;
 
 font-weight:700;
 
@@ -1797,8 +1819,8 @@ font-weight:700;
 .seller-hero p{
 
 color:#666;
-
-margin:15px 0;
+font-size: 14px;
+margin:8px 0;
 
 }
 
@@ -1814,7 +1836,7 @@ padding:14px;
 
 text-align:center;
 
-border-radius:8px;
+border-radius:6px;
 
 font-weight:700;
 
@@ -1826,7 +1848,7 @@ text-decoration:none;
 
 display:flex;
 
-gap:16px;
+gap:8px;
 
 background:#fff;
 
@@ -1834,7 +1856,7 @@ padding:16px;
 
 margin-bottom:12px;
 
-border-radius:10px;
+border-radius:6px;
 
 align-items:center;
 
