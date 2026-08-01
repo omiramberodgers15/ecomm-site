@@ -20,7 +20,7 @@ from django.contrib import admin
 
 from .models import Seller
 
-from .models import HelpCategory, HelpArticle
+from .models import HelpCategory, HelpArticle,Promotion
 
 logger = logging.getLogger(__name__)
 
@@ -217,3 +217,9 @@ class HelpArticleAdmin(admin.ModelAdmin):
     )
     search_fields = ("title", "summary", "content")
     prepopulated_fields = {"slug": ("title",)}
+
+
+@admin.register(Promotion)
+class PromotionAdmin(admin.ModelAdmin):
+    list_display = ("title", "active")
+    list_filter = ("active",)

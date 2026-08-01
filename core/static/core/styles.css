@@ -437,20 +437,14 @@ nav.navbar .navbar-dark{
 
 /* Images */
 .product-card img {
+   
     display: block;
     width: 100%;
-    height: 100%;   
-    aspect-ratio: 1 / 1;         /* maintain aspect ratio */       /* optional, keep uniform ratio */
+    height: auto;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 4px;
-    border-style: none;
-    overflow-clip-margin: content-box;
-    overflow: clip;
     cursor: pointer;
-    text-align: left;
-    font-weight: 400;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    
 }
 
 
@@ -873,6 +867,8 @@ div.product-card{
     background-color: #ffffff;
     border-radius: 6px;
     padding: 8px;
+
+    
 }
 
 .old-price {
@@ -1134,7 +1130,7 @@ form textarea {
     padding-left: 4px;
     background-color: #ffffff;
     padding-bottom: 4px;
-    text-decoration: none;
+    
     
 }
 
@@ -2594,3 +2590,160 @@ margin-bottom:15px;
     line-height: 1.5;
 }
 
+
+
+
+
+
+
+.social-icons a {
+    text-decoration: none;
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+.bi-facebook {
+    color: #1877F2;
+}
+
+.bi-instagram {
+    color: #E4405F;
+}
+
+.bi-twitter-x {
+    color: #000;
+}
+
+.bi-youtube {
+    color: #FF0000;
+}
+
+
+
+
+
+
+
+
+
+
+/* ======= PROMO BANNER ======= */
+
+.promo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 180px;
+    height: 180px;
+    padding: 20px;
+    overflow: hidden;
+    
+    border-radius: 16px;
+    background: #f5f5f5;
+}
+
+
+/* ======= PROMO CONTENT ======= */
+
+.promo-content {
+    flex: 1;
+    padding-right: 10px;
+}
+
+.promo-content small {
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+.promo-content h2 {
+    margin: 6px 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.promo-content p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+
+/* ======= PROMO BUTTON ======= */
+
+.promo-btn {
+    display: inline-block;
+
+    padding: 10px 18px;
+
+    background: #ffffff;
+    color:goldenrod;
+
+    border-radius: 30px;
+
+    text-decoration: none;
+    font-weight: 600;
+
+    transition: 
+        background-color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.promo-btn:hover {
+    background-color: #f3f4f6;
+    transform: scale(1.05);
+}
+
+
+/* ======= PROMO IMAGE ======= */
+
+.promo-image {
+    width: 40%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.promo-image img {
+    width: 100%;
+    height: 100%;
+
+    max-width: 180px;
+
+    object-fit: contain;
+}
+
+
+/* ======= MOBILE ======= */
+
+@media (max-width: 600px) {
+
+    .promo-banner {
+        height: 160px;
+        padding: 15px;
+    }
+
+
+    .promo-content h2 {
+        font-size: 18px;
+    }
+
+
+    .promo-content p {
+        font-size: 13px;
+    }
+
+
+    .promo-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+
+    .promo-image {
+        width: 35%;
+    }
+}

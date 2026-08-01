@@ -1,6 +1,29 @@
 {% extends "base.html" %}{% load static %}{% load humanize %}{% block title %}
 Home - WaziTrade {% endblock %}{% block content %}
 
+
+
+
+
+<!-- ======= WEEKEND DEALS BANNER ======= -->
+<div class="promo-banner">
+
+    <div class="promo-content">
+        <h2>{{ promotions.title }}</h2>
+
+        <p>{{ promotions.description }}</p>
+
+        <a href="{{ promotions.link }}" class="promo-btn">
+            {{ promotions.button_text }}
+        </a>
+    </div>
+
+    <div class="promo-image">
+        <img src="{{ promotions.image.url }}" alt="{{ promotions.title }}">
+    </div>
+
+</div>
+
 <!-- ======= PRODUCT HORIZONTAL SLIDER ======= -->
 <h3 class="section-title">Popular Products</h3>
 
@@ -87,7 +110,7 @@ Home - WaziTrade {% endblock %}{% block content %}
 -->
 
 <!-- ============= BEST SELLERS ============= -->
-<h3 class="section-title">Top Sales</h3>
+<h3 class="section-title">Top Sellers</h3>
 <div class="products-vertical">
   {% for product in best_sellers %}
   <div class="product-card">

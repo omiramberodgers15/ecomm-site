@@ -44,7 +44,7 @@ from django.utils import timezone
 
 # ---------- DEALS (Dynamic) ----------
 
-from .models import Deal
+from .models import Deal,Promotion
 
 
 from django.shortcuts import render, get_object_or_404
@@ -61,13 +61,14 @@ def home(request):
     top_deals = Product.objects.filter(approved=True, initial_price__isnull=False, initial_price__gt=F('base_price')).order_by("-created_at")[:10]
     best_sellers = Product.objects.filter(approved=True).annotate(reviews_count=Count("reviews")).order_by("-reviews_count")[:10]
     popular_products = Product.objects.all()[0:10]  # example
-
+    promotions = Promotion.objects.filter(active=True).first()
     context = {
         "all_categories": all_categories,   # <-- pass it
         "new_arrivals": new_arrivals,
         "top_deals": top_deals,
         "best_sellers": best_sellers,
         "popular_products": popular_products,
+        "promotions": promotions,   # <-- ADD THIS
     }
     return render(request, "home.html", context)
 
