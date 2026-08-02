@@ -6,15 +6,15 @@
 
 {% block content %}
 
-<div class="page-heading">
-    <h2>{{ current_category.name }}</h2>
+<div class="page-heading" >
+    <h2 style="font-size: 16px;">{{ current_category.name }}</h2>
 </div>
 
 <!-- Subcategories section -->
 {% if subcategories %}
 <div class="subcategory-list">
-    <h3>Browse Subcategories</h3>
-    <ul>
+    <h3 style="font-size: 14px;padding-left: 16px;text-decoration: none;">Browse Subcategories</h3>
+    <ul style="font-size: 12px;">
         {% for sub in subcategories %}
         <li>
             <a href="{% url 'core:products_by_subcategory' sub.id %}">
@@ -27,7 +27,7 @@
 {% endif %}
 
 <!-- Products Grid -->
-<div class="products-grid">
+<div class="product-grid">
     {% for product in products %}
     <div class="product-card">
         <a href="{% url 'core:product_detail' product.id %}">
