@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container" style="padding-bottom: 188px;">
-    <h2 style="text-align: center;color: goldenrod;padding-left: 24px;padding-right: 24px;font-size: 16px;">Seller Login</h2>
+    <h2 style="text-align: center;color:#ff6600;padding-left: 24px;padding-right: 24px;font-size: 16px;">Seller Login</h2>
     <form method="POST" action="">
     {% csrf_token %}
     <label for="username">Email or Username</label>
@@ -12,7 +12,7 @@
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
 
-    <button type="submit" style="text-transform: uppercase;padding:8px ;border-radius: 8px;background:goldenrod;border: none;font-size: 14px;color: #fff;">Login</button>
+    <button type="submit" style="text-transform: uppercase;padding:8px ;border-radius: 8px;background:#ff6600;border: none;font-size: 14px;color: #fff;font-weight: 600;">Login</button>
    </form>
 
 </div>
