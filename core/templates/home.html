@@ -6,105 +6,155 @@ Home - WaziTrade {% endblock %}{% block content %}
 
 
 <!-- ======= WEEKEND DEALS BANNER ======= -->
+ <!-- =======
 <div class="promo-banner">
 
-    <div class="promo-content">
-        <h2>{{ promotions.title }}</h2>
+	<div class="promo-content">
+		<h2>{{ promotions.title }}</h2>
 
-        <p>{{ promotions.description }}</p>
+		<p>{{ promotions.description }}</p>
 
-        <a href="{{ promotions.link }}" class="promo-btn">
-            {{ promotions.button_text }}
-        </a>
-    </div>
+		<a href="{{ promotions.link }}" class="promo-btn">
+			{{ promotions.button_text }}
+		</a>
+	</div>
 
-    <div class="promo-image">
-        <img src="{{ promotions.image.url }}" alt="{{ promotions.title }}">
-    </div>
+	<div class="promo-image">
+		<img src="{{ promotions.image.url }}" alt="{{ promotions.title }}">
+	</div>
+
+</div>
+ ======= -->
+
+ <div class="promo-banner">
+
+	<a href="{{ promotions.link }}" class="promo-image">
+		<img
+			src="{{ promotions.image.url }}"
+			alt="{{ promotions.title }}"
+		>
+	</a>
 
 </div>
 
 <!-- ======= PRODUCT HORIZONTAL SLIDER ======= -->
-<h3 class="section-title">Popular Products</h3>
 
-<div class="product-slider">
-  <div class="slider-track">
-    {% for product in popular_products %}
-    <a href="{% url 'core:product_detail' product.id %}" class="slider-item">
-      {% if product.images.exists %}
-      <img
-        src="{{ product.images.first.image.url }}"
-        alt="{{ product.name }}"
-      />
-      {% elif product.main_image %}
-      <img src="{{ product.main_image.url }}" alt="{{ product.name }}" />
-      {% else %}
-      <img src="{% static 'images/placeholder.png' %}" alt="No image" />
-      {% endif %}
+<div class="product-slider-section">
+	<div class="section-header">
+		<h2>Popular Products</h2>
 
-      <span class="product-title"> {{ product.name|truncatechars:18 }} </span>
-    </a>
-    {% endfor %}
-  </div>
+		<a href="{% url 'core:search' %}?sort=popular">
+			View All
+		</a>
+	</div>
+		<div class="product-slider">
+
+		<div class="slider-track">
+
+			{% for product in popular_products %}
+
+			<a href="{% url 'core:product_detail' product.id %}"
+			   class="slider-item">
+
+				{% if product.images.exists %}
+
+					<img
+						src="{{ product.images.first.image.url }}"
+						alt="{{ product.name }}"
+					/>
+
+				{% elif product.main_image %}
+
+					<img
+						src="{{ product.main_image.url }}"
+						alt="{{ product.name }}"
+					/>
+
+				{% else %}
+
+					<img
+						src="{% static 'images/placeholder.png' %}"
+						alt="No image"
+					/>
+
+				{% endif %}
+
+				<span class="product-title">
+					{{ product.name|truncatechars:18 }}
+				</span>
+
+			</a>
+
+			{% endfor %}
+
+		</div>
+
+	</div>
+
+	</div>
+	
 </div>
 
 <!-- ============= NEW ARRIVALS ============= -->
-<h3 class="section-title">New Arrivals</h3>
+ <div class="scroll-container-section">
+	 <h3 class="section-title">New Arrivals</h3>
 
 <div class="scroll-wrapper">
   <div class="products-horizontal scroll-container">
-    {% for product in new_arrivals %}
-    <div class="product-card">
-      <a href="{% url 'core:product_detail' product.id %}">
-        {% if product.main_image %}
-        <img src="{{ product.main_image.url }}" alt="{{ product.name }}" />
-        {% else %}
-        <img src="{% static 'core/default-product.jpg' %}" />
-        {% endif %}
-      </a>
+	{% for product in new_arrivals %}
+	<div class="product-card">
+	  <a href="{% url 'core:product_detail' product.id %}">
+		{% if product.main_image %}
+		<img src="{{ product.main_image.url }}" alt="{{ product.name }}" />
+		{% else %}
+		<img src="{% static 'core/default-product.jpg' %}" />
+		{% endif %}
+	  </a>
 
-      <div class="price-row">
-        <span class="new-price" style="color:goldenrod;font-weight: 700;font-size: 14px;"
-          >Ush {{ product.base_price|floatformat:0|intcomma }}</span
-        >
-      </div>
-      <p class="prod-name" style="margin-left: 0px;padding-left: 0px;color:#666;" >{{ product.name }}</p>
-    </div>
-    {% empty %}
-    <p>No new arrivals yet.</p>
-    {% endfor %}
+	  <div class="price-row">
+		<span class="new-price" style="color:#f60; font-weight: 700;font-size: 14px;"
+		  >Ush {{ product.base_price|floatformat:0|intcomma }}</span
+		>
+	  </div>
+	  <p class="prod-name" style="margin-left: 0px;padding-left: 0px;color:#666;" >{{ product.name }}</p>
+	</div>
+	{% empty %}
+	<p>No new arrivals yet.</p>
+	{% endfor %}
   </div>
 
-  <button class="scroll-btn right">›</button>
+  
 </div>
+
+ </div>
 
 <!-- ============= TOP DEALS ============= -->
 <!-- <h3 class="section-title">Top Deals</h3>
 <div class="products-default">
-    {% for product in top_deals %}
-    <div class="product-card">
+	{% for product in top_deals %}
+	<div class="product-card">
 
-        <a href="{% url 'core:product_detail' product.id %}">
-            {% if product.main_image %}
-            <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
-            {% else %}
-            <img src="{% static 'core/default-product.jpg' %}">
-            {% endif %}
-        </a>
+		<a href="{% url 'core:product_detail' product.id %}">
+			{% if product.main_image %}
+			<img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+			{% else %}
+			<img src="{% static 'core/default-product.jpg' %}">
+			{% endif %}
+		</a>
 
-        <p class="prod-name">{{ product.name }}</p>
+		<p class="prod-name">{{ product.name }}</p>
 
-        <div class="price-row">
-            {% if product.initial_price %}
-            <span class="old-price">UGX {{ product.initial_price }}</span>
-            {% endif %}
-            <span class="new-price">UGX {{ product.base_price }}</span>
-        </div>
+		<div class="price-row">
+			{% if product.initial_price %}
+			<span class="old-price">UGX {{ product.initial_price }}</span>
+			{% endif %}
+			<span class="new-price">UGX {{ product.base_price }}</span>
+		</div>
 
-    </div>
-    {% empty %}
-    <p>No top deals right now.</p>
-    {% endfor %}
+	</div>
+	{% empty %}
+	<p>No top deals right now.</p>
+	{% endfor %}
 </div>
 
 -->
@@ -114,25 +164,25 @@ Home - WaziTrade {% endblock %}{% block content %}
 <div class="products-vertical">
   {% for product in best_sellers %}
   <div class="product-card">
-    <a href="{% url 'core:product_detail' product.id %}">
-      {% if product.main_image %}
-      <img src="{{ product.main_image.url }}" alt="{{ product.name }}" />
-      {% else %}
-      <img src="{% static 'core/default-product.jpg' %}" />
-      {% endif %}
-    </a>
-    <div class="price-row">
-      <span class="new-price"
-        >Ush {{ product.base_price|floatformat:0|intcomma }}</span
-      >
-    </div>
-    <div class="prod-name-row">
-        <p class="prod-name">{{ product.name }}</p>
-        <p class="prod-review">{{ product.review_count }} reviews</p>
-    </div>
-    
+	<a href="{% url 'core:product_detail' product.id %}">
+	  {% if product.main_image %}
+	  <img src="{{ product.main_image.url }}" alt="{{ product.name }}" />
+	  {% else %}
+	  <img src="{% static 'core/default-product.jpg' %}" />
+	  {% endif %}
+	</a>
+	<div class="price-row">
+	  <span class="new-price"
+		>Ush {{ product.base_price|floatformat:0|intcomma }}</span
+	  >
+	</div>
+	<div class="prod-name-row">
+		<p class="prod-name">{{ product.name }}</p>
+		<p class="prod-review">{{ product.review_count }} reviews</p>
+	</div>
+	
 
-    
+	
   </div>
   {% empty %}
   <p>No best sellers yet.</p>
@@ -140,23 +190,101 @@ Home - WaziTrade {% endblock %}{% block content %}
 </div>
 
 {% endblock %} {% block extra_scripts %}
+
+
+
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const containers = document.querySelectorAll(".scroll-wrapper");
+document.addEventListener("DOMContentLoaded", function () {
 
-    containers.forEach((wrapper) => {
-      const container = wrapper.querySelector(".scroll-container");
-      const left = wrapper.querySelector(".scroll-btn.left");
-      const right = wrapper.querySelector(".scroll-btn.right");
+	const slider = document.querySelector(".product-slider");
+	const track = document.querySelector(".slider-track");
 
-      left.addEventListener("click", () => {
-        container.scrollBy({ left: -250, behavior: "smooth" });
-      });
+	if (!slider || !track) return;
 
-      right.addEventListener("click", () => {
-        container.scrollBy({ left: 250, behavior: "smooth" });
-      });
-    });
-  });
+	const products = track.querySelectorAll(".slider-item");
+
+	if (products.length <= 3) return;
+
+	let currentPage = 0;
+	let autoSlide;
+
+
+	function getPageWidth() {
+
+		return slider.clientWidth;
+
+	}
+
+
+	function slideNext() {
+
+		const totalPages = Math.ceil(products.length / 3);
+
+		currentPage++;
+
+		if (currentPage >= totalPages) {
+
+			currentPage = 0;
+
+		}
+
+		slider.scrollTo({
+
+			left: currentPage * getPageWidth(),
+
+			behavior: "smooth"
+
+		});
+
+	}
+
+
+	function startAutoSlide() {
+
+		clearInterval(autoSlide);
+
+		autoSlide = setInterval(slideNext, 4000);
+
+	}
+
+
+	function stopAutoSlide() {
+
+		clearInterval(autoSlide);
+
+	}
+
+
+	slider.addEventListener("touchstart", stopAutoSlide);
+
+	slider.addEventListener("mousedown", stopAutoSlide);
+
+	slider.addEventListener("mouseenter", stopAutoSlide);
+
+
+	slider.addEventListener("touchend", function () {
+
+		setTimeout(startAutoSlide, 2000);
+
+	});
+
+
+	slider.addEventListener("mouseup", function () {
+
+		setTimeout(startAutoSlide, 2000);
+
+	});
+
+
+	slider.addEventListener("mouseleave", function () {
+
+		startAutoSlide();
+
+	});
+
+
+	startAutoSlide();
+
+});
 </script>
 {% endblock %}

@@ -62,7 +62,7 @@ Help Center
 
   <span style="flex:1;">{{ category.name }}</span>
 
-  <span>&gt;</span>
+  <span style="color: #ff6600;">&gt;</span>
 </a>
 </div>
 {% endfor %}
@@ -127,7 +127,7 @@ Help Center
 
   <h5 class="help-section-title">Need More Help?</h5>
   <div class="legal-card">
-     <a class="help-card" href="{% url 'core:contact' %}">
+     <a class="help-card" href="{% url 'core:contact' %}" style="background-color:#ff6600;color: #fff;padding: 12px;border-radius: 4px;">
     Contact Customer Support →
   </a>
   </div>

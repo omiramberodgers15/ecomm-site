@@ -41,14 +41,12 @@
 .section-title{
   
   font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
-  color:#313133;/* natural black */
-  
   font-style: normal;
-  
   font-size:14.4px;
   line-height: 1.5;
   text-overflow: ellipsis;
-  padding-left: 16px;
+  color:#222;
+  padding: 12px 12px 8px;
   font-weight: 600;
   margin-bottom: 8px;
   margin-bottom: 8px;
@@ -159,9 +157,6 @@ nav.navbar .navbar-dark{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px 8px;
-    
-    height: 48px; /* small */
     border-bottom: 1px solid hsl(0, 0%, 50%);
 }
 
@@ -815,9 +810,9 @@ body.product-page .prod-container {
 
 
 .chat-header {
-  
+    
     padding: 16px;
-    background: goldenrod !important;
+    background:#f60 !important;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -868,7 +863,7 @@ body.product-page .prod-container {
 }
 
 div .new-price{
-    color:#313133;
+    color:#f60;
     font-weight: 700;
     font-size: 14px;
     font-style:normal;
@@ -954,30 +949,44 @@ div .new-price{
 
 
 
+
+
+
+
+
 /* Horizontal Scroll Wrapper */
+
+
 .scroll-wrapper {
     position: relative;
     width: 100%;
     display: flex;
     align-items: center;
-    
+    gap: 6px;
 }
-
+.scroll-container-section {
+    
+    background-color: hsl(24, 100%, 90%);
+}
 /* Scrollable row */
 .scroll-container {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    padding-top:8px;
+
+    padding-top: 4px;
     padding-left: 4px;
     padding-right: 4px;
+    padding-bottom: 8px;
+
     font-size: .875rem;
-    gap:4px;
-    scrollbar-width: none; /* Firefox */
+    gap: 6px;
+
+    scrollbar-width: none;
 }
 
 .scroll-container::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
 }
 
 /* Arrow Buttons */
@@ -985,17 +994,19 @@ div .new-price{
     position: absolute;
     top: 40%;
     transform: translateY(-50%);
+
     border: none;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
+
     padding: 8px 12px;
     border-radius: 50%;
+
     font-size: 22px;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     z-index: 10;
 }
-
-
 
 .scroll-btn.right {
     right: 0;
@@ -1026,20 +1037,18 @@ div .new-price{
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    color: white;
-    background-color: goldenrod;
+    color:#ff6600;
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
-    padding: 16px;
+   
 }
 
 .intro-text {
     
     line-height: 1.33;
     color: #000;
-
     font-weight: bold;
     font-size: 14.4px;
     text-align: center;
@@ -1068,7 +1077,7 @@ form textarea {
 /* Button */
 .contact-btn {
     width: 100%;
-    background-color:goldenrod;
+    background-color:#FF0000;
     color: white;
    
     
@@ -1112,57 +1121,75 @@ form textarea {
 
 
 /* Horizontal product slider container */
-.product-slider {
-    overflow-x:none;
-    display: flex;
-    gap: 4px;
-    padding-top: 8px;
-    padding-left: 4px;
-    background-color: #ffffff;
-    padding-bottom: 4px;
+.product-slider-section {
+   background-color:#f8f8f8;
     
     
 }
 
-/* Track that moves left automatically */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 12px 8px;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 14.4px;
+    font-weight: 600;
+    color:#222222;
+
+}
+
+.section-header a {
+    font-size: 12px;
+    font-weight: 500;
+
+    color:#222222;
+    text-decoration: none;
+}
+
+.product-slider {
+   
+    
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-top:4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 6px;
+    font-size: .875rem;
+    gap:6px;
+    scrollbar-width: none; /* Firefox */
+
+    -ms-overflow-style: none;
+}
+
+.product-slider::-webkit-scrollbar {
+    display: none;
+}
+/* =========================================
+   PRODUCT SLIDER TRACK
+   ========================================= */
+
 .slider-track {
     display: flex;
-    width: 100px;
-    border-radius: 6px;
     gap: 8px;
+
+    width: 100%;
+
     flex-shrink: 0;
-    animation: stepMove 12s infinite ease-in-out;
-}
-
-
-@keyframes stepMove {
-  0%, 20% {
-    transform: translateX(0);
-  }
-  30%, 50% {
-    transform: translateX(-33%);
-  }
-  60%, 80% {
-    transform: translateX(-66%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-
-/* Pause on hover */
-.slider-track:hover {
-    animation-play-state: paused;
 }
 
 /* Product card */
 .slider-item {
     display: flex;
     flex-direction: column;
+    padding-top: 4px;
+    flex: 0 0 calc((100% - 16px) / 3);
     border-radius: 4px;
-    margin-left: 4px;
-    margin-right: 4px;
     padding-bottom: 8px;
     height: 100%;
     text-align: left;
@@ -1170,21 +1197,17 @@ form textarea {
     font-size: .875rem;
     color: #313133;
     text-decoration: none;
-        
+    background-color: #fff;    
 }
 
 .slider-item img {
-    width: 100%;
-    height: auto;
-    border-style: none;
-    aspect-ratio: auto 104 / 104;
-    overflow-clip-margin: content-box;
-    overflow: clip;
-    text-align: left;
+    
 
+        width: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 4px;
-    overflow: hidden;
+   
     
 }
 
@@ -1195,7 +1218,7 @@ form textarea {
     text-decoration: none !important;
     line-height: 1.4;
     max-height: 36px;
-    
+    color: #222;
     padding-top: 6px;
     padding-bottom: 6px;
     font-weight: 400;
@@ -1309,7 +1332,7 @@ form textarea {
 .help-header{
 
     padding: 16px;
-    background: goldenrod;
+    background-color: hsl(24, 100%, 90%);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -1330,7 +1353,7 @@ form textarea {
 
     padding:12px;
 
-    border:1px solid #ddd;
+    border:0px solid #ddd;
 
     border-radius:30px;
 
@@ -1348,7 +1371,7 @@ form textarea {
 
     font-size:30px;
 
-    color:#f68b1e;
+    color:#f60;
 
 }
 
@@ -1530,7 +1553,7 @@ form textarea {
 
     border-radius:50%;
 
-    background:#d4af37;
+    background:#f60;
 
     color:white;
 
@@ -1560,14 +1583,14 @@ form textarea {
 
 .legal-header a{
     text-decoration:none;
-    color:#444;
+    color:#222;
     font-size:14px;
 }
 
 .legal-title{
     margin-top:8px;
     font-size:22px;
-    color: goldenrod;
+    color:#ff6600;
     font-weight:700;
     text-align: center;
 }
@@ -1583,11 +1606,11 @@ form textarea {
 .legal-card h3{
     font-size:16px;
     margin-bottom:8px;
-    color:goldenrod;
+    color:#ff6600;
 }
 
 .legal-card p{
-    color:#555;
+    color:#222;
     line-height:1.4;
     font-size:14px;
 }
@@ -1599,7 +1622,7 @@ form textarea {
 
 .legal-card li{
     margin-bottom:8px;
-    color:#555;
+    color:#222;
     line-height:1.4;
 }
 
@@ -1638,49 +1661,42 @@ padding:8px 16px;
 
 
 .footer-mobile{
-
-    background:#313133;
-    color:#fff;
+    border-top: 16px solid hsl(24, 100%, 90%);;
+    background: #f8f8f8;
+    color:#222222;
     padding-top:8px;
     display: grid;
     grid-template-columns: repeat(2,1fr);
-
-
 }
 
 .footer-section{
-    padding-right: 16px;
+    
+
+     padding-right: 16px;
     padding-left:16px ;
 
 }
 
 .footer-section h6{
-
-    color:#f6b01e;
-
     font-size:16px;
-
     font-weight:600;
-
     padding-bottom:8px;
+   color:#222222;
+  margin: 0;
 
 }
 
 .footer-section a{
-
     display:block;
-
     text-decoration:none;
-
     font-size:12px;
-
-   
-
+    color:#222222;
+    opacity: 0.7;
 }
 
 .footer-section a:hover{
 
-    color:#f6b01e;
+        color: #f60;
 
 }
 
@@ -1692,7 +1708,7 @@ padding:8px 16px;
 
     padding-top:8px;
 
-    color:#bbb;
+     color:#222222;
 
     font-size:12px;
 
@@ -1716,7 +1732,7 @@ padding:8px 16px;
 
 .social-icons a:hover{
 
-    color:#f6b01e;
+        color: #f60;
 
 }
 
@@ -1731,23 +1747,23 @@ padding:8px 16px;
 }
 
 .help-card{
-    
+     
       padding-left: 16px;
       padding-bottom:8px ;
-      color: #313133;
+      color: #222;
       cursor: pointer;
       font-size:14px;
       font-weight: 400;
       text-decoration: none;
       align-items: center;
       display: flex;
-
+      
     
   
 }
 
 .help-card:hover{
-    color:#f68b1e;
+    color:#ff6600;
     padding-left:8px;
 }
 
@@ -1774,7 +1790,7 @@ padding:8px 16px;
 
 .seller-landing{
 
-padding:16px;
+padding:8px;
 
 background:#f5f5f5;
 
@@ -1790,22 +1806,22 @@ border-radius:6px;
 
 text-align:center;
 
-margin-bottom:16px;
+margin-bottom:8px;
 
 }
 
 .seller-hero h2{
 
-font-size:22px;
+font-size:24px;
 
-font-weight:700;
+font-weight:600;
 
 }
 
 .seller-hero p{
 
 color:#666;
-font-size: 14px;
+font-size: 12px;
 margin:8px 0;
 
 }
@@ -1814,18 +1830,18 @@ margin:8px 0;
 
 display:block;
 
-background:#f68b1e;
+background:#ff6600;
 
 color:#fff;
 
-padding:14px;
+padding:14.4px;
 
 text-align:center;
 
-border-radius:6px;
+border-radius:4px;
 
-font-weight:700;
-
+font-weight:600;
+text-transform: capitalize;
 text-decoration:none;
 
 }
@@ -1857,7 +1873,7 @@ display:grid;
 
 grid-template-columns:repeat(2,1fr);
 
-gap:12px;
+gap:6px;
 
 }
 
@@ -1867,7 +1883,7 @@ background:#fff;
 
 padding:18px;
 
-border-radius:10px;
+border-radius:4px;
 
 text-align:center;
 
@@ -1889,7 +1905,7 @@ margin:auto;
 
 margin-bottom:10px;
 
-background:#f68b1e;
+background:#ff6600;
 
 color:white;
 
@@ -2161,7 +2177,7 @@ font-weight:bold;
 
 .seller-buttons{
     display:flex;
-    gap:12px;
+    gap:6px;
 }
 
 .visit-store,
@@ -2312,7 +2328,7 @@ font-weight:bold;
     align-items: center;
     gap: 8px;
     text-decoration: none;
-    color: #fff;
+    color: #222222;
     margin-bottom: 10px;
 }
 
@@ -2381,6 +2397,7 @@ font-weight:bold;
     color: #313133;
     text-decoration: none;
     line-height: 1.5;
+    margin-bottom: 8px;
 }
 
 
@@ -2420,123 +2437,24 @@ font-weight:bold;
 
 
 
-/* ======= PROMO BANNER ======= */
+
+
+
+
 
 .promo-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 180px;
-    height: 180px;
-    padding: 20px;
+    width: 100%;
     overflow: hidden;
     
-    border-radius: 16px;
-    background: #f5f5f5;
 }
-
-
-/* ======= PROMO CONTENT ======= */
-
-.promo-content {
-    flex: 1;
-    padding-right: 10px;
-}
-
-.promo-content small {
-    font-size: 11px;
-    letter-spacing: 1px;
-    opacity: 0.9;
-}
-
-.promo-content h2 {
-    margin: 6px 0;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.2;
-}
-
-.promo-content p {
-    margin: 0 0 14px;
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-
-/* ======= PROMO BUTTON ======= */
-
-.promo-btn {
-    display: inline-block;
-
-    padding: 10px 18px;
-
-    background: #ffffff;
-    color:goldenrod;
-
-    border-radius: 30px;
-
-    text-decoration: none;
-    font-weight: 600;
-
-    transition: 
-        background-color 0.3s ease,
-        transform 0.2s ease;
-}
-
-.promo-btn:hover {
-    background-color: #f3f4f6;
-    transform: scale(1.05);
-}
-
-
-/* ======= PROMO IMAGE ======= */
 
 .promo-image {
-    width: 40%;
-    height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    width: 100%;
 }
 
 .promo-image img {
+    display: block;
     width: 100%;
-    height: 100%;
-
-    max-width: 180px;
-
-    object-fit: contain;
-}
-
-
-/* ======= MOBILE ======= */
-
-@media (max-width: 600px) {
-
-    .promo-banner {
-        height: 160px;
-        padding: 15px;
-    }
-
-
-    .promo-content h2 {
-        font-size: 18px;
-    }
-
-
-    .promo-content p {
-        font-size: 13px;
-    }
-
-
-    .promo-btn {
-        padding: 8px 14px;
-        font-size: 13px;
-    }
-
-
-    .promo-image {
-        width: 35%;
-    }
+    height: auto;
 }
