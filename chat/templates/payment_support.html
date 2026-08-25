@@ -1,0 +1,1301 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Payment Support
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block mobile_footer %}
+{% endblock %}
+
+{% block content %}
+
+<div class="chat-page">
+
+  <!-- ===================================================== -->
+  <!-- HEADER -->
+  <!-- ===================================================== -->
+
+  <div class="chat-header">
+
+    <a href="{% url 'chat:chat' %}"
+       class="back-btn"
+       style="color: #ffffff;">
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+      <div class="chat-user">
+
+        <strong>WaziTrade Support</strong>
+
+        <small>
+          Payment Support
+        </small>
+
+      </div>
+
+    </a>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- CHAT BODY -->
+  <!-- ===================================================== -->
+
+  <div class="chat-body"
+       id="payment-support-app">
+
+
+    <!-- ================================================= -->
+    <!-- INITIAL SUPPORT MESSAGE -->
+    <!-- ================================================= -->
+
+    <div class="message support">
+
+      <div class="bubble">
+
+        💳 <strong>Payment Support</strong>
+
+        <br><br>
+
+        Hi {{ request.user.first_name|default:request.user.username }}.
+        We can help you with your WaziTrade payment.
+
+        <br><br>
+
+        First, select the order you need help with.
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- LOADING ORDERS -->
+    <!-- ================================================= -->
+
+    <div id="orders-loading"
+         style="
+           margin: 0 20px 20px;
+           padding: 16px;
+           text-align: center;
+           color: #777;
+         ">
+
+      Loading your orders...
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ERROR -->
+    <!-- ================================================= -->
+
+    <div id="payment-error"
+         style="
+           display: none;
+           margin: 0 20px 20px;
+           padding: 14px 16px;
+           border-radius: 10px;
+           background: #fff3f3;
+           color: #b42318;
+           border: 1px solid #f0caca;
+         ">
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ORDER LIST -->
+    <!-- ================================================= -->
+
+    <div id="orders-section"
+         style="
+           display: none;
+           margin: 0 20px 20px;
+         ">
+
+      <div style="
+        margin-bottom: 12px;
+        font-weight: 700;
+        font-size: 17px;
+      ">
+
+        Your recent orders
+
+      </div>
+
+
+      <div id="orders-list">
+
+        <!-- AJAX inserts orders here -->
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- SELECTED ORDER -->
+    <!-- ================================================= -->
+
+    <div id="selected-order-section"
+         style="
+           display: none;
+           margin: 0 20px 20px;
+         ">
+
+
+      <div style="
+        padding: 18px;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        background: #ffffff;
+      ">
+
+
+        <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 16px;
+        ">
+
+          <strong style="
+            font-size: 18px;
+          ">
+
+            Order #
+
+            <span id="selected-order-id">
+            </span>
+
+          </strong>
+
+
+          <span id="selected-order-status"
+                style="
+                  padding: 6px 10px;
+                  border-radius: 20px;
+                  background: #f3f3f3;
+                  font-size: 13px;
+                  font-weight: 600;
+                ">
+
+          </span>
+
+        </div>
+
+
+        <!-- ORDER TOTAL -->
+
+        <div style="
+          margin-bottom: 10px;
+        ">
+
+          <small style="
+            color: #777;
+          ">
+
+            Order total
+
+          </small>
+
+          <br>
+
+          <strong>
+
+            UGX
+
+            <span id="selected-order-total">
+            </span>
+
+          </strong>
+
+        </div>
+
+
+        <!-- ORDER DATE -->
+
+        <div style="
+          margin-bottom: 16px;
+        ">
+
+          <small style="
+            color: #777;
+          ">
+
+            Order placed
+
+          </small>
+
+          <br>
+
+          <strong id="selected-order-date">
+          </strong>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- PAYMENT INFORMATION -->
+        <!-- ================================================= -->
+
+        <div style="
+          border-top: 1px solid #eeeeee;
+          padding-top: 16px;
+        ">
+
+          <div style="
+            font-weight: 700;
+            margin-bottom: 12px;
+          ">
+
+            Payment information
+
+          </div>
+
+
+          <div id="payment-information">
+
+            <!-- AJAX inserts payment information -->
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PAYMENT ACTIONS -->
+    <!-- ================================================= -->
+
+    <div id="payment-actions"
+         style="
+           display: none;
+           margin: 0 20px 20px;
+         ">
+
+
+      <div style="
+        font-weight: 700;
+        font-size: 17px;
+        margin-bottom: 12px;
+      ">
+
+        What do you need help with?
+
+      </div>
+
+
+      <!-- PAYMENT PENDING -->
+
+      <button type="button"
+              class="payment-help-option"
+              data-help="pending"
+              style="
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 10px;
+                text-align: left;
+                background: #ffffff;
+                border: 1px solid #e5e5e5;
+                border-radius: 10px;
+                cursor: pointer;
+              ">
+
+        <strong>
+          ⏳ Payment is still pending
+        </strong>
+
+        <br>
+
+        <small style="color: #777;">
+          My payment has not been confirmed yet.
+        </small>
+
+      </button>
+
+
+      <!-- PAYMENT FAILED -->
+
+      <button type="button"
+              class="payment-help-option"
+              data-help="failed"
+              style="
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 10px;
+                text-align: left;
+                background: #ffffff;
+                border: 1px solid #e5e5e5;
+                border-radius: 10px;
+                cursor: pointer;
+              ">
+
+        <strong>
+          ❌ Payment failed
+        </strong>
+
+        <br>
+
+        <small style="color: #777;">
+          My payment did not go through.
+        </small>
+
+      </button>
+
+
+      <!-- CHARGED BUT NOT CONFIRMED -->
+
+      <button type="button"
+              class="payment-help-option"
+              data-help="charged"
+              style="
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 10px;
+                text-align: left;
+                background: #ffffff;
+                border: 1px solid #e5e5e5;
+                border-radius: 10px;
+                cursor: pointer;
+              ">
+
+        <strong>
+          💰 I was charged but my order isn't confirmed
+        </strong>
+
+        <br>
+
+        <small style="color: #777;">
+          Money was deducted but WaziTrade has not confirmed my order.
+        </small>
+
+      </button>
+
+
+      <!-- PAYMENT INFORMATION -->
+
+      <button type="button"
+              class="payment-help-option"
+              data-help="information"
+              style="
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 10px;
+                text-align: left;
+                background: #ffffff;
+                border: 1px solid #e5e5e5;
+                border-radius: 10px;
+                cursor: pointer;
+              ">
+
+        <strong>
+          ℹ️ I need more information about this payment
+        </strong>
+
+        <br>
+
+        <small style="color: #777;">
+          Show me more details about the transaction.
+        </small>
+
+      </button>
+
+
+      <!-- HUMAN SUPPORT -->
+
+      <button type="button"
+              class="payment-help-option"
+              data-help="human"
+              style="
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 10px;
+                text-align: left;
+                background: #ffffff;
+                border: 1px solid #e5e5e5;
+                border-radius: 10px;
+                cursor: pointer;
+              ">
+
+        <strong>
+          👤 Talk to WaziTrade support
+        </strong>
+
+        <br>
+
+        <small style="color: #777;">
+          I need help from a support agent.
+        </small>
+
+      </button>
+
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- HELP RESPONSE -->
+    <!-- ================================================= -->
+
+    <div id="help-response"
+         style="
+           display: none;
+           margin: 0 20px 20px;
+         ">
+
+      <div class="message support">
+
+        <div class="bubble"
+             id="help-response-content">
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- REFRESH PAYMENT -->
+    <!-- ================================================= -->
+
+    <div id="refresh-section"
+         style="
+           display: none;
+           margin: 0 20px 20px;
+           text-align: center;
+         ">
+
+      <button type="button"
+              id="refresh-payment-button"
+              style="
+                padding: 12px 18px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background: #ffffff;
+                cursor: pointer;
+              ">
+
+        🔄 Refresh payment status
+
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ordersLoading = document.getElementById("orders-loading");
+    const ordersSection = document.getElementById("orders-section");
+    const ordersList = document.getElementById("orders-list");
+    const errorBox = document.getElementById("payment-error");
+
+    const selectedOrderSection =
+        document.getElementById("selected-order-section");
+
+    const selectedOrderId =
+        document.getElementById("selected-order-id");
+
+    const selectedOrderStatus =
+        document.getElementById("selected-order-status");
+
+    const selectedOrderTotal =
+        document.getElementById("selected-order-total");
+
+    const selectedOrderDate =
+        document.getElementById("selected-order-date");
+
+    const paymentInformation =
+        document.getElementById("payment-information");
+
+    const paymentActions =
+        document.getElementById("payment-actions");
+
+    const helpResponse =
+        document.getElementById("help-response");
+
+    const helpResponseContent =
+        document.getElementById("help-response-content");
+
+    const refreshSection =
+        document.getElementById("refresh-section");
+
+    const refreshButton =
+        document.getElementById("refresh-payment-button");
+
+
+    let selectedOrder = null;
+
+
+    // =====================================================
+    // SHOW ERROR
+    // =====================================================
+
+    function showError(message) {
+
+        errorBox.textContent = message;
+        errorBox.style.display = "block";
+
+    }
+
+
+    function hideError() {
+
+        errorBox.textContent = "";
+        errorBox.style.display = "none";
+
+    }
+
+
+    // =====================================================
+    // FORMAT MONEY
+    // =====================================================
+
+    function formatMoney(value) {
+
+        return Number(value).toLocaleString("en-UG");
+
+    }
+
+
+    // =====================================================
+    // LOAD CUSTOMER ORDERS
+    // =====================================================
+
+    function loadOrders() {
+
+        hideError();
+
+        fetch(
+            "{% url 'chat:payment_support_orders' %}",
+            {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            }
+        )
+
+        .then(function(response) {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load orders."
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(function(data) {
+
+            ordersLoading.style.display = "none";
+
+            ordersList.innerHTML = "";
+
+            ordersSection.style.display = "block";
+
+
+            if (
+                !data.orders ||
+                data.orders.length === 0
+            ) {
+
+                ordersList.innerHTML = `
+                    <div style="
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 10px;
+                        background: #ffffff;
+                        color: #777;
+                    ">
+                        You do not have any orders yet.
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            data.orders.forEach(function(order) {
+
+                const button =
+                    document.createElement("button");
+
+                button.type = "button";
+
+                button.style.width = "100%";
+                button.style.padding = "16px";
+                button.style.marginBottom = "10px";
+                button.style.textAlign = "left";
+                button.style.background = "#ffffff";
+                button.style.border = "1px solid #e5e5e5";
+                button.style.borderRadius = "10px";
+                button.style.cursor = "pointer";
+
+
+                let itemText = "No items";
+
+                if (order.items && order.items.length > 0) {
+
+                    itemText = order.items
+                        .map(function(item) {
+
+                            return (
+                                item.product_name +
+                                " × " +
+                                item.quantity
+                            );
+
+                        })
+                        .join(", ");
+
+                }
+
+
+                button.innerHTML = `
+
+                    <strong>
+                        Order #${order.id}
+                    </strong>
+
+                    <br>
+
+                    <small style="color: #777;">
+                        ${itemText}
+                    </small>
+
+                    <br>
+
+                    <small style="color: #777;">
+                        ${order.created_at}
+                    </small>
+
+                    <br><br>
+
+                    <strong>
+                        UGX ${formatMoney(order.total_price)}
+                    </strong>
+
+                    <span style="
+                        float: right;
+                        font-size: 13px;
+                        font-weight: 600;
+                    ">
+                        ${order.status_display}
+                    </span>
+
+                `;
+
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        loadOrder(order.id);
+
+                    }
+                );
+
+
+                ordersList.appendChild(button);
+
+            });
+
+        })
+
+        .catch(function(error) {
+
+            ordersLoading.style.display = "none";
+
+            showError(
+                "We could not load your orders. Please try again."
+            );
+
+            console.error(
+                "Payment Support orders error:",
+                error
+            );
+
+        });
+
+    }
+
+
+    // =====================================================
+    // LOAD SINGLE ORDER
+    // =====================================================
+
+    function loadOrder(orderId) {
+
+        hideError();
+
+        selectedOrderSection.style.display = "none";
+        paymentActions.style.display = "none";
+        helpResponse.style.display = "none";
+        refreshSection.style.display = "none";
+
+
+        const url =
+            "{% url 'chat:payment_support_order' 999999 %}"
+            .replace(
+                "999999",
+                String(orderId)
+            );
+
+
+        fetch(
+            url,
+            {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            }
+        )
+
+        .then(function(response) {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load payment information."
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(function(data) {
+
+            selectedOrder = data.order;
+
+
+            selectedOrderId.textContent =
+                selectedOrder.id;
+
+            selectedOrderStatus.textContent =
+                selectedOrder.status_display;
+
+            selectedOrderTotal.textContent =
+                formatMoney(
+                    selectedOrder.total_price
+                );
+
+            selectedOrderDate.textContent =
+                selectedOrder.created_at;
+
+
+            renderPayment(
+                data.payment
+            );
+
+
+            selectedOrderSection.style.display =
+                "block";
+
+            paymentActions.style.display =
+                "block";
+
+            refreshSection.style.display =
+                "block";
+
+
+            selectedOrderSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        })
+
+        .catch(function(error) {
+
+            showError(
+                "We could not load this payment. Please try again."
+            );
+
+            console.error(
+                "Payment Support order error:",
+                error
+            );
+
+        });
+
+    }
+
+
+    // =====================================================
+    // DISPLAY PAYMENT
+    // =====================================================
+
+    function renderPayment(payment) {
+
+        if (!payment) {
+
+            paymentInformation.innerHTML = `
+
+                <div style="
+                    padding: 12px;
+                    border-radius: 8px;
+                    background: #fff8e8;
+                    color: #856404;
+                ">
+
+                    No payment record was found
+                    for this order yet.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        let statusText = payment.status;
+
+        let statusStyle =
+            "color: #555;";
+
+
+        if (payment.status === "SUCCESS") {
+
+            statusText = "Successful";
+
+            statusStyle =
+                "color: #16803c; font-weight: 700;";
+
+        }
+
+        else if (payment.status === "PENDING") {
+
+            statusText = "Pending";
+
+            statusStyle =
+                "color: #b7791f; font-weight: 700;";
+
+        }
+
+        else if (payment.status === "FAILED") {
+
+            statusText = "Failed";
+
+            statusStyle =
+                "color: #b42318; font-weight: 700;";
+
+        }
+
+
+        paymentInformation.innerHTML = `
+
+            <div style="margin-bottom: 10px;">
+
+                <strong>
+                    Status:
+                </strong>
+
+                <span style="${statusStyle}">
+                    ${statusText}
+                </span>
+
+            </div>
+
+
+            <div style="margin-bottom: 10px;">
+
+                <strong>
+                    Amount:
+                </strong>
+
+                UGX ${formatMoney(payment.amount)}
+
+            </div>
+
+
+            <div style="
+                margin-bottom: 10px;
+                word-break: break-word;
+            ">
+
+                <strong>
+                    Reference:
+                </strong>
+
+                ${payment.reference}
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Payment date:
+                </strong>
+
+                ${payment.created_at}
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =====================================================
+    // PAYMENT HELP BUTTONS
+    // =====================================================
+
+    document
+        .querySelectorAll(".payment-help-option")
+        .forEach(function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    if (!selectedOrder) {
+
+                        showError(
+                            "Please select an order first."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const helpType =
+                        button.getAttribute("data-help");
+
+
+                    helpResponse.style.display =
+                        "block";
+
+
+                    if (helpType === "pending") {
+
+                        helpResponseContent.innerHTML = `
+
+                            ⏳ <strong>
+                                Your payment is still pending.
+                            </strong>
+
+                            <br><br>
+
+                            Your payment has not yet been
+                            confirmed by WaziTrade.
+
+                            <br><br>
+
+                            You can refresh the payment
+                            status below.
+
+                        `;
+
+                    }
+
+
+                    else if (helpType === "failed") {
+
+                        helpResponseContent.innerHTML = `
+
+                            ❌ <strong>
+                                This payment is marked as failed.
+                            </strong>
+
+                            <br><br>
+
+                            If money was deducted from your
+                            MTN or Airtel account, please
+                            contact WaziTrade support so we
+                            can investigate the transaction.
+
+                            <br><br>
+
+                            <a
+                                href="{% url 'chat:human_support' %}"
+                                style="
+                                    display: inline-block;
+                                    padding: 10px 14px;
+                                    border-radius: 8px;
+                                    background: #ffffff;
+                                    border: 1px solid #ddd;
+                                    text-decoration: none;
+                                "
+                            >
+                                Talk to WaziTrade support
+                            </a>
+
+                        `;
+
+                    }
+
+
+                    else if (helpType === "charged") {
+
+                        helpResponseContent.innerHTML = `
+
+                            💰 <strong>
+                                Money was deducted?
+                            </strong>
+
+                            <br><br>
+
+                            If your mobile money account was
+                            charged but this order is not
+                            confirmed, please keep your
+                            payment reference.
+
+                            <br><br>
+
+                            WaziTrade support can investigate
+                            the transaction and confirm the
+                            order after verification.
+
+                            <br><br>
+
+                            <a
+                                href="{% url 'chat:human_support' %}"
+                                style="
+                                    display: inline-block;
+                                    padding: 10px 14px;
+                                    border-radius: 8px;
+                                    background: #ffffff;
+                                    border: 1px solid #ddd;
+                                    text-decoration: none;
+                                "
+                            >
+                                Talk to WaziTrade support
+                            </a>
+
+                        `;
+
+                    }
+
+
+                    else if (helpType === "information") {
+
+                        helpResponseContent.innerHTML = `
+
+                            ℹ️ <strong>
+                                Payment information
+                            </strong>
+
+                            <br><br>
+
+                            The information above shows the
+                            payment currently recorded against
+                            Order #${selectedOrder.id}.
+
+                            <br><br>
+
+                            If you believe any information is
+                            incorrect, WaziTrade support can
+                            investigate the transaction.
+
+                        `;
+
+                    }
+
+
+                    else if (helpType === "human") {
+
+                        helpResponseContent.innerHTML = `
+
+                            👤 <strong>
+                                WaziTrade support
+                            </strong>
+
+                            <br><br>
+
+                            A support agent can help investigate
+                            your payment.
+
+                            <br><br>
+
+                            <a
+                                href="{% url 'chat:human_support' %}"
+                                style="
+                                    display: inline-block;
+                                    padding: 10px 14px;
+                                    border-radius: 8px;
+                                    background: #ffffff;
+                                    border: 1px solid #ddd;
+                                    text-decoration: none;
+                                "
+                            >
+                                Contact support
+                            </a>
+
+                        `;
+
+                    }
+
+
+                    helpResponse.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }
+            );
+
+        });
+
+
+    // =====================================================
+    // REFRESH PAYMENT STATUS
+    // =====================================================
+
+    refreshButton.addEventListener(
+        "click",
+        function() {
+
+            if (!selectedOrder) {
+
+                showError(
+                    "Please select an order first."
+                );
+
+                return;
+
+            }
+
+
+            hideError();
+
+
+            refreshButton.disabled = true;
+
+            refreshButton.textContent =
+                "Checking payment...";
+
+
+            const refreshUrl =
+                "{% url 'chat:payment_support_refresh' 999999 %}"
+                .replace(
+                    "999999",
+                    String(selectedOrder.id)
+                );
+
+
+            fetch(
+                refreshUrl,
+                {
+                    method: "GET",
+                    headers: {
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+                    }
+                }
+            )
+
+            .then(function(response) {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Payment refresh failed."
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+            .then(function(data) {
+
+                renderPayment(
+                    data.payment
+                );
+
+
+                helpResponse.style.display =
+                    "block";
+
+
+                helpResponseContent.innerHTML = `
+
+                    🔄 <strong>
+                        Payment status refreshed.
+                    </strong>
+
+                    <br><br>
+
+                    We are showing the latest payment
+                    information currently stored by WaziTrade.
+
+                `;
+
+            })
+
+            .catch(function(error) {
+
+                showError(
+                    "We could not refresh the payment status. Please try again."
+                );
+
+                console.error(
+                    "Payment refresh error:",
+                    error
+                );
+
+            })
+
+            .finally(function() {
+
+                refreshButton.disabled = false;
+
+                refreshButton.textContent =
+                    "🔄 Refresh payment status";
+
+            });
+
+        }
+    );
+
+
+    // =====================================================
+    // START PAYMENT SUPPORT
+    // =====================================================
+
+    loadOrders();
+
+});
+
+</script>
+
+{% endblock %}

@@ -163,36 +163,107 @@ class TicketReplyInline(admin.StackedInline):
 
 @admin.register(SupportTicket)
 class SupportTicketAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email', 'subject', 'status', 'created_at')
+    list_display = (
+        'id',
+        'name',
+        'email',
+        'subject',
+        'status',
+        'created_at',
+    )
+
     list_filter = ('status',)
-    search_fields = ('email', 'name', 'subject')
+
+    search_fields = (
+        'email',
+        'name',
+        'subject',
+    )
+
     inlines = [TicketReplyInline]
 
     def save_formset(self, request, form, formset, change):
-        """Send email when admin adds a reply"""
+        """Save support replies and notify the customer by email."""
+
         instances = formset.save(commit=False)
 
         for obj in instances:
+
             if isinstance(obj, TicketReply):
+
                 obj.save()
 
-                # EMAIL NOTIFICATION
-                send_mail(
-                    subject=f"Reply to your support ticket #{obj.ticket.id}",
-                    message=obj.reply_text,
-                    from_email='yourgmail@gmail.com',
-                    recipient_list=[obj.ticket.email],
-                    fail_silently=True,
+                ticket = obj.ticket
+
+                # ------------------------------------------------
+                # SEND EMAIL TO CUSTOMER
+                # ------------------------------------------------
+
+                if ticket.email:
+
+                    # Use DEFAULT_FROM_EMAIL if configured.
+                    # Otherwise use EMAIL_HOST_USER.
+                    # This prevents None from being passed to send_mail.
+                    from_email = (
+                        settings.DEFAULT_FROM_EMAIL
+                        or settings.EMAIL_HOST_USER
+                    )
+
+                    if from_email:
+
+                        try:
+
+                            send_mail(
+                                subject=(
+                                    f"Reply to your WaziTrade "
+                                    f"support ticket #{ticket.id}"
+                                ),
+
+                                message=(
+                                    f"Hello {ticket.name},\n\n"
+                                    f"Our WaziTrade support team has replied "
+                                    f"to your support ticket.\n\n"
+                                    f"Ticket #{ticket.id}\n"
+                                    f"Subject: {ticket.subject}\n\n"
+                                    f"Support reply:\n"
+                                    f"{obj.reply_text}\n\n"
+                                    f"Regards,\n"
+                                    f"WaziTrade Support"
+                                ),
+
+                                from_email=from_email,
+
+                                recipient_list=[ticket.email],
+
+                                fail_silently=True,
+                            )
+
+                        except Exception as e:
+
+                            logger.error(
+                                "Failed to send support reply email "
+                                f"for ticket #{ticket.id}: {e}"
+                            )
+
+                    else:
+
+                        logger.warning(
+                            "Support ticket reply saved, but no "
+                            "email sender is configured. "
+                            f"Ticket #{ticket.id}"
+                        )
+
+                # ------------------------------------------------
+                # MARK TICKET AS PENDING
+                # ------------------------------------------------
+
+                ticket.status = 'pending'
+
+                ticket.save(
+                    update_fields=['status']
                 )
 
-                # Set ticket to pending or resolved
-                ticket = obj.ticket
-                ticket.status = 'pending'
-                ticket.save()
-
         formset.save_m2m()
-
-
 
 
 

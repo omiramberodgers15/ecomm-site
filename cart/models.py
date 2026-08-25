@@ -72,14 +72,16 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(
-        max_length=20,
-        choices=[
-            ('pending', 'Pending'),
-            ('paid', 'Paid'),
-            ('shipped', 'Shipped'),
-            ('delivered', 'Delivered'),
-        ],
-        default='pending'
+    max_length=30,
+    choices=[
+        ('pending', 'Pending'),
+        ('paid', 'Paid'),
+        ('processing', 'Processing'),
+        ('shipped', 'Shipped'),
+        ('out_for_delivery', 'Out for delivery'),
+        ('delivered', 'Delivered'),
+    ],
+    default='pending'
     )
 
     def __str__(self):

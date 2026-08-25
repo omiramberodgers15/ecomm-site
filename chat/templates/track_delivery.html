@@ -1,0 +1,714 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Track My Delivery
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block mobile_footer %}
+{% endblock %}
+
+{% block content %}
+
+<div class="chat-page">
+
+    <!-- HEADER -->
+    <div class="chat-header">
+
+        <a href="{% url 'chat:chat' %}"
+           class="back-btn"
+           style="color: #ffffff;">
+
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+
+            <div class="chat-user">
+                <strong>WaziTrade Support</strong>
+                <small>Track Delivery</small>
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <div class="chat-body">
+
+        <!-- INTRODUCTION -->
+        <div class="message support">
+
+            <div class="bubble">
+
+                📦 <strong>Track my delivery</strong>
+
+                <br><br>
+
+                Select an order below to see its delivery status.
+
+            </div>
+
+        </div>
+
+
+        <!-- LOADING -->
+        <div id="orders-loading"
+             style="
+                margin: 0 20px 20px 20px;
+                padding: 18px;
+                text-align: center;
+                color: #777;
+             ">
+
+            Loading your orders...
+
+        </div>
+
+
+        <!-- ORDERS -->
+        <div id="orders-container"
+             style="display: none;">
+
+        </div>
+
+
+        <!-- NO ORDERS -->
+        <div id="no-orders"
+             style="
+                display: none;
+                margin: 0 20px 20px 20px;
+                padding: 20px;
+                border: 1px solid #e5e5e5;
+                border-radius: 12px;
+                background: #ffffff;
+                text-align: center;
+             ">
+
+            <strong>No orders found</strong>
+
+            <br><br>
+
+            You don't have any orders to track yet.
+
+        </div>
+
+
+        <!-- ERROR -->
+        <div id="orders-error"
+             style="
+                display: none;
+                margin: 0 20px 20px 20px;
+                padding: 14px;
+                border-radius: 10px;
+                background: #fff3f3;
+                color: #b42318;
+                border: 1px solid #f5c2c7;
+             ">
+
+        </div>
+
+
+        <!-- ORDER DETAILS -->
+        <div id="order-details"
+             style="
+                display: none;
+                margin: 0 20px 20px 20px;
+             ">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ordersLoading =
+        document.getElementById("orders-loading");
+
+    const ordersContainer =
+        document.getElementById("orders-container");
+
+    const noOrders =
+        document.getElementById("no-orders");
+
+    const ordersError =
+        document.getElementById("orders-error");
+
+    const orderDetails =
+        document.getElementById("order-details");
+
+
+    /*
+    =========================================================
+    LOAD CUSTOMER ORDERS
+    =========================================================
+    */
+
+    function loadOrders() {
+
+        ordersLoading.style.display = "block";
+        ordersContainer.style.display = "none";
+        noOrders.style.display = "none";
+        ordersError.style.display = "none";
+
+        fetch("{% url 'chat:track_delivery_orders' %}", {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        })
+
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error("Unable to load orders.");
+            }
+
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            ordersLoading.style.display = "none";
+
+            if (!data.orders || data.orders.length === 0) {
+
+                noOrders.style.display = "block";
+                return;
+
+            }
+
+            ordersContainer.innerHTML = "";
+
+            data.orders.forEach(order => {
+
+                const card =
+                    document.createElement("div");
+
+                card.style.cssText = `
+                    margin: 0 20px 16px 20px;
+                    padding: 18px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 12px;
+                    background: #ffffff;
+                `;
+
+                let itemsHtml = "";
+
+                order.items.forEach(item => {
+
+                    itemsHtml += `
+                        <div style="
+                            margin-bottom: 6px;
+                            color: #444;
+                        ">
+                            ${item.product_name}
+                            × ${item.quantity}
+                        </div>
+                    `;
+
+                });
+
+
+                let statusClass = "";
+
+                if (
+                    order.status === "delivered" ||
+                    order.status === "out_for_delivery" ||
+                    order.status === "shipped" ||
+                    order.status === "processing" ||
+                    order.status === "paid"
+                ) {
+
+                    statusClass = `
+                        background: #e8f5e9;
+                        color: #2e7d32;
+                    `;
+
+                } else {
+
+                    statusClass = `
+                        background: #fff3cd;
+                        color: #856404;
+                    `;
+
+                }
+
+
+                card.innerHTML = `
+
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 12px;
+                        margin-bottom: 14px;
+                    ">
+
+                        <strong style="font-size: 17px;">
+                            Order #${order.id}
+                        </strong>
+
+                        <span style="
+                            padding: 6px 10px;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            font-weight: 600;
+                            ${statusClass}
+                        ">
+                            ${order.status_display}
+                        </span>
+
+                    </div>
+
+
+                    <div style="
+                        margin-bottom: 12px;
+                    ">
+
+                        ${itemsHtml}
+
+                    </div>
+
+
+                    <div style="
+                        color: #777;
+                        font-size: 13px;
+                        margin-bottom: 14px;
+                    ">
+
+                        Ordered ${order.created_at}
+
+                    </div>
+
+
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 12px;
+                    ">
+
+                        <strong>
+                            UGX ${formatMoney(order.total_price)}
+                        </strong>
+
+                        <button
+                            type="button"
+                            class="track-order-button"
+                            data-order-id="${order.id}"
+                            style="
+                                border: none;
+                                border-radius: 8px;
+                                padding: 10px 14px;
+                                cursor: pointer;
+                            "
+                        >
+                            Track order
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                ordersContainer.appendChild(card);
+
+            });
+
+
+            ordersContainer.style.display = "block";
+
+            attachOrderButtons();
+
+        })
+
+        .catch(error => {
+
+            ordersLoading.style.display = "none";
+
+            ordersError.textContent =
+                "We couldn't load your orders. Please try again.";
+
+            ordersError.style.display = "block";
+
+            console.error(error);
+
+        });
+
+    }
+
+
+    /*
+    =========================================================
+    FORMAT MONEY
+    =========================================================
+    */
+
+    function formatMoney(amount) {
+
+        return Number(amount).toLocaleString(
+            "en-US",
+            {
+                maximumFractionDigits: 0
+            }
+        );
+
+    }
+
+
+    /*
+    =========================================================
+    ORDER BUTTONS
+    =========================================================
+    */
+
+    function attachOrderButtons() {
+
+        const buttons =
+            document.querySelectorAll(
+                ".track-order-button"
+            );
+
+
+        buttons.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const orderId =
+                        this.dataset.orderId;
+
+                    loadOrderDetails(orderId);
+
+                }
+            );
+
+        });
+
+    }
+
+
+    /*
+    =========================================================
+    LOAD ORDER DETAILS
+    =========================================================
+    */
+
+    function loadOrderDetails(orderId) {
+
+        orderDetails.style.display = "block";
+
+        orderDetails.innerHTML = `
+
+            <div style="
+                padding: 20px;
+                text-align: center;
+                color: #777;
+            ">
+                Loading delivery details...
+            </div>
+
+        `;
+
+
+        fetch(
+            `/chat/track-delivery/order/${orderId}/`,
+            {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            }
+        )
+
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error(
+                    "Unable to load delivery details."
+                );
+            }
+
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            const order = data.order;
+
+            let timelineHtml = "";
+
+
+            order.timeline.forEach(step => {
+
+                let icon = "○";
+
+                if (step.state === "completed") {
+                    icon = "✓";
+                }
+
+                if (step.state === "current") {
+                    icon = "●";
+                }
+
+
+                timelineHtml += `
+
+                    <div style="
+                        display: flex;
+                        gap: 14px;
+                        margin-bottom: 18px;
+                    ">
+
+                        <div style="
+                            width: 28px;
+                            height: 28px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border: 1px solid #ddd;
+                            font-weight: 700;
+                        ">
+
+                            ${icon}
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                ${step.label}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            let productsHtml = "";
+
+            order.items.forEach(item => {
+
+                productsHtml += `
+
+                    <div style="
+                        padding: 10px 0;
+                        border-bottom: 1px solid #eee;
+                    ">
+
+                        <strong>
+                            ${item.product_name}
+                        </strong>
+
+                        <br>
+
+                        <small style="color: #777;">
+                            Quantity: ${item.quantity}
+                        </small>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            orderDetails.innerHTML = `
+
+                <div style="
+                    padding: 20px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 12px;
+                    background: #ffffff;
+                ">
+
+
+                    <div style="
+                        margin-bottom: 18px;
+                    ">
+
+                        <strong style="
+                            font-size: 19px;
+                        ">
+                            Order #${order.id}
+                        </strong>
+
+                        <br>
+
+                        <small style="
+                            color: #777;
+                        ">
+                            ${order.created_at}
+                        </small>
+
+                    </div>
+
+
+                    <div style="
+                        margin-bottom: 22px;
+                    ">
+
+                        <strong>
+                            Your items
+                        </strong>
+
+                        ${productsHtml}
+
+                    </div>
+
+
+                    <div style="
+                        margin-bottom: 22px;
+                    ">
+
+                        <strong>
+                            Delivery status
+                        </strong>
+
+                        <div style="
+                            margin-top: 18px;
+                        ">
+
+                            ${timelineHtml}
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="
+                        padding: 14px;
+                        border-radius: 10px;
+                        background: #f7f7f7;
+                        margin-bottom: 18px;
+                    ">
+
+                        <small style="
+                            color: #777;
+                        ">
+                            Current status
+                        </small>
+
+                        <br>
+
+                        <strong>
+                            ${order.status_display}
+                        </strong>
+
+                    </div>
+
+
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 10px;
+                    ">
+
+                        <strong>
+                            Total
+                        </strong>
+
+                        <strong>
+                            UGX ${formatMoney(order.total_price)}
+                        </strong>
+
+                    </div>
+
+
+                    <div style="
+                        margin-top: 20px;
+                        padding-top: 18px;
+                        border-top: 1px solid #eee;
+                        text-align: center;
+                    ">
+
+                        <strong>
+                            Need help with this delivery?
+                        </strong>
+
+                        <br><br>
+
+                        <a
+                            href="{% url 'chat:human_support' %}"
+                            style="
+                                display: inline-block;
+                                padding: 11px 16px;
+                                border-radius: 8px;
+                                text-decoration: none;
+                            "
+                        >
+                            Talk to a human
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+
+            orderDetails.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        })
+
+        .catch(error => {
+
+            orderDetails.innerHTML = `
+
+                <div style="
+                    padding: 14px;
+                    border-radius: 10px;
+                    background: #fff3f3;
+                    color: #b42318;
+                    border: 1px solid #f5c2c7;
+                ">
+
+                    We couldn't load this delivery.
+                    Please try again.
+
+                </div>
+
+            `;
+
+            console.error(error);
+
+        });
+
+    }
+
+
+    /*
+    =========================================================
+    INITIAL LOAD
+    =========================================================
+    */
+
+    loadOrders();
+
+});
+
+</script>
+
+{% endblock %}

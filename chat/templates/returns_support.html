@@ -1,0 +1,1880 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Returns & Refunds
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block mobile_footer %}
+{% endblock %}
+
+{% block content %}
+
+<div class="chat-page">
+
+    <!-- HEADER -->
+    <div class="chat-header">
+
+        <a href="{% url 'chat:chat' %}"
+           class="back-btn"
+           style="color: #ffffff;">
+
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+
+            <div class="chat-user">
+                <strong>WaziTrade Support</strong>
+                <small>Returns & Refunds</small>
+            </div>
+
+        </a>
+
+    </div>
+    <div style="
+    margin: 15px 20px 0 20px;
+">
+    <a
+        href="{% url 'chat:returns_support' %}"
+        style="
+            display: block;
+            padding: 12px 15px;
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #333;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+        "
+    >
+        ← Previous returns & refunds
+    </a>
+</div>
+
+    <div class="chat-body">
+
+        <!-- SUPPORT MESSAGE -->
+        <div class="message support">
+
+            <div class="bubble">
+
+                ↩️ <strong>Returns & Refunds</strong>
+
+                <br><br>
+
+                I can help you return an item or request a refund.
+
+                <br><br>
+
+                {% if selected_reason %}
+                    Tell us a little more about the problem.
+                {% elif selected_action %}
+                    Why do you want to return/refund this item?
+                {% elif selected_item %}
+                    What would you like to do with this item?
+                {% elif selected_order %}
+                    Now select the item you need help with.
+                {% else %}
+                    First, select the order you need help with.
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+        {% if error %}
+
+        <div style="
+            margin: 0 20px 15px 20px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #fff3f3;
+            color: #b42318;
+            border: 1px solid #f5c2c7;
+        ">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+<!-- ================================================= -->
+<!-- RETURN / REFUND HISTORY -->
+<!-- ================================================= -->
+
+{% if return_tickets and not new_request and not ticket %}
+
+<div style="
+    margin: 20px;
+">
+<div style="
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    ">
+        Your previous return/refund requests
+    </div>
+    {% for previous_ticket in return_tickets %}
+
+    <div style="
+        margin-bottom: 12px;
+        padding: 15px;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        background: #ffffff;
+    ">
+
+        <div style="
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 6px;
+        ">
+
+            Ticket #{{ previous_ticket.id }}
+
+            ·
+
+            {{ previous_ticket.created_at|date:"d M Y" }}
+
+        </div>
+
+
+        <div style="
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+        ">
+
+            Return / Refund Request
+
+        </div>
+
+
+        <div style="
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        ">
+
+            Status:
+
+            <strong>
+                {{ previous_ticket.get_status_display }}
+            </strong>
+
+        </div>
+
+
+        <a
+            href="{% url 'chat:returns_support' %}?ticket={{ previous_ticket.id }}"
+            style="
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 12px;
+                border-radius: 9px;
+                background: #D99923;
+                color: #ffffff;
+                text-decoration: none;
+                text-align: center;
+                font-weight: 600;
+            "
+        >
+
+            View conversation →
+
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+        <!-- ================================================= -->
+        <!-- SUPPORT REPLIES FROM WAZITRADE ADMIN -->
+        <!-- ================================================= -->
+
+        {% if ticket %}
+        
+        <div id="support-replies"
+             style="
+                margin: 20px;
+             ">
+
+            <div style="
+                font-size: 17px;
+                font-weight: 700;
+                margin-bottom: 12px;
+            ">
+
+                WaziTrade Support
+
+            </div>
+
+
+            {% if replies %}
+
+                {% for reply in replies %}
+
+                <div class="support-reply"
+                     style="
+                        margin-bottom: 12px;
+                        padding: 14px;
+                        border-radius: 12px;
+                        background: #fff8e8;
+                        border: 1px solid #f0d9a5;
+                        color: #333;
+                        line-height: 1.5;
+                     ">
+
+                    <div style="
+                        font-size: 13px;
+                        color: #777;
+                        margin-bottom: 6px;
+                    ">
+
+                        Support reply ·
+                        {{ reply.created_at|date:"d M Y, H:i" }}
+
+                    </div>
+
+                    <div style="
+                        white-space: pre-wrap;
+                        word-wrap: break-word;
+                    ">
+
+                        {{ reply.reply_text|linebreaksbr }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <!-- Ticket exists but support has not replied yet -->
+
+                <div class="waiting-for-reply" style="
+                 padding: 14px;
+                 border-radius: 12px;
+                 background: #f7f7f7;
+                 border: 1px solid #e5e5e5;
+                 color: #777;
+                 line-height: 1.5;
+                ">
+
+                    Your request has been received.
+
+                    <br>
+
+                    Our WaziTrade support team is reviewing it.
+                    A support reply will appear here.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- ================================================= -->
+        <!-- SUCCESS -->
+        <!-- ================================================= -->
+
+        {% if ticket %}
+
+    {% if success %}
+
+    <div style="
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #d9ead3;
+        border-radius: 12px;
+        background: #f6fff4;
+    ">
+
+        <div style="
+            font-size: 18px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        ">
+
+            ✅ Request submitted
+
+        </div>
+
+        <div style="
+            color: #555;
+            line-height: 1.5;
+        ">
+
+            Your return/refund request has been received.
+
+            Our WaziTrade support team will review it and
+            get back to you.
+
+        </div>
+
+        <div style="
+            margin-top: 15px;
+            font-size: 14px;
+            color: #777;
+        ">
+
+            Ticket: #{{ ticket.id }}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- START ANOTHER REQUEST -->
+
+    <div style="
+        margin: 20px;
+    ">
+
+        <a
+            href="{% url 'chat:returns_support' %}?new=1"
+            style="
+                display: block;
+                padding: 14px;
+                border-radius: 10px;
+                background: #D99923;
+                color: #ffffff;
+                text-decoration: none;
+                text-align: center;
+                font-weight: 600;
+            "
+        >
+
+            Start another return/refund request →
+
+        </a>
+
+    </div>
+
+
+{% elif selected_reason and selected_item and description %}
+
+        <!-- ================================================= -->
+        <!-- REVIEW REQUEST -->
+        <!-- ================================================= -->
+
+        <div style="
+            margin: 20px;
+            padding: 18px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            background: #ffffff;
+        ">
+
+            <div style="
+                font-size: 14px;
+                color: #777;
+                margin-bottom: 8px;
+            ">
+
+                Item
+
+            </div>
+
+            <strong style="font-size: 17px;">
+
+                {{ selected_item.product.name }}
+
+            </strong>
+
+            <div style="
+                margin-top: 8px;
+                color: #666;
+            ">
+
+                Quantity: {{ selected_item.quantity }}
+
+            </div>
+
+            <div style="
+                margin-top: 6px;
+                font-weight: 600;
+            ">
+
+                UGX {{ selected_item.price }}
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 10px 20px;
+            font-weight: 600;
+            font-size: 16px;
+        ">
+
+            What you told us
+
+        </div>
+
+
+        <div style="
+            margin: 0 20px 20px 20px;
+            padding: 14px;
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #444;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        ">
+
+            {{ description }}
+
+        </div>
+
+
+        <div style="
+            margin: 0 20px 20px 20px;
+        ">
+
+            <div style="
+                margin-bottom: 12px;
+                padding: 12px;
+                border-radius: 10px;
+                background: #fff8e8;
+                border: 1px solid #f0d9a5;
+                color: #555;
+                font-size: 14px;
+            ">
+
+                Reason:
+
+                <strong>
+                    {{ selected_reason|title }}
+                </strong>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="selected_action"
+                    value="{{ selected_action }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="reason"
+                    value="{{ selected_reason }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="description"
+                    value="{{ description }}"
+                >
+
+                <button
+                    type="submit"
+                    name="action"
+                    value="submit_request"
+                    style="
+                        width: 100%;
+                        padding: 15px;
+                        border: none;
+                        border-radius: 10px;
+                        background: #D99923;
+                        color: #ffffff;
+                        font-weight: 600;
+                        font-size: 16px;
+                        cursor: pointer;
+                    "
+                >
+
+                    Submit request →
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        {% elif selected_reason and selected_item and not description %}
+
+        <!-- ================================================= -->
+        <!-- STEP 5 — TELL US MORE -->
+        <!-- ================================================= -->
+
+        <div style="
+            margin: 20px;
+            padding: 18px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            background: #ffffff;
+        ">
+
+            <div style="
+                font-size: 14px;
+                color: #777;
+                margin-bottom: 8px;
+            ">
+
+                Item you're asking about
+
+            </div>
+
+            <strong style="
+                font-size: 17px;
+            ">
+
+                {{ selected_item.product.name }}
+
+            </strong>
+
+            <div style="
+                margin-top: 8px;
+                color: #666;
+            ">
+
+                Quantity: {{ selected_item.quantity }}
+
+            </div>
+
+            <div style="
+                margin-top: 6px;
+                font-weight: 600;
+            ">
+
+                UGX {{ selected_item.price }}
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 10px 20px;
+            font-weight: 600;
+            font-size: 16px;
+        ">
+
+            Tell us more about the problem
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 20px 20px;
+        ">
+
+            <div style="
+                margin-bottom: 12px;
+                padding: 12px;
+                border-radius: 10px;
+                background: #fff8e8;
+                border: 1px solid #f0d9a5;
+                color: #555;
+                font-size: 14px;
+            ">
+
+                Reason selected:
+
+                <strong>
+                    {{ selected_reason|title }}
+                </strong>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="selected_action"
+                    value="{{ selected_action }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="reason"
+                    value="{{ selected_reason }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="details"
+                >
+
+                <textarea
+                    name="description"
+                    rows="6"
+                    placeholder="Please describe what happened with this item..."
+                    required
+                    style="
+                        width: 100%;
+                        padding: 14px;
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        resize: vertical;
+                        box-sizing: border-box;
+                        font-family: inherit;
+                    "
+                ></textarea>
+
+                <button
+                    type="submit"
+                    style="
+                        width: 100%;
+                        margin-top: 12px;
+                        padding: 15px;
+                        border: none;
+                        border-radius: 10px;
+                        background: #D99923;
+                        color: #ffffff;
+                        font-weight: 600;
+                        font-size: 16px;
+                        cursor: pointer;
+                    "
+                >
+
+                    Continue →
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        {% elif selected_action and selected_item %}
+
+        <!-- ================================================= -->
+        <!-- STEP 4 — SELECT REASON -->
+        <!-- ================================================= -->
+
+        <div style="
+            margin: 20px;
+            padding: 18px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            background: #ffffff;
+        ">
+
+            <div style="
+                font-size: 14px;
+                color: #777;
+                margin-bottom: 6px;
+            ">
+
+                Item
+
+            </div>
+
+            <strong style="
+                font-size: 17px;
+            ">
+
+                {{ selected_item.product.name }}
+
+            </strong>
+
+            <div style="
+                margin-top: 8px;
+                color: #555;
+            ">
+
+                Quantity: {{ selected_item.quantity }}
+
+            </div>
+
+            <div style="
+                margin-top: 6px;
+                font-weight: 600;
+            ">
+
+                UGX {{ selected_item.price }}
+
+            </div>
+
+            <div style="
+                margin-top: 12px;
+                padding: 8px 10px;
+                border-radius: 8px;
+                background: #fff8e8;
+                color: #8a5a00;
+                font-size: 14px;
+                font-weight: 600;
+            ">
+
+                {% if selected_action == "return" %}
+                    Return this item
+                {% elif selected_action == "refund" %}
+                    Request a refund
+                {% elif selected_action == "return_refund" %}
+                    Return & refund
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 10px 20px;
+            font-weight: 600;
+            font-size: 16px;
+        ">
+
+            Why do you want to return/refund this item?
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 20px 20px;
+        ">
+
+
+            <!-- DAMAGED -->
+
+            <form method="POST" style="margin-bottom: 10px;">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="{{ selected_action }}"
+                >
+
+                <button
+                    type="submit"
+                    name="reason"
+                    value="damaged"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>Item arrived damaged</strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 5px;
+                        color: #777;
+                    ">
+
+                        The product was damaged when I received it.
+
+                    </small>
+
+                </button>
+
+            </form>
+
+
+            <!-- WRONG ITEM -->
+
+            <form method="POST" style="margin-bottom: 10px;">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="{{ selected_action }}"
+                >
+
+                <button
+                    type="submit"
+                    name="reason"
+                    value="wrong_item"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>Wrong item received</strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 5px;
+                        color: #777;
+                    ">
+
+                        The item I received is different from what I ordered.
+
+                    </small>
+
+                </button>
+
+            </form>
+
+
+            <!-- NOT WORKING -->
+
+            <form method="POST" style="margin-bottom: 10px;">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="{{ selected_action }}"
+                >
+
+                <button
+                    type="submit"
+                    name="reason"
+                    value="not_working"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>Item is not working</strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 5px;
+                        color: #777;
+                    ">
+
+                        The product does not work properly.
+
+                    </small>
+
+                </button>
+
+            </form>
+
+
+            <!-- MISSING PARTS -->
+
+            <form method="POST" style="margin-bottom: 10px;">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="{{ selected_action }}"
+                >
+
+                <button
+                    type="submit"
+                    name="reason"
+                    value="missing_parts"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>Missing parts or accessories</strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 5px;
+                        color: #777;
+                    ">
+
+                        Something that should have been included is missing.
+
+                    </small>
+
+                </button>
+
+            </form>
+
+
+            <!-- NOT AS DESCRIBED -->
+
+            <form method="POST" style="margin-bottom: 10px;">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="{{ selected_action }}"
+                >
+
+                <button
+                    type="submit"
+                    name="reason"
+                    value="not_as_described"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>Item is not as described</strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 5px;
+                        color: #777;
+                    ">
+
+                        The product does not match its description.
+
+                    </small>
+
+                </button>
+
+            </form>
+
+
+            <!-- CHANGED MIND -->
+
+            <form method="POST" style="margin-bottom: 10px;">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="{{ selected_action }}"
+                >
+
+                <button
+                    type="submit"
+                    name="reason"
+                    value="changed_mind"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>I changed my mind</strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 5px;
+                        color: #777;
+                    ">
+
+                        I no longer want the item.
+
+                    </small>
+
+                </button>
+
+            </form>
+
+
+            <!-- OTHER -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ selected_item.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="{{ selected_action }}"
+                >
+
+                <button
+                    type="submit"
+                    name="reason"
+                    value="other"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>Other reason</strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 5px;
+                        color: #777;
+                    ">
+
+                        My reason is not listed above.
+
+                    </small>
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- STEP 3 — CHOOSE RETURN / REFUND -->
+        <!-- ================================================= -->
+
+        {% elif selected_item %}
+
+        <div style="
+            margin: 20px;
+            padding: 18px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            background: #ffffff;
+        ">
+
+            <div style="
+                font-size: 14px;
+                color: #777;
+                margin-bottom: 8px;
+            ">
+
+                Item you're asking about
+
+            </div>
+
+            <strong style="
+                font-size: 17px;
+            ">
+
+                {{ selected_item.product.name }}
+
+            </strong>
+
+            <div style="
+                margin-top: 8px;
+                color: #666;
+            ">
+
+                Quantity: {{ selected_item.quantity }}
+
+            </div>
+
+            <div style="
+                margin-top: 6px;
+                font-weight: 600;
+            ">
+
+                UGX {{ selected_item.price }}
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 10px 20px;
+            font-weight: 600;
+            font-size: 16px;
+        ">
+
+            What would you like to do?
+
+        </div>
+
+
+        <form method="POST"
+              style="
+                  padding: 0 20px 20px 20px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+              ">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="item_id"
+                value="{{ selected_item.id }}"
+            >
+
+            <input
+                type="hidden"
+                name="order_number"
+                value="{{ selected_order.id }}"
+            >
+
+
+            <button
+                type="submit"
+                name="action"
+                value="return"
+                style="
+                    width: 100%;
+                    padding: 17px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 12px;
+                    background: #ffffff;
+                    color: #222;
+                    text-align: left;
+                    cursor: pointer;
+                "
+            >
+
+                <strong style="font-size: 16px;">
+                    ↩️ Return this item
+                </strong>
+
+                <br>
+
+                <small style="
+                    display: block;
+                    margin-top: 6px;
+                    color: #777;
+                ">
+
+                    I want to send the item back to WaziTrade.
+
+                </small>
+
+            </button>
+
+
+            <button
+                type="submit"
+                name="action"
+                value="refund"
+                style="
+                    width: 100%;
+                    padding: 17px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 12px;
+                    background: #ffffff;
+                    color: #222;
+                    text-align: left;
+                    cursor: pointer;
+                "
+            >
+
+                <strong style="font-size: 16px;">
+                    💰 Request a refund
+                </strong>
+
+                <br>
+
+                <small style="
+                    display: block;
+                    margin-top: 6px;
+                    color: #777;
+                ">
+
+                    I want to request my money back.
+
+                </small>
+
+            </button>
+
+
+            <button
+                type="submit"
+                name="action"
+                value="return_refund"
+                style="
+                    width: 100%;
+                    padding: 17px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 12px;
+                    background: #ffffff;
+                    color: #222;
+                    text-align: left;
+                    cursor: pointer;
+                "
+            >
+
+                <strong style="font-size: 16px;">
+                    🔄 Return & refund
+                </strong>
+
+                <br>
+
+                <small style="
+                    display: block;
+                    margin-top: 6px;
+                    color: #777;
+                ">
+
+                    I want to return the item and receive a refund.
+
+                </small>
+
+            </button>
+
+        </form>
+
+
+        <!-- ================================================= -->
+        <!-- STEP 2 — CHOOSE PRODUCT -->
+        <!-- ================================================= -->
+
+        {% elif selected_order %}
+
+        <div style="
+            margin: 20px;
+            padding: 18px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            background: #ffffff;
+        ">
+
+            <div style="
+                font-size: 14px;
+                color: #777;
+                margin-bottom: 8px;
+            ">
+
+                Selected order
+
+            </div>
+
+            <strong style="font-size: 18px;">
+
+                Order #{{ selected_order.id }}
+
+            </strong>
+
+            <div style="
+                margin-top: 8px;
+                color: #555;
+            ">
+
+                {{ selected_order.get_status_display }}
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 10px 20px;
+            font-weight: 600;
+            font-size: 16px;
+        ">
+
+            Which item do you need help with?
+
+        </div>
+
+
+        <div style="
+            padding: 0 20px 20px 20px;
+        ">
+
+            {% for item in selected_order.items.all %}
+
+            <form method="POST"
+                  style="margin-bottom: 10px;">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="order_number"
+                    value="{{ selected_order.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="item_id"
+                    value="{{ item.id }}"
+                >
+
+                <button
+                    type="submit"
+                    style="
+                        width: 100%;
+                        padding: 16px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 12px;
+                        background: #ffffff;
+                        color: #222;
+                        text-align: left;
+                        cursor: pointer;
+                    "
+                >
+
+                    <strong>
+                        {{ item.product.name }}
+                    </strong>
+
+                    <br>
+
+                    <small style="
+                        display: block;
+                        margin-top: 6px;
+                        color: #777;
+                    ">
+
+                        Quantity: {{ item.quantity }}
+
+                    </small>
+
+                    <small style="
+                        display: block;
+                        margin-top: 4px;
+                        color: #777;
+                    ">
+
+                        UGX {{ item.price }}
+
+                    </small>
+
+                    <div style="
+                        margin-top: 10px;
+                        color: #D99923;
+                        font-weight: 600;
+                    ">
+
+                        Select this item →
+
+                    </div>
+
+                </button>
+
+            </form>
+
+            {% empty %}
+
+            <div style="
+                padding: 20px;
+                border: 1px solid #e5e5e5;
+                border-radius: 12px;
+                background: #ffffff;
+                text-align: center;
+                color: #666;
+            ">
+
+                No items were found in this order.
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- STEP 1 — SELECT ORDER -->
+        <!-- ================================================= -->
+
+        {% else %}
+
+        <form method="POST"
+              style="
+                  padding: 20px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 12px;
+              ">
+
+            {% csrf_token %}
+
+            <div style="
+                font-weight: 600;
+                font-size: 16px;
+            ">
+
+                Your orders
+
+            </div>
+
+
+            {% for order in orders %}
+
+            <button
+                type="submit"
+                name="order_number"
+                value="{{ order.id }}"
+                style="
+                    width: 100%;
+                    padding: 16px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 12px;
+                    background: #ffffff;
+                    color: #222;
+                    text-align: left;
+                    cursor: pointer;
+                "
+            >
+
+                <strong>
+
+                    Order #{{ order.id }}
+
+                </strong>
+
+                <br>
+
+                <small style="color: #777;">
+
+                    {{ order.created_at|date:"d M Y" }}
+
+                </small>
+
+                <div style="
+                    margin-top: 10px;
+                    color: #555;
+                ">
+
+                    {% for item in order.items.all %}
+
+                        {{ item.product.name }}
+
+                        {% if not forloop.last %}, {% endif %}
+
+                    {% empty %}
+
+                        Order items unavailable
+
+                    {% endfor %}
+
+                </div>
+
+                <div style="
+                    margin-top: 8px;
+                    font-weight: 600;
+                ">
+
+                    UGX {{ order.total_price }}
+
+                </div>
+
+                <div style="
+                    margin-top: 10px;
+                    color: #D99923;
+                    font-weight: 600;
+                ">
+
+                    Get help with this order →
+
+                </div>
+
+            </button>
+
+            {% empty %}
+
+            <div style="
+                padding: 20px;
+                border: 1px solid #e5e5e5;
+                border-radius: 12px;
+                text-align: center;
+                color: #666;
+            ">
+
+                <strong>No orders found</strong>
+
+            </div>
+
+            {% endfor %}
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+{% if ticket %}
+
+<script>
+(function () {
+
+    const ticketId = "{{ ticket.id }}";
+
+    const repliesContainer = document.getElementById(
+        "support-replies"
+    );
+
+    if (!ticketId || !repliesContainer) {
+        return;
+    }
+
+    let lastReplyId = 0;
+
+    // ---------------------------------------------------------
+    // GET THE LAST REPLY ALREADY DISPLAYED
+    // ---------------------------------------------------------
+
+    const existingReplies =
+        repliesContainer.querySelectorAll(".support-reply");
+
+    existingReplies.forEach(function (reply) {
+
+        const replyId = parseInt(
+            reply.dataset.replyId || "0",
+            10
+        );
+
+        if (replyId > lastReplyId) {
+            lastReplyId = replyId;
+        }
+
+    });
+
+
+    // ---------------------------------------------------------
+    // CHECK FOR NEW SUPPORT REPLIES
+    // ---------------------------------------------------------
+
+    function checkForNewReplies() {
+
+        fetch(
+            "{% url 'chat:ticket_replies' %}" +
+            "?ticket_id=" +
+            encodeURIComponent(ticketId) +
+            "&after_id=" +
+            encodeURIComponent(lastReplyId),
+            {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            }
+        )
+
+        .then(function (response) {
+
+            if (!response.ok) {
+                throw new Error(
+                    "Could not check support replies."
+                );
+            }
+
+            return response.json();
+
+        })
+
+        .then(function (data) {
+
+            if (!data.replies || !data.replies.length) {
+                return;
+            }
+
+
+            // Remove the "waiting for reply" message
+            const waitingMessage =
+                repliesContainer.querySelector(
+                    ".waiting-for-reply"
+                );
+
+            if (waitingMessage) {
+                waitingMessage.remove();
+            }
+
+
+            data.replies.forEach(function (reply) {
+
+                // Prevent duplicates
+                if (
+                    repliesContainer.querySelector(
+                        '[data-reply-id="' +
+                        reply.id +
+                        '"]'
+                    )
+                ) {
+                    lastReplyId = Math.max(
+                        lastReplyId,
+                        reply.id
+                    );
+
+                    return;
+                }
+
+
+                const replyBox =
+                    document.createElement("div");
+
+                replyBox.className =
+                    "support-reply";
+
+                replyBox.dataset.replyId =
+                    reply.id;
+
+                replyBox.style.marginBottom = "12px";
+                replyBox.style.padding = "14px";
+                replyBox.style.borderRadius = "12px";
+                replyBox.style.background = "#fff8e8";
+                replyBox.style.border =
+                    "1px solid #f0d9a5";
+                replyBox.style.color = "#333";
+                replyBox.style.lineHeight = "1.5";
+
+
+                const replyDate =
+                    document.createElement("div");
+
+                replyDate.style.fontSize = "13px";
+                replyDate.style.color = "#777";
+                replyDate.style.marginBottom = "6px";
+
+                replyDate.textContent =
+                    "Support reply · " +
+                    reply.created_at;
+
+
+                const replyText =
+                    document.createElement("div");
+
+                replyText.style.whiteSpace =
+                    "pre-wrap";
+
+                replyText.style.wordWrap =
+                    "break-word";
+
+                // IMPORTANT:
+                // textContent prevents HTML injection.
+                replyText.textContent =
+                    reply.reply_text;
+
+
+                replyBox.appendChild(replyDate);
+                replyBox.appendChild(replyText);
+
+                repliesContainer.appendChild(
+                    replyBox
+                );
+
+
+                lastReplyId = Math.max(
+                    lastReplyId,
+                    reply.id
+                );
+
+            });
+
+
+            // Scroll to the newest reply
+            const newestReply =
+                repliesContainer.lastElementChild;
+
+            if (newestReply) {
+
+                newestReply.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest"
+                });
+
+            }
+
+        })
+
+        .catch(function (error) {
+
+            console.error(
+                "WaziTrade support reply check failed:",
+                error
+            );
+
+        });
+
+    }
+
+
+    // ---------------------------------------------------------
+    // CHECK EVERY 3 SECONDS
+    // ---------------------------------------------------------
+
+    checkForNewReplies();
+
+    setInterval(
+        checkForNewReplies,
+        3000
+    );
+
+})();
+</script>
+
+{% endif %}
+
+{% endblock %}

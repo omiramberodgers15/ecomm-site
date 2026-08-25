@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Talk to a Human
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block mobile_footer %}
+{% endblock %}
+
+{% block content %}
+
+<div class="chat-page">
+
+```
+<!-- HEADER -->
+<div class="chat-header">
+
+    <a href="{% url 'chat:chat' %}"
+       class="back-btn"
+       style="color: #ffffff;">
+
+        <span class="material-symbols-outlined">
+            arrow_back
+        </span>
+
+        <div class="chat-user">
+            <strong>WaziTrade Support</strong>
+            <small>Talk to a Human</small>
+        </div>
+
+    </a>
+
+</div>
+
+
+<div class="chat-body">
+
+    <!-- SUPPORT MESSAGE -->
+    <div class="message support">
+
+        <div class="bubble">
+
+            👨‍💼 <strong>Talk to a Human</strong>
+
+            <br><br>
+
+            Our support team is here to help.
+
+            <br><br>
+
+            Tell us what you need help with and a
+            WaziTrade support agent will review your request.
+
+        </div>
+
+    </div>
+
+
+    <!-- ERROR -->
+    {% if error %}
+
+    <div style="
+        margin: 0 20px 15px 20px;
+        padding: 14px;
+        border-radius: 10px;
+        background: #fff3f3;
+        color: #b42318;
+        border: 1px solid #f5c2c7;
+    ">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+    {% if ticket %}
+
+    <!-- SUCCESS -->
+
+    <div style="
+        margin: 20px;
+        padding: 20px;
+        border-radius: 12px;
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+    ">
+
+        <strong style="
+            display: block;
+            font-size: 18px;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        ">
+            Support request submitted
+        </strong>
+
+        <div style="
+            color: #333;
+            line-height: 1.6;
+        ">
+
+            Your request has been received.
+
+            <br>
+
+            Ticket #{{ ticket.id }}
+
+            <br><br>
+
+            A WaziTrade support agent will review
+            your request and contact you.
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <!-- HUMAN SUPPORT FORM -->
+
+    <form method="POST"
+          style="
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          ">
+
+        {% csrf_token %}
+
+        <label style="
+            font-weight: 600;
+            font-size: 15px;
+        ">
+            How can we help?
+        </label>
+
+        <textarea
+            name="message"
+            rows="6"
+            placeholder="Tell us what you need help with..."
+            required
+            style="
+                width: 100%;
+                padding: 14px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                font-size: 16px;
+                resize: vertical;
+                box-sizing: border-box;
+                font-family: inherit;
+            "
+        ></textarea>
+
+
+        <button
+            type="submit"
+            style="
+                width: 100%;
+                padding: 14px;
+                border: none;
+                border-radius: 10px;
+                background: #D99923;
+                color: #ffffff;
+                font-weight: 600;
+                font-size: 16px;
+                cursor: pointer;
+            "
+        >
+            Contact support
+        </button>
+
+    </form>
+
+    {% endif %}
+
+</div>
+```
+
+</div>
+
+{% endblock %}

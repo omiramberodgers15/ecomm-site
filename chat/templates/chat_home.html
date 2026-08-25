@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Help Center
+WaziTrade Support
 {% endblock %}
 
 {% block navbar %}
@@ -14,74 +14,327 @@ Help Center
 {% block content %}
 
 <div class="chat-page">
+
+  <!-- HEADER -->
   <div class="chat-header">
-    <a href="javascript:history.back()" class="back-btn" style="color: #ffffff">
-      <span class="material-symbols-outlined">arrow_back</span>
+
+    <a href="javascript:history.back()"
+       class="back-btn"
+       style="color: #ffffff;">
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
 
       <div class="chat-user">
-        <strong>WaziTrade</strong>
+        <strong>WaziTrade Support</strong>
         <small>Online</small>
       </div>
+
     </a>
+
   </div>
 
-  <!-- CHAT AREA -->
-  <div class="chat-body" id="chat-body">
+
+  {% if not request.user.is_authenticated %}
+
+  <!-- ================================= -->
+  <!-- STEP 1: SUPPORT ENTRY -->
+  <!-- ================================= -->
+
+  <div class="chat-body">
+
     <div class="message support">
+
       <div class="bubble">
+
         👋 Welcome to WaziTrade Support.
 
-        <br /><br />
+        <br><br>
 
-        Ask us about:
+        How would you like to continue?
 
-        <br />• Orders <br />• Payments <br />• Delivery <br />• Returns <br />•
-        Selling on WaziTrade
       </div>
 
-      <span class="time">09:20</span>
     </div>
 
-    {% for message in messages %} {% if message.sender == request.user %}
 
-    <div class="message customer">
-      <div class="bubble">{{ message.text }}</div>
+    <div style="
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    ">
 
-      <span class="time"> {{ message.created_at|time:"H:i" }} </span>
+      <!-- CONTINUE ON WAZITRADE -->
+
+      <a href="{% url 'account_login' %}?next={% url 'chat:chat' %}"
+         style="
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           min-height: 52px;
+           padding: 14px 18px;
+           border-radius: 10px;
+           background: #D99923;
+           color: #ffffff;
+           text-decoration: none;
+           font-weight: 600;
+         ">
+
+        <span class="material-symbols-outlined"
+              style="margin-right: 8px;">
+          chat
+        </span>
+
+        Continue on WaziTrade
+
+      </a>
+
+
+      <!-- CONTINUE ON WHATSAPP -->
+
+      <a href="https://wa.me/256762318421" target="_blank"
+         rel="noopener"
+         style="
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           min-height: 52px;
+           padding: 14px 18px;
+           border-radius: 10px;
+           background: #f2f2f2;
+           color: #222222;
+           text-decoration: none;
+           font-weight: 600;
+         ">
+
+        <span class="material-symbols-outlined"
+              style="margin-right: 8px;">
+          phone
+        </span>
+
+        Continue on WhatsApp
+
+      </a>
+
     </div>
 
-    {% else %}
-
-    <div class="message support">
-      {{ message.text }}
-
-      <span class="time"> {{ message.created_at|time:"H:i" }} </span>
-    </div>
-
-    {% endif %} {% endfor %}
   </div>
 
-  <!-- MESSAGE INPUT -->
 
-  <form class="chat-input" method="POST" action="{% url 'chat:send_message' %}">
-    {% csrf_token %}
+  {% else %}
 
-    <input
-      type="text"
-      name="message"
-      placeholder="Type your message..."
-      required
-    />
+  <!-- ================================= -->
+  <!-- STEP 2: SUPPORT MENU -->
+  <!-- ================================= -->
 
-    <button type="submit">
-      <span class="material-symbols-outlined"> send </span>
-    </button>
-  </form>
+  <div class="chat-body">
+
+    <div class="message support">
+
+      <div class="bubble">
+
+        👋 Hi {{ request.user.username }}, welcome to WaziTrade Support.
+
+        <br><br>
+
+        How can we help you today?
+
+      </div>
+
+    </div>
+
+
+    <!-- SUPPORT OPTIONS -->
+
+    <div style="
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    ">
+
+
+      <!-- TRACK DELIVERY -->
+
+<a href="{% url 'chat:track_delivery' %}"
+   style="
+     width: 100%;
+     min-height: 58px;
+     padding: 12px 16px;
+     border: 1px solid #e5e5e5;
+     border-radius: 10px;
+     background: #ffffff;
+     color: #222222;
+     text-align: left;
+     display: flex;
+     align-items: center;
+     gap: 14px;
+     cursor: pointer;
+     text-decoration: none;
+     box-sizing: border-box;
+   ">
+
+  <span class="material-symbols-outlined"
+        style="font-size: 28px;">
+    local_shipping
+  </span>
+
+  <span>
+    <strong>Track my delivery</strong>
+    <br>
+    <small style="color: #777;">
+      Check the status of my order
+    </small>
+  </span>
+
+</a>
+
+      <!-- PAYMENT -->
+
+      <a href="{% url 'chat:payment_support' %}"
+   style="
+     width: 100%;
+     min-height: 58px;
+     padding: 12px 16px;
+     border: 1px solid #e5e5e5;
+     border-radius: 10px;
+     background: #ffffff;
+     color: #222222;
+     text-align: left;
+     display: flex;
+     align-items: center;
+     gap: 14px;
+     cursor: pointer;
+     text-decoration: none;
+     box-sizing: border-box;
+   ">
+
+  <span class="material-symbols-outlined"
+        style="font-size: 28px;">
+    payments
+  </span>
+
+  <span>
+    <strong>MTN / Airtel payment</strong>
+    <br>
+    <small style="color: #777;">
+      Payment and transaction help
+    </small>
+  </span>
+
+</a>
+
+
+      <!-- WARRANTY -->
+
+<a href="{% url 'chat:warranty_support' %}"
+   style="
+     width: 100%;
+     min-height: 58px;
+     padding: 12px 16px;
+     border: 1px solid #e5e5e5;
+     border-radius: 10px;
+     background: #ffffff;
+     text-align: left;
+     display: flex;
+     align-items: center;
+     gap: 14px;
+     cursor: pointer;
+     text-decoration: none;
+     color: inherit;
+     box-sizing: border-box;
+   ">
+
+  <span class="material-symbols-outlined"
+        style="font-size: 28px;">
+    shield
+  </span>
+
+  <span>
+    <strong>Warranty / Technical issue</strong>
+    <br>
+    <small style="color: #777;">
+      Get help with a product problem
+    </small>
+  </span>
+
+</a>
+
+
+      <!-- RETURNS -->
+
+      <a href="{% url 'chat:returns_support' %}"
+   style="
+     width: 100%;
+     min-height: 58px;
+     padding: 12px 16px;
+     border: 1px solid #e5e5e5;
+     border-radius: 10px;
+     background: #ffffff;
+     color: #222222;
+     text-align: left;
+     display: flex;
+     align-items: center;
+     gap: 14px;
+     cursor: pointer;
+     text-decoration: none;
+     box-sizing: border-box;
+   ">
+
+  <span class="material-symbols-outlined"
+        style="font-size: 28px;">
+    assignment_return
+  </span>
+
+  <span>
+    <strong>Returns & refunds</strong>
+    <br>
+    <small style="color: #777;">
+      Help with returning an item
+    </small>
+  </span>
+
+</a>
+
+
+      <!-- HUMAN SUPPORT -->
+      <a href="{% url 'chat:human_support' %}"
+        style=" width: 100%;
+                min-height: 58px;
+                padding: 12px 16px;
+                border: 1px solid #D99923;
+                border-radius: 10px;
+                background: #D99923;
+                color: #ffffff;
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                cursor: pointer;
+              ">
+
+    <span class="material-symbols-outlined">
+        support_agent
+    </span>
+
+    <span>
+        <strong>Talk to a human</strong>
+        <br>
+        <small style="color: #ffffff;">
+            Connect with WaziTrade support
+        </small>
+    </span>
+
+</a>
+
+    </div>
+
+  </div>
+
+  {% endif %}
+
 </div>
-<script>
-  const chatBody = document.getElementById("chat-body");
-
-  chatBody.scrollTop = chatBody.scrollHeight;
-</script>
 
 {% endblock %}
