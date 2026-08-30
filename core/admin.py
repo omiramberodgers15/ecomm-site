@@ -11,7 +11,11 @@ from .models import Message
 from .models import SupportTicket
 
 
-from .models import SupportTicket, TicketReply
+from .models import (
+    SupportTicket,
+    TicketReply,
+    CustomerTicketMessage,
+)
 
 
 import threading
@@ -159,6 +163,26 @@ class MessageAdmin(admin.ModelAdmin):
 class TicketReplyInline(admin.StackedInline):
     model = TicketReply
     extra = 1
+    ordering = ("created_at",)
+
+
+class CustomerTicketMessageInline(admin.StackedInline):
+    model = CustomerTicketMessage
+    extra = 0
+    can_delete = False
+    ordering = ("created_at",)
+
+    readonly_fields = (
+        "message",
+        "attachment",
+        "created_at",
+    )
+
+    fields = (
+        "message",
+        "attachment",
+        "created_at",
+    )
 
 
 @admin.register(SupportTicket)
@@ -180,7 +204,10 @@ class SupportTicketAdmin(admin.ModelAdmin):
         'subject',
     )
 
-    inlines = [TicketReplyInline]
+    inlines = [
+        TicketReplyInline,
+        CustomerTicketMessageInline,
+    ]
 
     def save_formset(self, request, form, formset, change):
         """Save support replies and notify the customer by email."""
@@ -195,15 +222,8 @@ class SupportTicketAdmin(admin.ModelAdmin):
 
                 ticket = obj.ticket
 
-                # ------------------------------------------------
-                # SEND EMAIL TO CUSTOMER
-                # ------------------------------------------------
-
                 if ticket.email:
 
-                    # Use DEFAULT_FROM_EMAIL if configured.
-                    # Otherwise use EMAIL_HOST_USER.
-                    # This prevents None from being passed to send_mail.
                     from_email = (
                         settings.DEFAULT_FROM_EMAIL
                         or settings.EMAIL_HOST_USER
@@ -253,10 +273,6 @@ class SupportTicketAdmin(admin.ModelAdmin):
                             f"Ticket #{ticket.id}"
                         )
 
-                # ------------------------------------------------
-                # MARK TICKET AS PENDING
-                # ------------------------------------------------
-
                 ticket.status = 'pending'
 
                 ticket.save(
@@ -266,6 +282,28 @@ class SupportTicketAdmin(admin.ModelAdmin):
         formset.save_m2m()
 
 
+@admin.register(CustomerTicketMessage)
+class CustomerTicketMessageAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "ticket",
+        "created_at",
+    )
+
+    list_filter = (
+        "created_at",
+    )
+
+    search_fields = (
+        "message",
+        "ticket__email",
+        "ticket__subject",
+    )
+
+    readonly_fields = (
+        "created_at",
+    )
 
 @admin.register(HelpCategory)
 class HelpCategoryAdmin(admin.ModelAdmin):

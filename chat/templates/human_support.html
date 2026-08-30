@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Talk to a Human
+    Talk to a Human
 {% endblock %}
 
 {% block navbar %}
@@ -15,173 +15,1731 @@ Talk to a Human
 
 <div class="chat-page">
 
-```
-<!-- HEADER -->
-<div class="chat-header">
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-    <a href="{% url 'chat:chat' %}"
-       class="back-btn"
-       style="color: #ffffff;">
+    <div class="chat-header">
 
-        <span class="material-symbols-outlined">
-            arrow_back
-        </span>
+        <a href="{% url 'chat:chat' %}"
+           class="back-btn"
+           style="color: #ffffff;">
 
-        <div class="chat-user">
-            <strong>WaziTrade Support</strong>
-            <small>Talk to a Human</small>
-        </div>
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
 
-    </a>
+            <div class="chat-user">
 
-</div>
+                <strong>
+                    WaziTrade Support
+                </strong>
 
+                <small>
+                    Talk to a Human
+                </small>
 
-<div class="chat-body">
+            </div>
 
-    <!-- SUPPORT MESSAGE -->
-    <div class="message support">
-
-        <div class="bubble">
-
-            👨‍💼 <strong>Talk to a Human</strong>
-
-            <br><br>
-
-            Our support team is here to help.
-
-            <br><br>
-
-            Tell us what you need help with and a
-            WaziTrade support agent will review your request.
-
-        </div>
+        </a>
 
     </div>
 
 
-    <!-- ERROR -->
-    {% if error %}
+    <!-- =====================================================
+         CHAT BODY
+    ====================================================== -->
 
-    <div style="
-        margin: 0 20px 15px 20px;
-        padding: 14px;
-        border-radius: 10px;
-        background: #fff3f3;
-        color: #b42318;
-        border: 1px solid #f5c2c7;
-    ">
-
-        {{ error }}
-
-    </div>
-
-    {% endif %}
+    <div class="chat-body">
 
 
-    {% if ticket %}
+        <!-- =================================================
+             SUPPORT INTRODUCTION
+        ================================================== -->
 
-    <!-- SUCCESS -->
+        <div class="message support">
 
-    <div style="
-        margin: 20px;
-        padding: 20px;
-        border-radius: 12px;
-        background: #e8f5e9;
-        border: 1px solid #c8e6c9;
-    ">
+            <div class="bubble">
 
-        <strong style="
-            display: block;
-            font-size: 18px;
-            color: #2e7d32;
-            margin-bottom: 10px;
-        ">
-            Support request submitted
-        </strong>
+                👨‍💼
+                <strong>
+                    WaziTrade Support
+                </strong>
 
-        <div style="
-            color: #333;
-            line-height: 1.6;
-        ">
+                <br><br>
 
-            Your request has been received.
+                Our support team is here to help.
 
-            <br>
+                <br><br>
 
-            Ticket #{{ ticket.id }}
+                Tell us what you need help with.
 
-            <br><br>
+                You can also send us photos or videos
+                if they help explain the problem.
 
-            A WaziTrade support agent will review
-            your request and contact you.
+            </div>
 
         </div>
 
-    </div>
 
-    {% else %}
+        <!-- =================================================
+             ERROR
+        ================================================== -->
 
-    <!-- HUMAN SUPPORT FORM -->
+        <div id="human-error"
+             style="
+                display:
+                    {% if error %}
+                        block
+                    {% else %}
+                        none
+                    {% endif %};
 
-    <form method="POST"
-          style="
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-          ">
-
-        {% csrf_token %}
-
-        <label style="
-            font-weight: 600;
-            font-size: 15px;
-        ">
-            How can we help?
-        </label>
-
-        <textarea
-            name="message"
-            rows="6"
-            placeholder="Tell us what you need help with..."
-            required
-            style="
-                width: 100%;
+                margin: 0 20px 15px 20px;
                 padding: 14px;
+                border-radius: 10px;
+                background: #fff3f3;
+                color: #b42318;
+                border: 1px solid #f5c2c7;
+             ">
+
+            {{ error }}
+
+        </div>
+
+
+        <!-- =================================================
+             EXISTING CONVERSATION
+        ================================================== -->
+
+        <div id="human-messages"
+             style="
+                margin: 20px;
+             ">
+
+
+            <!-- =================================================
+                 ORIGINAL CUSTOMER MESSAGE
+            ================================================== -->
+
+            {% if ticket %}
+
+                <div class="message customer">
+
+                    <div style="
+                        display: flex;
+                        justify-content: flex-end;
+                    ">
+
+                        <div style="
+                            max-width: 80%;
+                            padding: 12px 15px;
+                            border-radius: 14px;
+                            background: #D99923;
+                            color: #ffffff;
+                            line-height: 1.5;
+                        ">
+
+                            {% if ticket.message %}
+
+                                {{ ticket.message|linebreaksbr }}
+
+                            {% endif %}
+
+
+                            {% if ticket.attachment %}
+
+                                <div style="
+                                    margin-top: 10px;
+                                ">
+
+                                    <a href="{{ ticket.attachment.url }}"
+                                       target="_blank"
+                                       style="
+                                            color: #ffffff;
+                                            text-decoration: underline;
+                                       ">
+
+                                        📎 View attachment
+
+                                    </a>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 CUSTOMER FOLLOW-UP MESSAGES
+            ================================================== -->
+
+            {% for message in customer_messages %}
+
+                <div class="message customer"
+                     data-customer-message-id="{{ message.id }}">
+
+                    <div style="
+                        display: flex;
+                        justify-content: flex-end;
+                    ">
+
+                        <div style="
+                            max-width: 80%;
+                            padding: 12px 15px;
+                            border-radius: 14px;
+                            background: #D99923;
+                            color: #ffffff;
+                            line-height: 1.5;
+                        ">
+
+                            {% if message.message %}
+
+                                {{ message.message|linebreaksbr }}
+
+                            {% endif %}
+
+
+                            {% if message.attachment %}
+
+                                <div style="
+                                    margin-top: 10px;
+                                ">
+
+                                    <a href="{{ message.attachment.url }}"
+                                       target="_blank"
+                                       style="
+                                            color: #ffffff;
+                                            text-decoration: underline;
+                                       ">
+
+                                        📎 View attachment
+
+                                    </a>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+            <!-- =================================================
+                 AGENT REPLIES
+            ================================================== -->
+
+            <div id="human-replies">
+
+                {% for reply in replies %}
+
+                    <div class="message support"
+                         data-reply-id="{{ reply.id }}">
+
+                        <div class="bubble">
+
+                            👨‍💼
+                            <strong>
+                                WaziTrade Support
+                            </strong>
+
+                            {% if reply.reply_text %}
+
+                                <br><br>
+
+                                {{ reply.reply_text|linebreaksbr }}
+
+                            {% endif %}
+
+
+                            {% if reply.attachment %}
+
+                                <div style="
+                                    margin-top: 10px;
+                                ">
+
+                                    <a href="{{ reply.attachment.url }}"
+                                       target="_blank">
+
+                                        📎 View attachment
+
+                                    </a>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <br>
+
+                            <small style="
+                                color: #888;
+                                font-size: 12px;
+                            ">
+
+                                {{ reply.created_at|date:"d M Y, H:i" }}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SUCCESS / TICKET INFORMATION
+        ================================================== -->
+
+        <div id="human-success"
+             style="
+                display:
+                    {% if ticket %}
+                        block
+                    {% else %}
+                        none
+                    {% endif %};
+
+                margin: 20px;
+                padding: 15px;
+                border-radius: 12px;
+                background: #e8f5e9;
+                border: 1px solid #c8e6c9;
+             ">
+
+            <strong style="
+                color: #2e7d32;
+            ">
+
+                Support ticket
+                #<span id="human-ticket-id">
+
+                    {% if ticket %}
+                        {{ ticket.id }}
+                    {% endif %}
+
+                </span>
+
+            </strong>
+
+            <div style="
+                margin-top: 5px;
+                color: #555;
+            ">
+
+                Your conversation with WaziTrade Support
+                is active.
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             REPLY STATUS
+        ================================================== -->
+
+        <div id="human-reply-status"
+             style="
+                display:
+                    {% if ticket %}
+                        block
+                    {% else %}
+                        none
+                    {% endif %};
+
+                margin: 0 20px 15px 20px;
+                padding: 12px;
+                border-radius: 10px;
+                background: #f7f7f7;
+                border: 1px solid #e5e5e5;
+                color: #777;
+                line-height: 1.5;
+                text-align: center;
+             ">
+
+            Waiting for a WaziTrade support agent to reply...
+
+        </div>
+
+
+        <!-- =================================================
+             ATTACHMENT PREVIEW
+        ================================================== -->
+
+        <div id="attachment-preview"
+             style="
+                display: none;
+                margin: 0 20px 10px 20px;
+                padding: 10px;
                 border: 1px solid #ddd;
                 border-radius: 10px;
-                font-size: 16px;
-                resize: vertical;
-                box-sizing: border-box;
-                font-family: inherit;
-            "
-        ></textarea>
+                background: #fafafa;
+             ">
+
+            <div style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            ">
+
+                <span id="attachment-name"></span>
+
+                <button type="button"
+                        id="remove-attachment"
+                        style="
+                            border: none;
+                            background: none;
+                            color: #b42318;
+                            cursor: pointer;
+                            font-size: 18px;
+                        ">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+        </div>
 
 
-        <button
-            type="submit"
-            style="
-                width: 100%;
-                padding: 14px;
-                border: none;
+        <!-- =================================================
+             CHAT FORM
+        ================================================== -->
+
+        <form id="human-support-form"
+              method="POST"
+              enctype="multipart/form-data"
+              style="
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+              ">
+
+            {% csrf_token %}
+
+
+            <!-- Hidden ticket ID -->
+
+            <input type="hidden"
+                   id="human-ticket-input"
+                   name="ticket_id"
+                   value="{% if ticket %}{{ ticket.id }}{% endif %}">
+
+
+            <!-- Message -->
+
+            <textarea
+                id="human-message"
+                name="message"
+                rows="3"
+                placeholder="Type your message..."
+                style="
+                    width: 100%;
+                    padding: 14px;
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    font-size: 16px;
+                    resize: vertical;
+                    box-sizing: border-box;
+                    font-family: inherit;
+                "
+            ></textarea>
+
+
+        
+<!-- Bottom controls -->
+
+<div style="
+    display: flex;
+    gap: 10px;
+    align-items: center;
+">
+
+
+    <!-- Attachment -->
+
+    <label for="human-attachment"
+           style="
+                flex: 0 0 auto;
+                padding: 12px 15px;
+                border: 1px solid #ddd;
                 border-radius: 10px;
-                background: #D99923;
-                color: #ffffff;
-                font-weight: 600;
-                font-size: 16px;
                 cursor: pointer;
-            "
-        >
-            Contact support
-        </button>
+                background: #ffffff;
+           ">
 
-    </form>
+        📎
 
-    {% endif %}
+        <span style="
+            margin-left: 4px;
+        ">
+
+            Photo / Video
+
+        </span>
+
+    </label>
+
+
+    <input
+        type="file"
+        id="human-attachment"
+        name="attachment"
+        accept="image/*,video/*"
+        style="
+            display: none;
+        "
+    >
+
+
+    <!-- =================================================
+         VOICE MESSAGE BUTTON
+    ================================================== -->
+
+    <button
+        type="button"
+        id="voice-record-button"
+        style="
+            flex: 0 0 auto;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #ffffff;
+            font-size: 16px;
+        "
+    >
+
+        🎤
+
+        <span style="
+            margin-left: 4px;
+        ">
+
+            Voice
+
+        </span>
+
+    </button>
+
+
+    <!-- =================================================
+         VOICE RECORDING STATUS
+    ================================================== -->
+
+    <span
+        id="voice-recording-status"
+        style="
+            display: none;
+            font-size: 13px;
+            color: #b42318;
+        "
+    >
+
+        🔴 Recording...
+
+    </span>
+
+
+    <!-- Send -->
+
+    <button
+        id="human-submit"
+        type="submit"
+        style="
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #D99923;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+        "
+    >
+
+        Send
+
+    </button>
 
 </div>
-```
+
+
+
+        </form>
+
+
+    
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
+
+    const form = document.getElementById("human-support-form");
+
+    const messageInput =
+        document.getElementById("human-message");
+
+    const attachmentInput =
+        document.getElementById("human-attachment");
+
+    const attachmentPreview =
+        document.getElementById("attachment-preview");
+
+    const attachmentName =
+        document.getElementById("attachment-name");
+
+    const removeAttachment =
+        document.getElementById("remove-attachment");
+
+    const submitButton =
+        document.getElementById("human-submit");
+
+    const errorBox =
+        document.getElementById("human-error");
+
+    const ticketInput =
+        document.getElementById("human-ticket-input");
+
+    const ticketIdBox =
+        document.getElementById("human-ticket-id");
+
+    const successBox =
+        document.getElementById("human-success");
+
+    const messagesBox =
+        document.getElementById("human-messages");
+
+    const repliesBox =
+        document.getElementById("human-replies");
+
+    const replyStatus =
+        document.getElementById("human-reply-status");
+
+
+    /* =========================================================
+       VOICE RECORDING ELEMENTS
+    ========================================================= */
+
+    const voiceButton =
+        document.getElementById("voice-record-button");
+
+    const voiceStatus =
+        document.getElementById("voice-recording-status");
+
+
+    let mediaRecorder = null;
+
+    let audioChunks = [];
+
+    let recordedVoiceBlob = null;
+
+    let recordedVoiceFile = null;
+
+
+    /* =========================================================
+       LAST KNOWN IDS
+    ========================================================= */
+
+    let lastReplyId = 0;
+
+    let lastCustomerMessageId = 0;
+
+
+    /* =========================================================
+       FIND EXISTING AGENT REPLIES
+    ========================================================= */
+
+    document
+        .querySelectorAll("#human-replies [data-reply-id]")
+        .forEach(function (element) {
+
+            const id =
+                parseInt(
+                    element.dataset.replyId,
+                    10
+                );
+
+            if (id > lastReplyId) {
+                lastReplyId = id;
+            }
+
+        });
+
+
+    /* =========================================================
+       FIND EXISTING CUSTOMER MESSAGES
+    ========================================================= */
+
+    document
+        .querySelectorAll("[data-customer-message-id]")
+        .forEach(function (element) {
+
+            const id =
+                parseInt(
+                    element.dataset.customerMessageId,
+                    10
+                );
+
+            if (id > lastCustomerMessageId) {
+                lastCustomerMessageId = id;
+            }
+
+        });
+
+
+    /* =========================================================
+       ATTACHMENT SELECTED
+    ========================================================= */
+
+    attachmentInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                attachmentInput.files[0];
+
+            if (!file) {
+
+                attachmentPreview.style.display =
+                    "none";
+
+                return;
+            }
+
+            attachmentName.textContent =
+                "📎 " + file.name;
+
+            attachmentPreview.style.display =
+                "block";
+
+        }
+    );
+
+
+    /* =========================================================
+       REMOVE ATTACHMENT
+    ========================================================= */
+
+    removeAttachment.addEventListener(
+        "click",
+        function () {
+
+            attachmentInput.value = "";
+
+            attachmentPreview.style.display =
+                "none";
+
+            attachmentName.textContent =
+                "";
+
+        }
+    );
+
+
+    /* =========================================================
+       START / STOP VOICE RECORDING
+    ========================================================= */
+
+    voiceButton.addEventListener(
+        "click",
+        async function () {
+
+            /* -------------------------------------------------
+               STOP RECORDING
+            ------------------------------------------------- */
+
+            if (
+                mediaRecorder &&
+                mediaRecorder.state === "recording"
+            ) {
+
+                mediaRecorder.stop();
+
+                return;
+            }
+
+
+            /* -------------------------------------------------
+               START RECORDING
+            ------------------------------------------------- */
+
+            try {
+
+                const stream =
+                    await navigator.mediaDevices.getUserMedia({
+                        audio: true
+                    });
+
+
+                audioChunks = [];
+
+
+                mediaRecorder =
+                    new MediaRecorder(stream);
+
+
+                mediaRecorder.addEventListener(
+                    "dataavailable",
+                    function (event) {
+
+                        if (event.data.size > 0) {
+
+                            audioChunks.push(
+                                event.data
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                mediaRecorder.addEventListener(
+                    "stop",
+                    function () {
+
+                        const mimeType =
+                            mediaRecorder.mimeType ||
+                            "audio/webm";
+
+
+                        recordedVoiceBlob =
+                            new Blob(
+                                audioChunks,
+                                {
+                                    type: mimeType
+                                }
+                            );
+
+
+                        let extension = "webm";
+
+
+                        if (
+                            mimeType.includes("mp4")
+                        ) {
+
+                            extension = "m4a";
+
+                        }
+                        else if (
+                            mimeType.includes("ogg")
+                        ) {
+
+                            extension = "ogg";
+
+                        }
+
+
+                        recordedVoiceFile =
+                            new File(
+                                [
+                                    recordedVoiceBlob
+                                ],
+                                "voice-message." +
+                                extension,
+                                {
+                                    type: mimeType
+                                }
+                            );
+
+
+                        voiceStatus.textContent =
+                            "🎤 Voice recorded";
+
+                        voiceStatus.style.display =
+                            "inline";
+
+
+                        voiceButton.textContent =
+                            "🎤 Voice ready";
+
+
+                        stream
+                            .getTracks()
+                            .forEach(
+                                function (track) {
+                                    track.stop();
+                                }
+                            );
+
+                    }
+                );
+
+
+                mediaRecorder.start();
+
+
+                voiceStatus.textContent =
+                    "🔴 Recording... Click 🎤 again to stop";
+
+
+                voiceStatus.style.display =
+                    "inline";
+
+
+                voiceButton.textContent =
+                    "⏹ Stop recording";
+
+
+            }
+            catch (error) {
+
+                errorBox.textContent =
+                    "Microphone access was blocked. Please allow microphone access and try again.";
+
+                errorBox.style.display =
+                    "block";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       CREATE CUSTOMER MESSAGE IN CHAT
+    ========================================================= */
+
+    function addCustomerMessage(
+        text,
+        attachmentUrl,
+        voiceUrl
+    ) {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "message customer";
+
+
+        const outer =
+            document.createElement("div");
+
+        outer.style.display =
+            "flex";
+
+        outer.style.justifyContent =
+            "flex-end";
+
+
+        const bubble =
+            document.createElement("div");
+
+        bubble.style.maxWidth =
+            "80%";
+
+        bubble.style.padding =
+            "12px 15px";
+
+        bubble.style.borderRadius =
+            "14px";
+
+        bubble.style.background =
+            "#D99923";
+
+        bubble.style.color =
+            "#ffffff";
+
+        bubble.style.lineHeight =
+            "1.5";
+
+
+        /* -------------------------------------------------
+           TEXT
+        ------------------------------------------------- */
+
+        if (text) {
+
+            const textNode =
+                document.createElement("div");
+
+            textNode.textContent =
+                text;
+
+            bubble.appendChild(
+                textNode
+            );
+
+        }
+
+
+        /* -------------------------------------------------
+           ATTACHMENT
+        ------------------------------------------------- */
+
+        if (attachmentUrl) {
+
+            const attachment =
+                document.createElement("div");
+
+            attachment.style.marginTop =
+                "10px";
+
+
+            const link =
+                document.createElement("a");
+
+            link.href =
+                attachmentUrl;
+
+            link.target =
+                "_blank";
+
+            link.rel =
+                "noopener noreferrer";
+
+            link.textContent =
+                "📎 View attachment";
+
+            link.style.color =
+                "#ffffff";
+
+            link.style.textDecoration =
+                "underline";
+
+
+            attachment.appendChild(
+                link
+            );
+
+            bubble.appendChild(
+                attachment
+            );
+
+        }
+
+
+        /* -------------------------------------------------
+           VOICE
+        ------------------------------------------------- */
+
+        if (voiceUrl) {
+
+            const voiceBox =
+                document.createElement("div");
+
+            voiceBox.style.marginTop =
+                "10px";
+
+
+            const audio =
+                document.createElement("audio");
+
+            audio.controls =
+                true;
+
+            audio.preload =
+                "metadata";
+
+            audio.src =
+                voiceUrl;
+
+            audio.style.maxWidth =
+                "100%";
+
+
+            voiceBox.appendChild(
+                audio
+            );
+
+            bubble.appendChild(
+                voiceBox
+            );
+
+        }
+
+
+        outer.appendChild(
+            bubble
+        );
+
+        wrapper.appendChild(
+            outer
+        );
+
+        messagesBox.appendChild(
+            wrapper
+        );
+
+
+        wrapper.scrollIntoView({
+            behavior: "smooth",
+            block: "end"
+        });
+
+    }
+
+
+    /* =========================================================
+       CREATE AGENT REPLY IN CHAT
+    ========================================================= */
+
+    function addAgentReply(reply) {
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            "message support";
+
+        message.dataset.replyId =
+            reply.id;
+
+
+        const bubble =
+            document.createElement("div");
+
+        bubble.className =
+            "bubble";
+
+
+        const heading =
+            document.createElement("strong");
+
+        heading.textContent =
+            "👨‍💼 WaziTrade Support";
+
+
+        bubble.appendChild(
+            heading
+        );
+
+
+        /* -------------------------------------------------
+           TEXT
+        ------------------------------------------------- */
+
+        if (reply.reply_text) {
+
+            bubble.appendChild(
+                document.createElement("br")
+            );
+
+            bubble.appendChild(
+                document.createElement("br")
+            );
+
+
+            const text =
+                document.createElement("div");
+
+            text.textContent =
+                reply.reply_text;
+
+
+            bubble.appendChild(
+                text
+            );
+
+        }
+
+
+        /* -------------------------------------------------
+           ATTACHMENT
+        ------------------------------------------------- */
+
+        if (reply.attachment_url) {
+
+            const attachment =
+                document.createElement("div");
+
+            attachment.style.marginTop =
+                "10px";
+
+
+            const link =
+                document.createElement("a");
+
+            link.href =
+                reply.attachment_url;
+
+            link.target =
+                "_blank";
+
+            link.rel =
+                "noopener noreferrer";
+
+            link.textContent =
+                "📎 View attachment";
+
+
+            attachment.appendChild(
+                link
+            );
+
+            bubble.appendChild(
+                attachment
+            );
+
+        }
+
+
+        /* -------------------------------------------------
+           VOICE MESSAGE FROM AGENT
+        ------------------------------------------------- */
+
+        if (reply.voice_url) {
+
+            const voiceBox =
+                document.createElement("div");
+
+            voiceBox.style.marginTop =
+                "10px";
+
+
+            const audio =
+                document.createElement("audio");
+
+            audio.controls =
+                true;
+
+            audio.preload =
+                "metadata";
+
+            audio.src =
+                reply.voice_url;
+
+            audio.style.maxWidth =
+                "100%";
+
+
+            voiceBox.appendChild(
+                audio
+            );
+
+            bubble.appendChild(
+                voiceBox
+            );
+
+        }
+
+
+        /* -------------------------------------------------
+           TIME
+        ------------------------------------------------- */
+
+        const time =
+            document.createElement("small");
+
+        time.style.color =
+            "#888";
+
+        time.style.fontSize =
+            "12px";
+
+        time.style.display =
+            "block";
+
+        time.style.marginTop =
+            "8px";
+
+        time.textContent =
+            reply.created_at;
+
+
+        bubble.appendChild(
+            time
+        );
+
+
+        message.appendChild(
+            bubble
+        );
+
+        repliesBox.appendChild(
+            message
+        );
+
+
+        message.scrollIntoView({
+            behavior: "smooth",
+            block: "end"
+        });
+
+    }
+
+
+    /* =========================================================
+       SEND MESSAGE / PHOTO / VIDEO / VOICE
+       AJAX — NO PAGE REFRESH
+    ========================================================= */
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            const text =
+                messageInput.value.trim();
+
+            const file =
+                attachmentInput.files[0];
+
+
+            if (
+                !text &&
+                !file &&
+                !recordedVoiceFile
+            ) {
+
+                errorBox.textContent =
+                    "Please enter a message, attach a photo/video, or record a voice message.";
+
+                errorBox.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            errorBox.style.display =
+                "none";
+
+
+            submitButton.disabled =
+                true;
+
+            submitButton.textContent =
+                "Sending...";
+
+
+            const formData =
+                new FormData(form);
+
+
+            /* -------------------------------------------------
+               ADD RECORDED VOICE TO FORM
+            ------------------------------------------------- */
+
+            if (recordedVoiceFile) {
+
+                formData.append(
+                    "voice_message",
+                    recordedVoiceFile
+                );
+
+            }
+
+
+            fetch(
+                "{% url 'chat:human_support' %}",
+                {
+                    method: "POST",
+
+                    body: formData,
+
+                    headers: {
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+                    }
+                }
+            )
+            .then(
+                function (response) {
+
+                    return response.json()
+                        .then(
+                            function (data) {
+
+                                if (!response.ok) {
+
+                                    throw new Error(
+                                        data.error ||
+                                        "Request failed."
+                                    );
+
+                                }
+
+                                return data;
+
+                            }
+                        );
+
+                }
+            )
+            .then(
+                function (data) {
+
+                    if (!data.success) {
+
+                        throw new Error(
+                            data.error ||
+                            "Something went wrong."
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       NEW TICKET
+                    ========================================= */
+
+                    if (data.ticket) {
+
+                        const newTicketId =
+                            data.ticket.id;
+
+
+                        ticketInput.value =
+                            newTicketId;
+
+
+                        ticketIdBox.textContent =
+                            newTicketId;
+
+
+                        successBox.style.display =
+                            "block";
+
+
+                        replyStatus.style.display =
+                            "block";
+
+
+                        addCustomerMessage(
+                            data.ticket.message,
+                            data.ticket.attachment_url,
+                            data.ticket.voice_url
+                        );
+
+
+                        messageInput.value =
+                            "";
+
+
+                        attachmentInput.value =
+                            "";
+
+                        attachmentPreview
+                            .style
+                            .display =
+                                "none";
+
+
+                        /* Clear voice */
+
+                        recordedVoiceBlob =
+                            null;
+
+                        recordedVoiceFile =
+                            null;
+
+                        audioChunks = [];
+
+
+                        voiceStatus.style.display =
+                            "none";
+
+
+                        voiceButton.textContent =
+                            "🎤 Voice";
+
+
+                        startReplyPolling(
+                            newTicketId
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       EXISTING TICKET MESSAGE
+                    ========================================= */
+
+                    else if (data.message) {
+
+                        addCustomerMessage(
+                            data.message.text,
+                            data.message.attachment_url,
+                            data.message.voice_url
+                        );
+
+
+                        if (
+                            data.message.id >
+                            lastCustomerMessageId
+                        ) {
+
+                            lastCustomerMessageId =
+                                data.message.id;
+
+                        }
+
+
+                        messageInput.value =
+                            "";
+
+
+                        attachmentInput.value =
+                            "";
+
+                        attachmentPreview
+                            .style
+                            .display =
+                                "none";
+
+
+                        /* Clear voice */
+
+                        recordedVoiceBlob =
+                            null;
+
+                        recordedVoiceFile =
+                            null;
+
+                        audioChunks = [];
+
+
+                        voiceStatus.style.display =
+                            "none";
+
+
+                        voiceButton.textContent =
+                            "🎤 Voice";
+
+                    }
+
+                }
+            )
+            .catch(
+                function (error) {
+
+                    errorBox.textContent =
+                        error.message ||
+                        "Something went wrong. Please try again.";
+
+                    errorBox.style.display =
+                        "block";
+
+                }
+            )
+            .finally(
+                function () {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "Send";
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       POLL FOR NEW REPLIES
+    ========================================================= */
+
+    let pollingStarted =
+        false;
+
+
+    function startReplyPolling(ticketId) {
+
+        if (pollingStarted) {
+            return;
+        }
+
+
+        pollingStarted =
+            true;
+
+
+        function checkReplies() {
+
+            fetch(
+                "{% url 'chat:ticket_replies' %}" +
+                "?ticket_id=" +
+                encodeURIComponent(ticketId) +
+                "&after_reply_id=" +
+                encodeURIComponent(lastReplyId) +
+                "&after_customer_id=" +
+                encodeURIComponent(lastCustomerMessageId),
+                {
+                    method: "GET",
+
+                    headers: {
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+                    }
+                }
+            )
+            .then(
+                function (response) {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Reply request failed."
+                        );
+
+                    }
+
+                    return response.json();
+
+                }
+            )
+            .then(
+                function (data) {
+
+                    /* =========================================
+                       AGENT REPLIES
+                    ========================================= */
+
+                    if (data.replies) {
+
+                        data.replies.forEach(
+                            function (reply) {
+
+                                if (
+                                    reply.id <=
+                                    lastReplyId
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                addAgentReply(
+                                    reply
+                                );
+
+
+                                lastReplyId =
+                                    reply.id;
+
+
+                                replyStatus
+                                    .textContent =
+                                    "A WaziTrade support agent has replied.";
+
+                            }
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       CUSTOMER MESSAGES
+                    ========================================= */
+
+                    if (data.customer_messages) {
+
+                        data.customer_messages
+                            .forEach(
+                                function (message) {
+
+                                    if (
+                                        message.id <=
+                                        lastCustomerMessageId
+                                    ) {
+
+                                        return;
+
+                                    }
+
+
+                                    lastCustomerMessageId =
+                                        message.id;
+
+                                }
+                            );
+
+                    }
+
+                }
+            )
+            .catch(
+                function () {
+
+                    /*
+                     * Do nothing.
+                     * Next polling cycle will retry.
+                     */
+
+                }
+            );
+
+        }
+
+
+        /* Check immediately */
+
+        checkReplies();
+
+
+        /* Then every 3 seconds */
+
+        setInterval(
+            checkReplies,
+            3000
+        );
+
+    }
+
+
+    /* =========================================================
+       START POLLING FOR EXISTING TICKET
+    ========================================================= */
+
+    const existingTicket =
+        ticketIdBox
+            ? ticketIdBox
+                .textContent
+                .trim()
+            : "";
+
+
+    if (existingTicket) {
+
+        startReplyPolling(
+            existingTicket
+        );
+
+    }
+
+});
+
+</script>
+
+
+
+
+    </div>
 
 </div>
 

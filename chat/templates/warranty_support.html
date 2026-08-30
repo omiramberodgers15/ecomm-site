@@ -105,52 +105,85 @@ Warranty / Technical Issue
         <!-- SUCCESS -->
         <!-- ================================================= -->
 
-        {% if ticket %}
+        
+{% if ticket %}
 
-        <div style="
-            margin: 20px;
-            padding: 20px;
-            border-radius: 12px;
-            background: #e8f5e9;
-            border: 1px solid #c8e6c9;
-        ">
+<div style="
+    margin: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #e8f5e9;
+    border: 1px solid #c8e6c9;
+">
 
-            <strong style="
-                display: block;
-                font-size: 18px;
-                color: #2e7d32;
-                margin-bottom: 12px;
-            ">
+    <strong style="
+        display: block;
+        font-size: 18px;
+        color: #2e7d32;
+        margin-bottom: 12px;
+    ">
 
-                ✅ Issue submitted successfully
+        ✅ Issue submitted successfully
 
-            </strong>
+    </strong>
 
-            <div style="
-                color: #333;
-                line-height: 1.7;
-            ">
+    <div style="
+        color: #333;
+        line-height: 1.7;
+    ">
 
-                Your warranty / technical support request
-                has been received.
+        Your warranty / technical support request
+        has been received.
 
-                <br><br>
+        <br><br>
 
-                <strong>
-                    Ticket #{{ ticket.id }}
-                </strong>
+        <strong>
+            Ticket #{{ ticket.id }}
+        </strong>
 
-                <br><br>
+        <br><br>
 
-                Our WaziTrade support team will review
-                the issue and contact you.
+        Our WaziTrade support team will review
+        the issue and contact you.
 
-            </div>
+    </div>
 
-        </div>
+</div>
 
 
-        {% else %}
+<!-- ================================================= -->
+<!-- SUPPORT REPLIES -->
+<!-- ================================================= -->
+
+<div
+    id="ticket-replies"
+    style="
+        margin: 20px;
+    "
+>
+</div>
+
+
+<!-- ================================================= -->
+<!-- WAITING MESSAGE -->
+<!-- ================================================= -->
+
+<div
+    id="waiting-for-reply"
+    style="
+        margin: 20px;
+        padding: 15px;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #777;
+        text-align: center;
+    "
+>
+    Waiting for a response from WaziTrade Support...
+</div>
+
+{% else %}
 
 
         <!-- ================================================= -->
@@ -790,4 +823,144 @@ Warranty / Technical Issue
 
 </div>
 
+<script>
+
+(function () {
+
+    const ticketId = "{{ ticket.id }}";
+
+    const repliesContainer =
+        document.getElementById("ticket-replies");
+
+    const waitingMessage =
+        document.getElementById("waiting-for-reply");
+
+    let lastReplyId = 0;
+
+    let checkingReplies = false;
+
+
+    function checkReplies() {
+
+        if (checkingReplies) {
+            return;
+        }
+
+        checkingReplies = true;
+
+        fetch(
+            "{% url 'chat:ticket_replies' %}"
+            + "?ticket_id="
+            + encodeURIComponent(ticketId)
+            + "&after_id="
+            + lastReplyId,
+            {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                credentials: "same-origin"
+            }
+        )
+        .then(function (response) {
+
+            if (!response.ok) {
+                throw new Error("Unable to check replies.");
+            }
+
+            return response.json();
+
+        })
+        .then(function (data) {
+
+            if (!data.replies) {
+                return;
+            }
+
+
+            data.replies.forEach(function (reply) {
+
+                const message = document.createElement("div");
+
+                message.style.marginBottom = "12px";
+                message.style.padding = "14px 16px";
+                message.style.borderRadius = "12px";
+                message.style.background = "#f7f7f7";
+                message.style.border = "1px solid #e5e5e5";
+                message.style.lineHeight = "1.5";
+
+
+                const title = document.createElement("strong");
+
+                title.textContent =
+                    "WaziTrade Support";
+
+                title.style.display = "block";
+                title.style.marginBottom = "6px";
+
+
+                const text = document.createElement("div");
+
+                text.textContent =
+                    reply.reply_text;
+
+
+                const time = document.createElement("small");
+
+                time.textContent =
+                    reply.created_at;
+
+                time.style.display = "block";
+                time.style.marginTop = "8px";
+                time.style.color = "#777";
+
+
+                message.appendChild(title);
+                message.appendChild(text);
+                message.appendChild(time);
+
+
+                repliesContainer.appendChild(message);
+
+
+                if (reply.id > lastReplyId) {
+                    lastReplyId = reply.id;
+                }
+
+
+                waitingMessage.style.display = "none";
+
+            });
+
+        })
+        .catch(function (error) {
+
+            console.log(
+                "Warranty reply check:",
+                error
+            );
+
+        })
+        .finally(function () {
+
+            checkingReplies = false;
+
+        });
+
+    }
+
+
+    // Check immediately when the page opens.
+    checkReplies();
+
+
+    // Then quietly check for new replies.
+    setInterval(
+        checkReplies,
+        3000
+    );
+
+})();
+
+</script>
 {% endblock %}

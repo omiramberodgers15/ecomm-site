@@ -9,6 +9,7 @@ from core.models import (
     Product,
     SupportTicket,
     TicketReply,
+    CustomerTicketMessage,
 )
 
 from cart.models import Order
@@ -139,48 +140,133 @@ def send_message(request):
 
 @login_required
 def ticket_replies(request):
-    ticket_id = request.GET.get("ticket_id", "").strip()
-    after_id = request.GET.get("after_id", "0").strip()
+
+    ticket_id = request.GET.get(
+        "ticket_id",
+        "",
+    ).strip()
+
+    after_reply_id = request.GET.get(
+        "after_reply_id",
+        "0",
+    ).strip()
+
+    after_customer_id = request.GET.get(
+        "after_customer_id",
+        "0",
+    ).strip()
 
     if not ticket_id.isdigit():
+
         return JsonResponse(
             {"error": "Invalid ticket"},
             status=400,
         )
 
-    if not after_id.isdigit():
-        after_id = "0"
+    if not after_reply_id.isdigit():
+        after_reply_id = "0"
+
+    if not after_customer_id.isdigit():
+        after_customer_id = "0"
 
     ticket = get_object_or_404(
         SupportTicket,
         id=int(ticket_id),
         email=request.user.email,
+        subject="Talk to a Human",
     )
+
+    # ---------------------------------------------------------
+    # AGENT REPLIES
+    # ---------------------------------------------------------
 
     replies = (
         TicketReply.objects
         .filter(
             ticket=ticket,
-            id__gt=int(after_id),
+            id__gt=int(after_reply_id),
         )
         .order_by("id")
     )
 
-    return JsonResponse(
-        {
-            "replies": [
-                {
-                    "id": reply.id,
-                    "reply_text": reply.reply_text,
-                    "created_at": reply.created_at.strftime(
-                        "%d %b %Y, %H:%M"
-                    ),
-                }
-                for reply in replies
-            ]
-        }
+    # ---------------------------------------------------------
+    # CUSTOMER FOLLOW-UP MESSAGES
+    # ---------------------------------------------------------
+
+    customer_messages = (
+        CustomerTicketMessage.objects
+        .filter(
+            ticket=ticket,
+            id__gt=int(after_customer_id),
+        )
+        .order_by("id")
     )
 
+    reply_data = []
+
+    for reply in replies:
+
+        attachment_url = None
+
+        if reply.attachment:
+
+            attachment_url = reply.attachment.url
+        voice_url = None
+
+        if reply.voice_message:
+
+            voice_url = reply.voice_message.url
+
+        reply_data.append(
+            {
+                "id": reply.id,
+                "reply_text": reply.reply_text,
+                "attachment_url": attachment_url,
+                "voice_url": voice_url,
+                "created_at": (
+                    reply.created_at.strftime(
+                        "%d %b %Y, %H:%M"
+                    )
+                ),
+            }
+        )
+
+    customer_data = []
+
+    for message in customer_messages:
+
+        attachment_url = None
+
+        if message.attachment:
+
+            attachment_url = message.attachment.url
+
+        voice_url = None
+
+        if message.voice_message:
+
+            voice_url = message.voice_message.url
+
+        customer_data.append(
+                {
+                    "id": message.id,
+                    "message": message.message,
+                    "attachment_url": attachment_url,
+                    "voice_url": voice_url,
+                    "created_at": (
+                    message.created_at.strftime(
+                    "%d %b %Y, %H:%M"
+                )
+            ),
+        }
+    )
+            
+    return JsonResponse(
+        {
+            "replies": reply_data,
+            "customer_messages": customer_data,
+        }
+    )
 
 # =========================================================
 # TRACK DELIVERY
@@ -639,6 +725,23 @@ def warranty_support(request):
     error = None
     ticket = None
 
+    # ---------------------------------------------------------
+    # EXISTING WARRANTY TICKET
+    # ---------------------------------------------------------
+
+    ticket_id = request.GET.get("ticket", "").strip()
+
+    if ticket_id.isdigit():
+        ticket = (
+            SupportTicket.objects
+            .filter(
+                id=int(ticket_id),
+                email=request.user.email,
+                subject="Warranty / Technical Issue",
+            )
+            .first()
+        )
+
     selected_order = None
     selected_item = None
     selected_issue = None
@@ -897,6 +1000,10 @@ def warranty_support(request):
                                 f"{description}"
                             ),
                             status="open",
+                        )
+                        return redirect(
+                            f"{reverse('chat:warranty_support')}"
+                            f"?ticket={ticket.id}"
                         )
 
     return render(
@@ -1284,25 +1391,241 @@ def returns_support(request):
 
 @login_required
 def human_support(request):
+
     error = None
     ticket = None
 
-    if request.method == "POST":
-        message = request.POST.get("message", "").strip()
+    # ---------------------------------------------------------
+    # EXISTING TICKET
+    # ---------------------------------------------------------
 
-        if not message:
-            error = "Please tell us how we can help you."
-        else:
-            ticket = SupportTicket.objects.create(
-                name=(
-                    request.user.get_full_name()
-                    or request.user.username
-                ),
+    ticket_id = request.GET.get("ticket", "").strip()
+
+    if ticket_id.isdigit():
+
+        ticket = (
+            SupportTicket.objects
+            .filter(
+                id=int(ticket_id),
                 email=request.user.email,
                 subject="Talk to a Human",
-                message=message,
-                status="open",
             )
+            .first()
+        )
+
+    # ---------------------------------------------------------
+    # HANDLE POST
+    # ---------------------------------------------------------
+
+    if request.method == "POST":
+
+        message = request.POST.get(
+            "message",
+            "",
+        ).strip()
+
+        posted_ticket_id = request.POST.get(
+            "ticket_id",
+            "",
+        ).strip()
+
+        attachment = request.FILES.get(
+            "attachment"
+        )
+
+        voice_message = request.FILES.get(
+            "voice_message"
+        )
+
+        # =====================================================
+        # EXISTING TICKET — CUSTOMER SENDS ANOTHER MESSAGE
+        # =====================================================
+
+        if posted_ticket_id:
+
+            if not posted_ticket_id.isdigit():
+
+                error = "Invalid support ticket."
+
+            else:
+
+                ticket = (
+                    SupportTicket.objects
+                    .filter(
+                        id=int(posted_ticket_id),
+                        email=request.user.email,
+                        subject="Talk to a Human",
+                    )
+                    .first()
+                )
+
+                if not ticket:
+
+                    error = "We could not find your support ticket."
+
+                elif not message and not attachment and not voice_message:
+
+                    error = (
+                       "Please enter a message, attach "
+                       "a photo/video, or record a voice message."
+                )
+                else:
+
+                    customer_message = (
+                        CustomerTicketMessage.objects.create(
+                            ticket=ticket,
+                            message=message,
+                            attachment=attachment,
+                            voice_message=voice_message,
+                           )
+                    )
+
+                    # Re-open ticket when customer sends a message
+                    if ticket.status == "resolved":
+
+                        ticket.status = "open"
+                        ticket.save(update_fields=["status"])
+
+                    # AJAX response
+                    if (
+                        request.headers.get(
+                            "X-Requested-With"
+                        )
+                        == "XMLHttpRequest"
+                    ):
+
+                        attachment_url = None
+
+                        if customer_message.attachment:
+
+                            attachment_url = (
+                                customer_message
+                                .attachment
+                                .url
+                            )
+                        voice_url = None
+
+                        if customer_message.voice_message:
+
+                            voice_url = (
+                                customer_message
+                                .voice_message
+                                .url
+                            )
+
+
+                        return JsonResponse(
+                            {
+                                "success": True,
+                                "message": {
+                                    "id": customer_message.id,
+                                    "text": (
+                                        customer_message.message
+                                    ),
+                                    "attachment_url": (
+                                        attachment_url
+                                    ),
+                                    "voice_url": voice_url,
+                                    "created_at": (
+                                        customer_message
+                                        .created_at
+                                        .strftime(
+                                            "%d %b %Y, %H:%M"
+                                        )
+                                    ),
+                                },
+                            }
+                        )
+
+        # =====================================================
+        # NEW SUPPORT TICKET
+        # =====================================================
+
+        else:
+
+            if not message and not attachment and not voice_message:
+
+                error = (
+                    "Please tell us how we can help "
+                    "or attach a photo/video or record a voice message."
+                )
+
+            else:
+
+                ticket = SupportTicket.objects.create(
+                    name=(
+                        request.user.get_full_name()
+                        or request.user.username
+                     ),
+                    email=request.user.email,
+                    subject="Talk to a Human",
+                    message=message,
+                    attachment=attachment,
+                    status="open",
+                    )
+                # -------------------------------------------------
+                # AJAX RESPONSE
+                # -------------------------------------------------
+
+                if (
+                    request.headers.get(
+                        "X-Requested-With"
+                    )
+                    == "XMLHttpRequest"
+                ):
+
+                    attachment_url = None
+
+                    if ticket.attachment:
+
+                        attachment_url = (
+                            ticket.attachment.url
+                        )
+
+                    return JsonResponse(
+                        {
+                            "success": True,
+                            "ticket": {
+                                "id": ticket.id,
+                                "message": ticket.message,
+                                "attachment_url": (
+                                    attachment_url
+                                ),
+                            },
+                        }
+                    )
+
+    # ---------------------------------------------------------
+    # LOAD AGENT REPLIES
+    # ---------------------------------------------------------
+
+    replies = []
+
+    if ticket:
+
+        replies = list(
+            TicketReply.objects
+            .filter(ticket=ticket)
+            .order_by("created_at")
+        )
+
+    # ---------------------------------------------------------
+    # LOAD CUSTOMER FOLLOW-UP MESSAGES
+    # ---------------------------------------------------------
+
+    customer_messages = []
+
+    if ticket:
+
+        customer_messages = list(
+            CustomerTicketMessage.objects
+            .filter(ticket=ticket)
+            .order_by("created_at")
+        )
+
+    # ---------------------------------------------------------
+    # NORMAL PAGE RESPONSE
+    # ---------------------------------------------------------
 
     return render(
         request,
@@ -1310,5 +1633,7 @@ def human_support(request):
         {
             "ticket": ticket,
             "error": error,
+            "replies": replies,
+            "customer_messages": customer_messages,
         },
     )

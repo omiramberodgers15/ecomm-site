@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+WaziTrade Support
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block mobile_footer %}
+{% endblock %}
+
+{% block content %}
+
+<div class="chat-page">
+
+  <!-- CHAT HEADER -->
+  <div class="chat-header">
+
+    <a href="javascript:history.back()"
+       class="back-btn"
+       style="color: #ffffff;">
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+      <div class="chat-user">
+        <strong>WaziTrade Support</strong>
+        <small>Online</small>
+      </div>
+
+    </a>
+
+  </div>
+
+
+  <!-- CHAT AREA -->
+  <div class="chat-body" id="chat-body">
+
+    <!-- WELCOME MESSAGE -->
+    <div class="message support">
+
+      <div class="bubble">
+        👋 Welcome to WaziTrade Support.
+
+        <br><br>
+
+        Ask us about:
+
+        <br>• Orders
+        <br>• Payments
+        <br>• Delivery
+        <br>• Returns
+        <br>• Selling on WaziTrade
+      </div>
+
+      <span class="time">
+        Now
+      </span>
+
+    </div>
+
+
+    <!-- EXISTING MESSAGES -->
+    {% for message in messages %}
+
+      {% if message.sender == request.user %}
+
+        <!-- CUSTOMER MESSAGE -->
+        <div class="message customer">
+
+          <div class="bubble">
+            {{ message.content }}
+          </div>
+
+          <span class="time">
+            {{ message.timestamp|time:"H:i" }}
+          </span>
+
+        </div>
+
+      {% else %}
+
+        <!-- SUPPORT MESSAGE -->
+        <div class="message support">
+
+          <div class="bubble">
+            {{ message.content }}
+          </div>
+
+          <span class="time">
+            {{ message.timestamp|time:"H:i" }}
+          </span>
+
+        </div>
+
+      {% endif %}
+
+    {% empty %}
+
+    {% endfor %}
+
+  </div>
+
+
+  <!-- MESSAGE INPUT -->
+  <form
+    class="chat-input"
+    method="POST"
+    action="{% url 'chat:send_message' %}"
+  >
+
+    {% csrf_token %}
+
+    <input
+      type="hidden"
+      name="session_id"
+      value="{{ session.id }}"
+    >
+
+    <input
+      type="text"
+      name="content"
+      placeholder="Type your message..."
+      autocomplete="off"
+      required
+    >
+
+    <button type="submit">
+
+      <span class="material-symbols-outlined">
+        send
+      </span>
+
+    </button>
+
+  </form>
+
+</div>
+
+
+<script>
+
+  const chatBody = document.getElementById("chat-body");
+
+  if (chatBody) {
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+</script>
+
+{% endblock %}

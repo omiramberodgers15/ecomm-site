@@ -242,23 +242,89 @@ class SupportTicket(models.Model):
     email = models.EmailField()
     subject = models.CharField(max_length=255)
     message = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+
+    # Customer's first attachment
+    attachment = models.FileField(
+        upload_to='support/customer/',
+        blank=True,
+        null=True,
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='open',
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Ticket #{self.id} - {self.subject}"
 
 
-
 class TicketReply(models.Model):
-    ticket = models.ForeignKey('SupportTicket', on_delete=models.CASCADE, related_name='replies')
+    ticket = models.ForeignKey(
+        'SupportTicket',
+        on_delete=models.CASCADE,
+        related_name='replies',
+    )
+
     reply_text = models.TextField()
+
+    # Agent's optional photo/video/file
+    attachment = models.FileField(
+        upload_to='support/agent/',
+        blank=True,
+        null=True,
+    )
+
+    # Agent's optional voice message
+    voice_message = models.FileField(
+        upload_to='support/agent/voice/',
+        blank=True,
+        null=True,
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Reply to Ticket #{self.ticket.id}"
+    
 
+class CustomerTicketMessage(models.Model):
+    """
+    Additional messages sent by the customer
+    after the original support ticket was created.
+    """
 
+    ticket = models.ForeignKey(
+        SupportTicket,
+        on_delete=models.CASCADE,
+        related_name='customer_messages',
+    )
+
+    message = models.TextField(blank=True)
+
+    attachment = models.FileField(
+        upload_to='support/customer/',
+        blank=True,
+        null=True,
+    )
+
+    # Customer's optional voice message
+    voice_message = models.FileField(
+        upload_to='support/customer/voice/',
+        blank=True,
+        null=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"Customer message for Ticket #{self.ticket.id}"
 
 
 class HelpCategory(models.Model):
