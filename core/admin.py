@@ -17,7 +17,7 @@ from .models import (
     CustomerTicketMessage,
 )
 
-
+from .forms import TicketReplyAdminForm
 import threading
 import logging
 from django.contrib import admin
@@ -159,12 +159,14 @@ class MessageAdmin(admin.ModelAdmin):
 
 
 
-
 class TicketReplyInline(admin.StackedInline):
     model = TicketReply
+    form = TicketReplyAdminForm
     extra = 1
     ordering = ("created_at",)
 
+    class Media:
+        js = ("core/js/ticket_reply_admin.js",)
 
 class CustomerTicketMessageInline(admin.StackedInline):
     model = CustomerTicketMessage
@@ -217,6 +219,9 @@ class SupportTicketAdmin(admin.ModelAdmin):
         for obj in instances:
 
             if isinstance(obj, TicketReply):
+
+                if not obj.reply_text.strip() and obj.voice_message:
+                    obj.reply_text = "[Voice message]"
 
                 obj.save()
 

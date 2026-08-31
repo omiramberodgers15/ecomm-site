@@ -1396,7 +1396,7 @@ def human_support(request):
     ticket = None
 
     # ---------------------------------------------------------
-    # EXISTING TICKET
+    # EXISTING TICKET FROM URL
     # ---------------------------------------------------------
 
     ticket_id = request.GET.get("ticket", "").strip()
@@ -1438,7 +1438,8 @@ def human_support(request):
         )
 
         # =====================================================
-        # EXISTING TICKET — CUSTOMER SENDS ANOTHER MESSAGE
+        # EXISTING TICKET
+        # CUSTOMER SENDS FOLLOW-UP MESSAGE
         # =====================================================
 
         if posted_ticket_id:
@@ -1461,14 +1462,21 @@ def human_support(request):
 
                 if not ticket:
 
-                    error = "We could not find your support ticket."
+                    error = (
+                        "We could not find your support ticket."
+                    )
 
-                elif not message and not attachment and not voice_message:
+                elif (
+                    not message
+                    and not attachment
+                    and not voice_message
+                ):
 
                     error = (
-                       "Please enter a message, attach "
-                       "a photo/video, or record a voice message."
-                )
+                        "Please enter a message, attach "
+                        "a photo/video, or record a voice message."
+                    )
+
                 else:
 
                     customer_message = (
@@ -1477,16 +1485,25 @@ def human_support(request):
                             message=message,
                             attachment=attachment,
                             voice_message=voice_message,
-                           )
+                        )
                     )
 
-                    # Re-open ticket when customer sends a message
+                    # -------------------------------------------------
+                    # Re-open resolved ticket when customer replies
+                    # -------------------------------------------------
+
                     if ticket.status == "resolved":
 
                         ticket.status = "open"
-                        ticket.save(update_fields=["status"])
 
-                    # AJAX response
+                        ticket.save(
+                            update_fields=["status"]
+                        )
+
+                    # -------------------------------------------------
+                    # AJAX RESPONSE
+                    # -------------------------------------------------
+
                     if (
                         request.headers.get(
                             "X-Requested-With"
@@ -1503,6 +1520,7 @@ def human_support(request):
                                 .attachment
                                 .url
                             )
+
                         voice_url = None
 
                         if customer_message.voice_message:
@@ -1513,19 +1531,25 @@ def human_support(request):
                                 .url
                             )
 
-
                         return JsonResponse(
                             {
                                 "success": True,
+
                                 "message": {
                                     "id": customer_message.id,
+
                                     "text": (
                                         customer_message.message
                                     ),
+
                                     "attachment_url": (
                                         attachment_url
                                     ),
-                                    "voice_url": voice_url,
+
+                                    "voice_url": (
+                                        voice_url
+                                    ),
+
                                     "created_at": (
                                         customer_message
                                         .created_at
@@ -1543,26 +1567,40 @@ def human_support(request):
 
         else:
 
-            if not message and not attachment and not voice_message:
+            if (
+                not message
+                and not attachment
+                and not voice_message
+            ):
 
                 error = (
                     "Please tell us how we can help "
-                    "or attach a photo/video or record a voice message."
+                    "or attach a photo/video or record "
+                    "a voice message."
                 )
 
             else:
 
                 ticket = SupportTicket.objects.create(
+
                     name=(
                         request.user.get_full_name()
                         or request.user.username
-                     ),
+                    ),
+
                     email=request.user.email,
+
                     subject="Talk to a Human",
+
                     message=message,
+
                     attachment=attachment,
+
+                    voice_message=voice_message,
+
                     status="open",
-                    )
+                )
+
                 # -------------------------------------------------
                 # AJAX RESPONSE
                 # -------------------------------------------------
@@ -1579,17 +1617,36 @@ def human_support(request):
                     if ticket.attachment:
 
                         attachment_url = (
-                            ticket.attachment.url
+                            ticket
+                            .attachment
+                            .url
+                        )
+
+                    voice_url = None
+
+                    if ticket.voice_message:
+
+                        voice_url = (
+                            ticket
+                            .voice_message
+                            .url
                         )
 
                     return JsonResponse(
                         {
                             "success": True,
+
                             "ticket": {
                                 "id": ticket.id,
+
                                 "message": ticket.message,
+
                                 "attachment_url": (
                                     attachment_url
+                                ),
+
+                                "voice_url": (
+                                    voice_url
                                 ),
                             },
                         }

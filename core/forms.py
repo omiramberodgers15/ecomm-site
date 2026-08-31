@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from .models import Seller
 from .models import Category
 
+from .models import TicketReply
+
 class SellerRegistrationForm(forms.ModelForm):
     username = forms.CharField(max_length=150)
     password = forms.CharField(widget=forms.PasswordInput)
@@ -53,3 +55,15 @@ class ProductForm(forms.ModelForm):
                 pass
         elif self.instance.pk and self.instance.category:
             self.fields['subcategory'].queryset = SubCategory.objects.filter(category=self.instance.category)
+
+
+
+class TicketReplyAdminForm(forms.ModelForm):
+    class Meta:
+        model = TicketReply
+        fields = (
+                "reply_text",
+                "attachment",
+                "voice_message",
+            )
+

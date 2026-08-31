@@ -167,7 +167,31 @@
                                 </div>
 
                             {% endif %}
+                            {% if ticket.voice_message %}
 
+    <div style="
+        margin-top: 10px;
+    ">
+
+        <audio
+            controls
+            preload="metadata"
+            style="
+                max-width: 100%;
+            "
+        >
+
+            <source
+                src="{{ ticket.voice_message.url }}"
+            >
+
+            Your browser does not support audio playback.
+
+        </audio>
+
+    </div>
+
+{% endif %}
                         </div>
 
                     </div>
