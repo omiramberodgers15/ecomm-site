@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 app_name = "core"
@@ -26,7 +26,6 @@ urlpatterns = [
     path("seller/dashboard/", views.seller_dashboard, name="seller-dashboard"),
     path("seller/add-product/", views.seller_add_product, name="seller-add-product"),
     # ---------- ALLAUTH / THIRD PARTY LOGIN ----------
-    path("accounts/", include("allauth.urls")),  # Google, Facebook, etc.
     path('chat/fetch/<int:product_id>/', views.fetch_messages, name='fetch_messages'),
     # core/urls.py
     path('seller/messages/', views.seller_messages, name='seller-messages'),
@@ -40,9 +39,6 @@ urlpatterns = [
     path('contact/', views.contact_page, name='contact'),
     path('subcategories-json/', views.subcategories_json, name='subcategories_json'),
     # ---------- HELP CENTER ----------
-    #path("help/", views.help_center, name="help-center"),
-    #path("help/search/", views.search_help, name="search_help"),
-    #path("help/", views.help_center, name="help-center"),
     path("help/", views.help_center, name="help-center"),
 path(
     "help/category/<slug:slug>/",

@@ -47,15 +47,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
+    
+    "daphne",
+
     'django.contrib.staticfiles',
     'django.contrib.sites',  # required by allauth
     'django.contrib.humanize', # making sure pricing doesnot display in decimal and it provides standard rounding
-
+    
+    "channels",
     # Your apps
     'cart',
     'core',
     'payments',
     'chat',
+    
 
     # 👇 add these later
     "cloudinary",
@@ -231,3 +236,16 @@ DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# =========================================================
+# DJANGO CHANNELS
+# =========================================================
+
+ASGI_APPLICATION = "mysite.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}

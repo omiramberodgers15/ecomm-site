@@ -182,12 +182,15 @@ def custom_login(request):
 
         if user:
             login(request, user)
+
+            next_url = request.POST.get("next")
             # Only normal users go to home
             if hasattr(user, 'seller_profile'):
                 # Optional: prevent sellers from using buyer login
                 messages.warning(request, "Please login via Seller Login for your account.")
                 return redirect('core:seller-login')
-            return redirect('core:home')
+            return redirect(next_url or 'core:home')
+        
         else:
             messages.error(request, "Invalid username or password.")
             return redirect('core:login')

@@ -200,4 +200,252 @@ document.addEventListener(
 );
 
 
+/*
+ * =========================================================
+ * LIVE CUSTOMER MESSAGES
+ * =========================================================
+ */
+
+function connectCustomerWebSocket() {
+
+    const pathParts = window.location.pathname.split("/");
+
+    const ticketIndex = pathParts.indexOf("supportticket");
+
+    if (ticketIndex === -1) {
+        return;
+    }
+
+    const ticketId = pathParts[ticketIndex + 1];
+
+    if (!ticketId || !/^\d+$/.test(ticketId)) {
+        return;
+    }
+
+    const protocol =
+        window.location.protocol === "https:"
+            ? "wss:"
+            : "ws:";
+
+    const socketUrl =
+        protocol +
+        "//" +
+        window.location.host +
+        "/ws/human-support/" +
+        ticketId +
+        "/";
+
+    const socket = new WebSocket(socketUrl);
+
+    socket.onopen = function () {
+
+        console.log(
+            "Admin live chat connected for ticket #" + ticketId
+        );
+
+    };
+
+    socket.onmessage = function (event) {
+
+        try {
+
+            const data = JSON.parse(event.data);
+
+            console.log(
+                "Admin received WebSocket event:",
+                data
+            );
+
+            if (data.type !== "customer_message") {
+                return;
+            }
+
+            addCustomerMessageToAdmin(data);
+
+        } catch (error) {
+
+            console.error(
+                "Error reading live customer message:",
+                error
+            );
+
+        }
+
+    };
+
+    socket.onclose = function () {
+
+        console.log(
+            "Admin live chat disconnected."
+        );
+
+    };
+
+    socket.onerror = function (error) {
+
+        console.error(
+            "Admin WebSocket error:",
+            error
+        );
+
+    };
+}
+
+
+function addCustomerMessageToAdmin(data) {
+
+    const message = data.message || "";
+
+    /*
+     * Find the Customer Ticket Messages inline
+     */
+    const inlineGroup =
+        document.querySelector(
+            ".inline-group"
+        );
+
+    if (!inlineGroup) {
+
+        console.warn(
+            "Customer message inline section not found."
+        );
+
+        return;
+    }
+
+
+    /*
+     * Create a new visual message box.
+     */
+    const messageBox =
+        document.createElement("div");
+
+    messageBox.style.marginTop = "15px";
+    messageBox.style.padding = "12px";
+    messageBox.style.border = "1px solid #ddd";
+    messageBox.style.borderRadius = "8px";
+    messageBox.style.background = "#f9f9f9";
+
+
+    /*
+     * Customer label
+     */
+    const sender =
+        document.createElement("strong");
+
+    sender.textContent = "Customer";
+
+    messageBox.appendChild(sender);
+
+
+    /*
+     * Message text
+     */
+    if (message) {
+
+        const text =
+            document.createElement("div");
+
+        text.textContent = message;
+
+        text.style.marginTop = "6px";
+
+        messageBox.appendChild(text);
+
+    }
+
+    /*
+ * Attachment
+ */
+if (data.attachment_url) {
+
+    const attachment = document.createElement("div");
+
+    attachment.style.marginTop = "10px";
+
+    const link = document.createElement("a");
+
+    link.href = data.attachment_url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "📎 View attachment";
+
+    attachment.appendChild(link);
+
+    messageBox.appendChild(attachment);
+}
+
+    
+    /*
+ * Voice message
+ */
+if (data.voice_url) {
+
+    const voiceContainer =
+        document.createElement("div");
+
+    voiceContainer.style.marginTop = "10px";
+
+    const audio =
+        document.createElement("audio");
+
+    audio.controls = true;
+    audio.preload = "metadata";
+    audio.style.maxWidth = "100%";
+
+    const source =
+        document.createElement("source");
+
+    source.src = data.voice_url;
+
+    audio.appendChild(source);
+
+    voiceContainer.appendChild(audio);
+
+    messageBox.appendChild(voiceContainer);
+}
+
+    /*
+     * Time
+     */
+    if (data.created_at) {
+
+        const time =
+            document.createElement("small");
+
+        time.textContent =
+            data.created_at;
+
+        time.style.display = "block";
+        time.style.marginTop = "6px";
+        time.style.color = "#777";
+
+        messageBox.appendChild(time);
+
+    }
+
+
+    inlineGroup.appendChild(messageBox);
+
+
+    /*
+     * Scroll the new message into view.
+     */
+    messageBox.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
+
+}
+
+
+/*
+ * Start the Admin WebSocket.
+ */
+document.addEventListener(
+    "DOMContentLoaded",
+    connectCustomerWebSocket
+);
+
+
 })();

@@ -827,13 +827,29 @@ Warranty / Technical Issue
 
 (function () {
 
-    const ticketId = "{{ ticket.id }}";
+    const ticketId = "{{ ticket.id|default:'' }}";
 
     const repliesContainer =
         document.getElementById("ticket-replies");
 
     const waitingMessage =
         document.getElementById("waiting-for-reply");
+
+
+    /*
+     * Do NOT start polling when there is
+     * no support ticket yet.
+     *
+     * This prevents requests such as:
+     *
+     * ticket_id=
+     *
+     */
+
+    if (!ticketId || !repliesContainer || !waitingMessage) {
+        return;
+    }
+
 
     let lastReplyId = 0;
 
@@ -848,24 +864,29 @@ Warranty / Technical Issue
 
         checkingReplies = true;
 
+
         fetch(
             "{% url 'chat:ticket_replies' %}"
             + "?ticket_id="
             + encodeURIComponent(ticketId)
-            + "&after_id="
+            + "&after_reply_id="
             + lastReplyId,
             {
                 method: "GET",
+
                 headers: {
                     "X-Requested-With": "XMLHttpRequest"
                 },
+
                 credentials: "same-origin"
             }
         )
         .then(function (response) {
 
             if (!response.ok) {
-                throw new Error("Unable to check replies.");
+                throw new Error(
+                    "Unable to check replies."
+                );
             }
 
             return response.json();
@@ -880,43 +901,73 @@ Warranty / Technical Issue
 
             data.replies.forEach(function (reply) {
 
-                const message = document.createElement("div");
+                const message =
+                    document.createElement("div");
+
 
                 message.style.marginBottom = "12px";
-                message.style.padding = "14px 16px";
-                message.style.borderRadius = "12px";
-                message.style.background = "#f7f7f7";
-                message.style.border = "1px solid #e5e5e5";
-                message.style.lineHeight = "1.5";
+
+                message.style.padding =
+                    "14px 16px";
+
+                message.style.borderRadius =
+                    "12px";
+
+                message.style.background =
+                    "#f7f7f7";
+
+                message.style.border =
+                    "1px solid #e5e5e5";
+
+                message.style.lineHeight =
+                    "1.5";
 
 
-                const title = document.createElement("strong");
+                const title =
+                    document.createElement("strong");
+
 
                 title.textContent =
                     "WaziTrade Support";
 
-                title.style.display = "block";
-                title.style.marginBottom = "6px";
+
+                title.style.display =
+                    "block";
+
+                title.style.marginBottom =
+                    "6px";
 
 
-                const text = document.createElement("div");
+                const text =
+                    document.createElement("div");
+
 
                 text.textContent =
                     reply.reply_text;
 
 
-                const time = document.createElement("small");
+                const time =
+                    document.createElement("small");
+
 
                 time.textContent =
                     reply.created_at;
 
-                time.style.display = "block";
-                time.style.marginTop = "8px";
-                time.style.color = "#777";
+
+                time.style.display =
+                    "block";
+
+                time.style.marginTop =
+                    "8px";
+
+                time.style.color =
+                    "#777";
 
 
                 message.appendChild(title);
+
                 message.appendChild(text);
+
                 message.appendChild(time);
 
 
@@ -924,11 +975,15 @@ Warranty / Technical Issue
 
 
                 if (reply.id > lastReplyId) {
-                    lastReplyId = reply.id;
+
+                    lastReplyId =
+                        reply.id;
+
                 }
 
 
-                waitingMessage.style.display = "none";
+                waitingMessage.style.display =
+                    "none";
 
             });
 
@@ -950,11 +1005,19 @@ Warranty / Technical Issue
     }
 
 
-    // Check immediately when the page opens.
+    /*
+     * Check immediately when the
+     * ticket page opens.
+     */
+
     checkReplies();
 
 
-    // Then quietly check for new replies.
+    /*
+     * Then check every 3 seconds
+     * for new support replies.
+     */
+
     setInterval(
         checkReplies,
         3000

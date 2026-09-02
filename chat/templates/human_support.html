@@ -35,8 +35,12 @@
                     WaziTrade Support
                 </strong>
 
-                <small>
-                    Talk to a Human
+                <small id="human-connection-status">
+                    {% if ticket %}
+                        Connecting...
+                    {% else %}
+                        Talk to a Human
+                    {% endif %}
                 </small>
 
             </div>
@@ -51,7 +55,6 @@
     ====================================================== -->
 
     <div class="chat-body">
-
 
         <!-- =================================================
              SUPPORT INTRODUCTION
@@ -94,7 +97,6 @@
                     {% else %}
                         none
                     {% endif %};
-
                 margin: 0 20px 15px 20px;
                 padding: 14px;
                 border-radius: 10px;
@@ -117,14 +119,14 @@
                 margin: 20px;
              ">
 
-
             <!-- =================================================
                  ORIGINAL CUSTOMER MESSAGE
             ================================================== -->
 
             {% if ticket %}
 
-                <div class="message customer">
+                <div class="message customer"
+                     data-original-ticket-message="true">
 
                     <div style="
                         display: flex;
@@ -149,12 +151,11 @@
 
                             {% if ticket.attachment %}
 
-                                <div style="
-                                    margin-top: 10px;
-                                ">
+                                <div style="margin-top: 10px;">
 
                                     <a href="{{ ticket.attachment.url }}"
                                        target="_blank"
+                                       rel="noopener noreferrer"
                                        style="
                                             color: #ffffff;
                                             text-decoration: underline;
@@ -167,31 +168,31 @@
                                 </div>
 
                             {% endif %}
+
+
                             {% if ticket.voice_message %}
 
-    <div style="
-        margin-top: 10px;
-    ">
+                                <div style="margin-top: 10px;">
 
-        <audio
-            controls
-            preload="metadata"
-            style="
-                max-width: 100%;
-            "
-        >
+                                    <audio
+                                        controls
+                                        preload="metadata"
+                                        style="max-width: 100%;"
+                                    >
 
-            <source
-                src="{{ ticket.voice_message.url }}"
-            >
+                                        <source
+                                            src="{{ ticket.voice_message.url }}"
+                                        >
 
-            Your browser does not support audio playback.
+                                        Your browser does not support
+                                        audio playback.
 
-        </audio>
+                                    </audio>
 
-    </div>
+                                </div>
 
-{% endif %}
+                            {% endif %}
+
                         </div>
 
                     </div>
@@ -233,12 +234,11 @@
 
                             {% if message.attachment %}
 
-                                <div style="
-                                    margin-top: 10px;
-                                ">
+                                <div style="margin-top: 10px;">
 
                                     <a href="{{ message.attachment.url }}"
                                        target="_blank"
+                                       rel="noopener noreferrer"
                                        style="
                                             color: #ffffff;
                                             text-decoration: underline;
@@ -247,6 +247,30 @@
                                         📎 View attachment
 
                                     </a>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            {% if message.voice_message %}
+
+                                <div style="margin-top: 10px;">
+
+                                    <audio
+                                        controls
+                                        preload="metadata"
+                                        style="max-width: 100%;"
+                                    >
+
+                                        <source
+                                            src="{{ message.voice_message.url }}"
+                                        >
+
+                                        Your browser does not support
+                                        audio playback.
+
+                                    </audio>
 
                                 </div>
 
@@ -290,16 +314,39 @@
 
                             {% if reply.attachment %}
 
-                                <div style="
-                                    margin-top: 10px;
-                                ">
+                                <div style="margin-top: 10px;">
 
                                     <a href="{{ reply.attachment.url }}"
-                                       target="_blank">
+                                       target="_blank"
+                                       rel="noopener noreferrer">
 
                                         📎 View attachment
 
                                     </a>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            {% if reply.voice_message %}
+
+                                <div style="margin-top: 10px;">
+
+                                    <audio
+                                        controls
+                                        preload="metadata"
+                                        style="max-width: 100%;"
+                                    >
+
+                                        <source
+                                            src="{{ reply.voice_message.url }}"
+                                        >
+
+                                        Your browser does not support
+                                        audio playback.
+
+                                    </audio>
 
                                 </div>
 
@@ -329,7 +376,7 @@
 
 
         <!-- =================================================
-             SUCCESS / TICKET INFORMATION
+             TICKET INFORMATION
         ================================================== -->
 
         <div id="human-success"
@@ -340,7 +387,6 @@
                     {% else %}
                         none
                     {% endif %};
-
                 margin: 20px;
                 padding: 15px;
                 border-radius: 12px;
@@ -348,12 +394,11 @@
                 border: 1px solid #c8e6c9;
              ">
 
-            <strong style="
-                color: #2e7d32;
-            ">
+            <strong style="color: #2e7d32;">
 
-                Support ticket
-                #<span id="human-ticket-id">
+                Support ticket #
+
+                <span id="human-ticket-id">
 
                     {% if ticket %}
                         {{ ticket.id }}
@@ -377,7 +422,7 @@
 
 
         <!-- =================================================
-             REPLY STATUS
+             CONNECTION STATUS
         ================================================== -->
 
         <div id="human-reply-status"
@@ -388,7 +433,6 @@
                     {% else %}
                         none
                     {% endif %};
-
                 margin: 0 20px 15px 20px;
                 padding: 12px;
                 border-radius: 10px;
@@ -399,7 +443,11 @@
                 text-align: center;
              ">
 
-            Waiting for a WaziTrade support agent to reply...
+            {% if ticket %}
+                Connecting to WaziTrade Support...
+            {% else %}
+                Send your message to start a support conversation.
+            {% endif %}
 
         </div>
 
@@ -426,15 +474,17 @@
 
                 <span id="attachment-name"></span>
 
-                <button type="button"
-                        id="remove-attachment"
-                        style="
-                            border: none;
-                            background: none;
-                            color: #b42318;
-                            cursor: pointer;
-                            font-size: 18px;
-                        ">
+                <button
+                    type="button"
+                    id="remove-attachment"
+                    style="
+                        border: none;
+                        background: none;
+                        color: #b42318;
+                        cursor: pointer;
+                        font-size: 18px;
+                    "
+                >
 
                     ✕
 
@@ -462,12 +512,14 @@
             {% csrf_token %}
 
 
-            <!-- Hidden ticket ID -->
+            <!-- Ticket ID -->
 
-            <input type="hidden"
-                   id="human-ticket-input"
-                   name="ticket_id"
-                   value="{% if ticket %}{{ ticket.id }}{% endif %}">
+            <input
+                type="hidden"
+                id="human-ticket-input"
+                name="ticket_id"
+                value="{% if ticket %}{{ ticket.id }}{% endif %}"
+            >
 
 
             <!-- Message -->
@@ -490,290 +542,1194 @@
             ></textarea>
 
 
-        
-<!-- Bottom controls -->
+            <!-- =================================================
+                 CONTROLS
+            ================================================== -->
 
-<div style="
-    display: flex;
-    gap: 10px;
-    align-items: center;
-">
-
-
-    <!-- Attachment -->
-
-    <label for="human-attachment"
-           style="
-                flex: 0 0 auto;
-                padding: 12px 15px;
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                cursor: pointer;
-                background: #ffffff;
-           ">
-
-        📎
-
-        <span style="
-            margin-left: 4px;
-        ">
-
-            Photo / Video
-
-        </span>
-
-    </label>
+            <div style="
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                flex-wrap: wrap;
+            ">
 
 
-    <input
-        type="file"
-        id="human-attachment"
-        name="attachment"
-        accept="image/*,video/*"
-        style="
-            display: none;
-        "
-    >
+                <!-- ATTACHMENT -->
+
+                <label
+                    for="human-attachment"
+                    style="
+                        flex: 0 0 auto;
+                        padding: 12px 15px;
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        background: #ffffff;
+                    "
+                >
+
+                    📎
+
+                    <span style="margin-left: 4px;">
+
+                        Photo / Video
+
+                    </span>
+
+                </label>
 
 
-    <!-- =================================================
-         VOICE MESSAGE BUTTON
-    ================================================== -->
-
-    <button
-        type="button"
-        id="voice-record-button"
-        style="
-            flex: 0 0 auto;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            cursor: pointer;
-            background: #ffffff;
-            font-size: 16px;
-        "
-    >
-
-        🎤
-
-        <span style="
-            margin-left: 4px;
-        ">
-
-            Voice
-
-        </span>
-
-    </button>
+                <input
+                    type="file"
+                    id="human-attachment"
+                    name="attachment"
+                    accept="image/*,video/*"
+                    style="display: none;"
+                >
 
 
-    <!-- =================================================
-         VOICE RECORDING STATUS
-    ================================================== -->
+                <!-- VOICE -->
 
-    <span
-        id="voice-recording-status"
-        style="
-            display: none;
-            font-size: 13px;
-            color: #b42318;
-        "
-    >
+                <button
+                    type="button"
+                    id="voice-record-button"
+                    style="
+                        flex: 0 0 auto;
+                        padding: 12px 15px;
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        background: #ffffff;
+                        font-size: 16px;
+                    "
+                >
 
-        🔴 Recording...
+                    🎤
 
-    </span>
+                    <span style="margin-left: 4px;">
+
+                        Voice
+
+                    </span>
+
+                </button>
 
 
-    <!-- Send -->
+                <!-- VOICE STATUS -->
 
-    <button
-        id="human-submit"
-        type="submit"
-        style="
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: #D99923;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-        "
-    >
+                <span
+                    id="voice-recording-status"
+                    style="
+                        display: none;
+                        font-size: 13px;
+                        color: #b42318;
+                    "
+                >
 
-        Send
+                    🔴 Recording...
 
-    </button>
+                </span>
+
+
+                <!-- SEND -->
+
+                <button
+                    id="human-submit"
+                    type="submit"
+                    style="
+                        flex: 1;
+                        min-width: 100px;
+                        padding: 14px;
+                        border: none;
+                        border-radius: 10px;
+                        background: #D99923;
+                        color: #ffffff;
+                        font-weight: 600;
+                        font-size: 16px;
+                        cursor: pointer;
+                    "
+                >
+
+                    Send
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 
 
+<!-- =========================================================
+     WEBSOCKET CHAT JAVASCRIPT
+========================================================= -->
 
-        </form>
-
-
-    
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    /* =========================================================
-       ELEMENTS
-    ========================================================= */
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
 
-    const form = document.getElementById("human-support-form");
+        const form =
+            document.getElementById(
+                "human-support-form"
+            );
 
-    const messageInput =
-        document.getElementById("human-message");
+        const messageInput =
+            document.getElementById(
+                "human-message"
+            );
 
-    const attachmentInput =
-        document.getElementById("human-attachment");
+        const attachmentInput =
+            document.getElementById(
+                "human-attachment"
+            );
 
-    const attachmentPreview =
-        document.getElementById("attachment-preview");
+        const attachmentPreview =
+            document.getElementById(
+                "attachment-preview"
+            );
 
-    const attachmentName =
-        document.getElementById("attachment-name");
+        const attachmentName =
+            document.getElementById(
+                "attachment-name"
+            );
 
-    const removeAttachment =
-        document.getElementById("remove-attachment");
+        const removeAttachment =
+            document.getElementById(
+                "remove-attachment"
+            );
 
-    const submitButton =
-        document.getElementById("human-submit");
+        const submitButton =
+            document.getElementById(
+                "human-submit"
+            );
 
-    const errorBox =
-        document.getElementById("human-error");
+        const errorBox =
+            document.getElementById(
+                "human-error"
+            );
 
-    const ticketInput =
-        document.getElementById("human-ticket-input");
+        const ticketInput =
+            document.getElementById(
+                "human-ticket-input"
+            );
 
-    const ticketIdBox =
-        document.getElementById("human-ticket-id");
+        const ticketIdBox =
+            document.getElementById(
+                "human-ticket-id"
+            );
 
-    const successBox =
-        document.getElementById("human-success");
+        const successBox =
+            document.getElementById(
+                "human-success"
+            );
 
-    const messagesBox =
-        document.getElementById("human-messages");
+        const messagesBox =
+            document.getElementById(
+                "human-messages"
+            );
 
-    const repliesBox =
-        document.getElementById("human-replies");
+        const repliesBox =
+            document.getElementById(
+                "human-replies"
+            );
 
-    const replyStatus =
-        document.getElementById("human-reply-status");
+        const replyStatus =
+            document.getElementById(
+                "human-reply-status"
+            );
 
+        const connectionStatus =
+            document.getElementById(
+                "human-connection-status"
+            );
 
-    /* =========================================================
-       VOICE RECORDING ELEMENTS
-    ========================================================= */
+        const voiceButton =
+            document.getElementById(
+                "voice-record-button"
+            );
 
-    const voiceButton =
-        document.getElementById("voice-record-button");
-
-    const voiceStatus =
-        document.getElementById("voice-recording-status");
-
-
-    let mediaRecorder = null;
-
-    let audioChunks = [];
-
-    let recordedVoiceBlob = null;
-
-    let recordedVoiceFile = null;
-
-
-    /* =========================================================
-       LAST KNOWN IDS
-    ========================================================= */
-
-    let lastReplyId = 0;
-
-    let lastCustomerMessageId = 0;
+        const voiceStatus =
+            document.getElementById(
+                "voice-recording-status"
+            );
 
 
-    /* =========================================================
-       FIND EXISTING AGENT REPLIES
-    ========================================================= */
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
 
-    document
-        .querySelectorAll("#human-replies [data-reply-id]")
-        .forEach(function (element) {
+        let socket = null;
 
-            const id =
-                parseInt(
-                    element.dataset.replyId,
-                    10
-                );
+        let reconnectTimer = null;
 
-            if (id > lastReplyId) {
-                lastReplyId = id;
+        let reconnectAttempts = 0;
+
+        let manuallyClosed = false;
+
+        let mediaRecorder = null;
+
+        let audioChunks = [];
+
+        let recordedVoiceFile = null;
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        function showError(message) {
+
+            errorBox.textContent =
+                message;
+
+            errorBox.style.display =
+                "block";
+
+        }
+
+
+        function clearError() {
+
+            errorBox.textContent =
+                "";
+
+            errorBox.style.display =
+                "none";
+
+        }
+
+
+        /* =====================================================
+           TICKET ID
+        ===================================================== */
+
+        function getTicketId() {
+
+            return (
+                ticketInput.value || ""
+            ).trim();
+
+        }
+
+
+        /* =====================================================
+           SCROLL
+        ===================================================== */
+
+        function scrollToBottom() {
+
+            messagesBox.scrollTop =
+                messagesBox.scrollHeight;
+
+            window.scrollTo(
+                0,
+                document.body.scrollHeight
+            );
+
+        }
+
+
+        /* =====================================================
+           ADD CUSTOMER MESSAGE
+        ===================================================== */
+
+        function addCustomerMessage(
+            text,
+            attachmentUrl,
+            voiceUrl,
+            messageId
+        ) {
+
+            const wrapper =
+                document.createElement("div");
+
+            wrapper.className =
+                "message customer";
+
+
+            if (messageId) {
+
+                wrapper.dataset.customerMessageId =
+                    messageId;
+
             }
 
-        });
+
+            const outer =
+                document.createElement("div");
+
+            outer.style.display =
+                "flex";
+
+            outer.style.justifyContent =
+                "flex-end";
 
 
-    /* =========================================================
-       FIND EXISTING CUSTOMER MESSAGES
-    ========================================================= */
+            const bubble =
+                document.createElement("div");
 
-    document
-        .querySelectorAll("[data-customer-message-id]")
-        .forEach(function (element) {
+            bubble.style.maxWidth =
+                "80%";
 
-            const id =
-                parseInt(
-                    element.dataset.customerMessageId,
-                    10
+            bubble.style.padding =
+                "12px 15px";
+
+            bubble.style.borderRadius =
+                "14px";
+
+            bubble.style.background =
+                "#D99923";
+
+            bubble.style.color =
+                "#ffffff";
+
+            bubble.style.lineHeight =
+                "1.5";
+
+
+            if (text) {
+
+                const textNode =
+                    document.createElement("div");
+
+                textNode.textContent =
+                    text;
+
+                bubble.appendChild(
+                    textNode
                 );
 
-            if (id > lastCustomerMessageId) {
-                lastCustomerMessageId = id;
             }
 
-        });
+
+            if (attachmentUrl) {
+
+                const attachment =
+                    document.createElement("div");
+
+                attachment.style.marginTop =
+                    "10px";
 
 
-    /* =========================================================
-       ATTACHMENT SELECTED
-    ========================================================= */
+                const link =
+                    document.createElement("a");
 
-    attachmentInput.addEventListener(
-        "change",
-        function () {
+                link.href =
+                    attachmentUrl;
 
-            const file =
-                attachmentInput.files[0];
+                link.target =
+                    "_blank";
 
-            if (!file) {
+                link.rel =
+                    "noopener noreferrer";
+
+                link.textContent =
+                    "📎 View attachment";
+
+                link.style.color =
+                    "#ffffff";
+
+                link.style.textDecoration =
+                    "underline";
+
+
+                attachment.appendChild(
+                    link
+                );
+
+                bubble.appendChild(
+                    attachment
+                );
+
+            }
+
+
+            if (voiceUrl) {
+
+                const voiceBox =
+                    document.createElement("div");
+
+                voiceBox.style.marginTop =
+                    "10px";
+
+
+                const audio =
+                    document.createElement("audio");
+
+                audio.controls =
+                    true;
+
+                audio.preload =
+                    "metadata";
+
+                audio.src =
+                    voiceUrl;
+
+                audio.style.maxWidth =
+                    "100%";
+
+
+                voiceBox.appendChild(
+                    audio
+                );
+
+                bubble.appendChild(
+                    voiceBox
+                );
+
+            }
+
+
+            outer.appendChild(
+                bubble
+            );
+
+            wrapper.appendChild(
+                outer
+            );
+
+            messagesBox.appendChild(
+                wrapper
+            );
+
+
+            scrollToBottom();
+
+        }
+
+
+        /* =====================================================
+           ADD AGENT REPLY
+        ===================================================== */
+
+        function addAgentReply(data) {
+
+            const replyId =
+                data.reply_id ||
+                data.id;
+
+
+            if (
+                replyId &&
+                document.querySelector(
+                    '[data-reply-id="' +
+                    replyId +
+                    '"]'
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const message =
+                document.createElement("div");
+
+            message.className =
+                "message support";
+
+
+            if (replyId) {
+
+                message.dataset.replyId =
+                    replyId;
+
+            }
+
+
+            const bubble =
+                document.createElement("div");
+
+            bubble.className =
+                "bubble";
+
+
+            const heading =
+                document.createElement("strong");
+
+            heading.textContent =
+                "👨‍💼 WaziTrade Support";
+
+
+            bubble.appendChild(
+                heading
+            );
+
+
+            if (data.message) {
+
+                bubble.appendChild(
+                    document.createElement("br")
+                );
+
+                bubble.appendChild(
+                    document.createElement("br")
+                );
+
+
+                const text =
+                    document.createElement("div");
+
+                text.textContent =
+                    data.message;
+
+                bubble.appendChild(
+                    text
+                );
+
+            }
+
+
+            if (data.attachment_url) {
+
+                const attachment =
+                    document.createElement("div");
+
+                attachment.style.marginTop =
+                    "10px";
+
+
+                const link =
+                    document.createElement("a");
+
+                link.href =
+                    data.attachment_url;
+
+                link.target =
+                    "_blank";
+
+                link.rel =
+                    "noopener noreferrer";
+
+                link.textContent =
+                    "📎 View attachment";
+
+
+                attachment.appendChild(
+                    link
+                );
+
+                bubble.appendChild(
+                    attachment
+                );
+
+            }
+
+
+            if (data.voice_url) {
+
+                const voiceBox =
+                    document.createElement("div");
+
+                voiceBox.style.marginTop =
+                    "10px";
+
+
+                const audio =
+                    document.createElement("audio");
+
+                audio.controls =
+                    true;
+
+                audio.preload =
+                    "metadata";
+
+                audio.src =
+                    data.voice_url;
+
+                audio.style.maxWidth =
+                    "100%";
+
+
+                voiceBox.appendChild(
+                    audio
+                );
+
+                bubble.appendChild(
+                    voiceBox
+                );
+
+            }
+
+
+            if (data.created_at) {
+
+                const time =
+                    document.createElement("small");
+
+                time.style.color =
+                    "#888";
+
+                time.style.fontSize =
+                    "12px";
+
+                time.style.display =
+                    "block";
+
+                time.style.marginTop =
+                    "8px";
+
+                time.textContent =
+                    data.created_at;
+
+
+                bubble.appendChild(
+                    time
+                );
+
+            }
+
+
+            message.appendChild(
+                bubble
+            );
+
+            repliesBox.appendChild(
+                message
+            );
+
+
+            replyStatus.textContent =
+                "A WaziTrade support agent has replied.";
+
+
+            scrollToBottom();
+
+        }
+
+
+        /* =====================================================
+           ENABLE CONTROLS
+        ===================================================== */
+
+        function enableControls() {
+
+            messageInput.disabled =
+                false;
+
+            attachmentInput.disabled =
+                false;
+
+            voiceButton.disabled =
+                false;
+
+            submitButton.disabled =
+                false;
+
+        }
+
+
+        /* =====================================================
+           DISABLE ONLY WHEN NO CONNECTION
+        ===================================================== */
+
+        function disableControls() {
+
+            messageInput.disabled =
+                true;
+
+            attachmentInput.disabled =
+                true;
+
+            voiceButton.disabled =
+                true;
+
+            submitButton.disabled =
+                true;
+
+        }
+
+
+        /* =====================================================
+           CONNECT WEBSOCKET
+        ===================================================== */
+
+        function connectWebSocket(ticketId) {
+
+            if (!ticketId) {
+
+                return;
+
+            }
+
+
+            if (
+                socket &&
+                (
+                    socket.readyState ===
+                    WebSocket.OPEN ||
+
+                    socket.readyState ===
+                    WebSocket.CONNECTING
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const protocol =
+                window.location.protocol ===
+                "https:"
+                    ? "wss"
+                    : "ws";
+
+
+            const websocketUrl =
+                protocol +
+                "://" +
+                window.location.host +
+                "/ws/human-support/" +
+                encodeURIComponent(ticketId) +
+                "/";
+
+
+            connectionStatus.textContent =
+                "Connecting...";
+
+
+            replyStatus.textContent =
+                "Connecting to WaziTrade Support...";
+
+
+            socket =
+                new WebSocket(
+                    websocketUrl
+                );
+
+
+            socket.onopen =
+                function () {
+
+                    reconnectAttempts =
+                        0;
+
+                    connectionStatus.textContent =
+                        "Online";
+
+                    replyStatus.textContent =
+                        "Connected to WaziTrade Support.";
+
+                    enableControls();
+
+                    clearError();
+
+                };
+
+
+            socket.onmessage =
+                function (event) {
+
+                    let data;
+
+                    try {
+
+                        data =
+                            JSON.parse(
+                                event.data
+                            );
+
+                    }
+                    catch (error) {
+
+                        return;
+
+                    }
+
+
+                    /* -----------------------------------------
+                       CONNECTION
+                    ----------------------------------------- */
+
+                    if (
+                        data.type ===
+                        "connection"
+                    ) {
+
+                        connectionStatus.textContent =
+                            "Online";
+
+                        replyStatus.textContent =
+                            "Connected to WaziTrade Support.";
+
+                        enableControls();
+
+                        return;
+
+                    }
+
+
+                    /* -----------------------------------------
+                       AGENT REPLY
+                    ----------------------------------------- */
+
+                    if (
+                        data.type ===
+                        "agent_reply"
+                    ) {
+
+                        addAgentReply(
+                            data
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* -----------------------------------------
+                       CUSTOMER MESSAGE
+                    ----------------------------------------- */
+
+                    if (
+                        data.type ===
+                        "customer_message"
+                    ) {
+
+                        /*
+                         * Do not add our own message twice.
+                         *
+                         * The sender already displays it
+                         * immediately.
+                         */
+
+                        return;
+
+                    }
+
+                };
+
+
+            socket.onclose =
+                function () {
+
+                    socket =
+                        null;
+
+
+                    if (manuallyClosed) {
+
+                        return;
+
+                    }
+
+
+                    connectionStatus.textContent =
+                        "Reconnecting...";
+
+                    replyStatus.textContent =
+                        "Connection lost. Reconnecting...";
+
+
+                    scheduleReconnect(
+                        ticketId
+                    );
+
+                };
+
+
+            socket.onerror =
+                function () {
+
+                    connectionStatus.textContent =
+                        "Connection error";
+
+                };
+
+        }
+
+
+        /* =====================================================
+           RECONNECT
+        ===================================================== */
+
+        function scheduleReconnect(ticketId) {
+
+            if (reconnectTimer) {
+
+                return;
+
+            }
+
+
+            reconnectAttempts++;
+
+
+            const delay =
+                Math.min(
+                    1000 *
+                    Math.pow(
+                        2,
+                        reconnectAttempts - 1
+                    ),
+                    10000
+                );
+
+
+            reconnectTimer =
+                setTimeout(
+                    function () {
+
+                        reconnectTimer =
+                            null;
+
+                        connectWebSocket(
+                            ticketId
+                        );
+
+                    },
+                    delay
+                );
+
+        }
+
+
+        /* =====================================================
+           ATTACHMENT PREVIEW
+        ===================================================== */
+
+        attachmentInput.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    attachmentInput.files[0];
+
+
+                if (!file) {
+
+                    attachmentPreview.style.display =
+                        "none";
+
+                    attachmentName.textContent =
+                        "";
+
+                    return;
+
+                }
+
+
+                attachmentName.textContent =
+                    "📎 " + file.name;
+
+                attachmentPreview.style.display =
+                    "block";
+
+            }
+        );
+
+
+        /* =====================================================
+           REMOVE ATTACHMENT
+        ===================================================== */
+
+        removeAttachment.addEventListener(
+            "click",
+            function () {
+
+                attachmentInput.value =
+                    "";
 
                 attachmentPreview.style.display =
                     "none";
 
-                return;
+                attachmentName.textContent =
+                    "";
+
             }
-
-            attachmentName.textContent =
-                "📎 " + file.name;
-
-            attachmentPreview.style.display =
-                "block";
-
-        }
-    );
+        );
 
 
-    /* =========================================================
-       REMOVE ATTACHMENT
-    ========================================================= */
+        /* =====================================================
+           VOICE RECORDING
+        ===================================================== */
 
-    removeAttachment.addEventListener(
-        "click",
-        function () {
+        voiceButton.addEventListener(
+            "click",
+            async function () {
 
-            attachmentInput.value = "";
+                if (
+                    mediaRecorder &&
+                    mediaRecorder.state ===
+                    "recording"
+                ) {
+
+                    mediaRecorder.stop();
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const stream =
+                        await navigator.mediaDevices
+                            .getUserMedia({
+                                audio: true
+                            });
+
+
+                    audioChunks = [];
+
+
+                    mediaRecorder =
+                        new MediaRecorder(
+                            stream
+                        );
+
+
+                    mediaRecorder.addEventListener(
+                        "dataavailable",
+                        function (event) {
+
+                            if (
+                                event.data.size >
+                                0
+                            ) {
+
+                                audioChunks.push(
+                                    event.data
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                    mediaRecorder.addEventListener(
+                        "stop",
+                        function () {
+
+                            const mimeType =
+                                mediaRecorder.mimeType ||
+                                "audio/webm";
+
+
+                            let extension =
+                                "webm";
+
+
+                            if (
+                                mimeType.includes(
+                                    "mp4"
+                                )
+                            ) {
+
+                                extension =
+                                    "m4a";
+
+                            }
+                            else if (
+                                mimeType.includes(
+                                    "ogg"
+                                )
+                            ) {
+
+                                extension =
+                                    "ogg";
+
+                            }
+
+
+                            const blob =
+                                new Blob(
+                                    audioChunks,
+                                    {
+                                        type:
+                                            mimeType
+                                    }
+                                );
+
+
+                            recordedVoiceFile =
+                                new File(
+                                    [
+                                        blob
+                                    ],
+                                    "voice-message." +
+                                    extension,
+                                    {
+                                        type:
+                                            mimeType
+                                    }
+                                );
+
+
+                            voiceStatus.textContent =
+                                "🎤 Voice recorded";
+
+                            voiceStatus.style.display =
+                                "inline";
+
+
+                            voiceButton.textContent =
+                                "🎤 Voice ready";
+
+
+                            stream
+                                .getTracks()
+                                .forEach(
+                                    function (track) {
+
+                                        track.stop();
+
+                                    }
+                                );
+
+                        }
+                    );
+
+
+                    mediaRecorder.start();
+
+
+                    voiceStatus.textContent =
+                        "🔴 Recording... Click Voice again to stop";
+
+                    voiceStatus.style.display =
+                        "inline";
+
+
+                    voiceButton.textContent =
+                        "⏹ Stop recording";
+
+                }
+                catch (error) {
+
+                    showError(
+                        "Microphone access was blocked. Please allow microphone access and try again."
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           CLEAR COMPOSER
+        ===================================================== */
+
+        function clearComposer() {
+
+            messageInput.value =
+                "";
+
+            attachmentInput.value =
+                "";
 
             attachmentPreview.style.display =
                 "none";
@@ -781,607 +1737,78 @@ document.addEventListener("DOMContentLoaded", function () {
             attachmentName.textContent =
                 "";
 
-        }
-    );
+            recordedVoiceFile =
+                null;
 
+            audioChunks =
+                [];
 
-    /* =========================================================
-       START / STOP VOICE RECORDING
-    ========================================================= */
+            voiceStatus.style.display =
+                "none";
 
-    voiceButton.addEventListener(
-        "click",
-        async function () {
-
-            /* -------------------------------------------------
-               STOP RECORDING
-            ------------------------------------------------- */
-
-            if (
-                mediaRecorder &&
-                mediaRecorder.state === "recording"
-            ) {
-
-                mediaRecorder.stop();
-
-                return;
-            }
-
-
-            /* -------------------------------------------------
-               START RECORDING
-            ------------------------------------------------- */
-
-            try {
-
-                const stream =
-                    await navigator.mediaDevices.getUserMedia({
-                        audio: true
-                    });
-
-
-                audioChunks = [];
-
-
-                mediaRecorder =
-                    new MediaRecorder(stream);
-
-
-                mediaRecorder.addEventListener(
-                    "dataavailable",
-                    function (event) {
-
-                        if (event.data.size > 0) {
-
-                            audioChunks.push(
-                                event.data
-                            );
-
-                        }
-
-                    }
-                );
-
-
-                mediaRecorder.addEventListener(
-                    "stop",
-                    function () {
-
-                        const mimeType =
-                            mediaRecorder.mimeType ||
-                            "audio/webm";
-
-
-                        recordedVoiceBlob =
-                            new Blob(
-                                audioChunks,
-                                {
-                                    type: mimeType
-                                }
-                            );
-
-
-                        let extension = "webm";
-
-
-                        if (
-                            mimeType.includes("mp4")
-                        ) {
-
-                            extension = "m4a";
-
-                        }
-                        else if (
-                            mimeType.includes("ogg")
-                        ) {
-
-                            extension = "ogg";
-
-                        }
-
-
-                        recordedVoiceFile =
-                            new File(
-                                [
-                                    recordedVoiceBlob
-                                ],
-                                "voice-message." +
-                                extension,
-                                {
-                                    type: mimeType
-                                }
-                            );
-
-
-                        voiceStatus.textContent =
-                            "🎤 Voice recorded";
-
-                        voiceStatus.style.display =
-                            "inline";
-
-
-                        voiceButton.textContent =
-                            "🎤 Voice ready";
-
-
-                        stream
-                            .getTracks()
-                            .forEach(
-                                function (track) {
-                                    track.stop();
-                                }
-                            );
-
-                    }
-                );
-
-
-                mediaRecorder.start();
-
-
-                voiceStatus.textContent =
-                    "🔴 Recording... Click 🎤 again to stop";
-
-
-                voiceStatus.style.display =
-                    "inline";
-
-
-                voiceButton.textContent =
-                    "⏹ Stop recording";
-
-
-            }
-            catch (error) {
-
-                errorBox.textContent =
-                    "Microphone access was blocked. Please allow microphone access and try again.";
-
-                errorBox.style.display =
-                    "block";
-
-            }
+            voiceButton.textContent =
+                "🎤 Voice";
 
         }
-    );
 
 
-    /* =========================================================
-       CREATE CUSTOMER MESSAGE IN CHAT
-    ========================================================= */
+        /* =====================================================
+           CREATE FIRST TICKET
+        ===================================================== */
 
-    function addCustomerMessage(
-        text,
-        attachmentUrl,
-        voiceUrl
-    ) {
+        function createFirstTicket(
+            text,
+            file,
+            voiceFile
+        ) {
 
-        const wrapper =
-            document.createElement("div");
+            const formData =
+                new FormData();
 
-        wrapper.className =
-            "message customer";
 
+            const csrfToken =
+                document.querySelector(
+                    "[name=csrfmiddlewaretoken]"
+                ).value;
 
-        const outer =
-            document.createElement("div");
 
-        outer.style.display =
-            "flex";
-
-        outer.style.justifyContent =
-            "flex-end";
-
-
-        const bubble =
-            document.createElement("div");
-
-        bubble.style.maxWidth =
-            "80%";
-
-        bubble.style.padding =
-            "12px 15px";
-
-        bubble.style.borderRadius =
-            "14px";
-
-        bubble.style.background =
-            "#D99923";
-
-        bubble.style.color =
-            "#ffffff";
-
-        bubble.style.lineHeight =
-            "1.5";
-
-
-        /* -------------------------------------------------
-           TEXT
-        ------------------------------------------------- */
-
-        if (text) {
-
-            const textNode =
-                document.createElement("div");
-
-            textNode.textContent =
-                text;
-
-            bubble.appendChild(
-                textNode
-            );
-
-        }
-
-
-        /* -------------------------------------------------
-           ATTACHMENT
-        ------------------------------------------------- */
-
-        if (attachmentUrl) {
-
-            const attachment =
-                document.createElement("div");
-
-            attachment.style.marginTop =
-                "10px";
-
-
-            const link =
-                document.createElement("a");
-
-            link.href =
-                attachmentUrl;
-
-            link.target =
-                "_blank";
-
-            link.rel =
-                "noopener noreferrer";
-
-            link.textContent =
-                "📎 View attachment";
-
-            link.style.color =
-                "#ffffff";
-
-            link.style.textDecoration =
-                "underline";
-
-
-            attachment.appendChild(
-                link
-            );
-
-            bubble.appendChild(
-                attachment
-            );
-
-        }
-
-
-        /* -------------------------------------------------
-           VOICE
-        ------------------------------------------------- */
-
-        if (voiceUrl) {
-
-            const voiceBox =
-                document.createElement("div");
-
-            voiceBox.style.marginTop =
-                "10px";
-
-
-            const audio =
-                document.createElement("audio");
-
-            audio.controls =
-                true;
-
-            audio.preload =
-                "metadata";
-
-            audio.src =
-                voiceUrl;
-
-            audio.style.maxWidth =
-                "100%";
-
-
-            voiceBox.appendChild(
-                audio
-            );
-
-            bubble.appendChild(
-                voiceBox
-            );
-
-        }
-
-
-        outer.appendChild(
-            bubble
-        );
-
-        wrapper.appendChild(
-            outer
-        );
-
-        messagesBox.appendChild(
-            wrapper
-        );
-
-
-        wrapper.scrollIntoView({
-            behavior: "smooth",
-            block: "end"
-        });
-
-    }
-
-
-    /* =========================================================
-       CREATE AGENT REPLY IN CHAT
-    ========================================================= */
-
-    function addAgentReply(reply) {
-
-        const message =
-            document.createElement("div");
-
-        message.className =
-            "message support";
-
-        message.dataset.replyId =
-            reply.id;
-
-
-        const bubble =
-            document.createElement("div");
-
-        bubble.className =
-            "bubble";
-
-
-        const heading =
-            document.createElement("strong");
-
-        heading.textContent =
-            "👨‍💼 WaziTrade Support";
-
-
-        bubble.appendChild(
-            heading
-        );
-
-
-        /* -------------------------------------------------
-           TEXT
-        ------------------------------------------------- */
-
-        if (reply.reply_text) {
-
-            bubble.appendChild(
-                document.createElement("br")
-            );
-
-            bubble.appendChild(
-                document.createElement("br")
+            formData.append(
+                "csrfmiddlewaretoken",
+                csrfToken
             );
 
 
-            const text =
-                document.createElement("div");
-
-            text.textContent =
-                reply.reply_text;
-
-
-            bubble.appendChild(
+            formData.append(
+                "message",
                 text
             );
 
-        }
 
-
-        /* -------------------------------------------------
-           ATTACHMENT
-        ------------------------------------------------- */
-
-        if (reply.attachment_url) {
-
-            const attachment =
-                document.createElement("div");
-
-            attachment.style.marginTop =
-                "10px";
-
-
-            const link =
-                document.createElement("a");
-
-            link.href =
-                reply.attachment_url;
-
-            link.target =
-                "_blank";
-
-            link.rel =
-                "noopener noreferrer";
-
-            link.textContent =
-                "📎 View attachment";
-
-
-            attachment.appendChild(
-                link
-            );
-
-            bubble.appendChild(
-                attachment
-            );
-
-        }
-
-
-        /* -------------------------------------------------
-           VOICE MESSAGE FROM AGENT
-        ------------------------------------------------- */
-
-        if (reply.voice_url) {
-
-            const voiceBox =
-                document.createElement("div");
-
-            voiceBox.style.marginTop =
-                "10px";
-
-
-            const audio =
-                document.createElement("audio");
-
-            audio.controls =
-                true;
-
-            audio.preload =
-                "metadata";
-
-            audio.src =
-                reply.voice_url;
-
-            audio.style.maxWidth =
-                "100%";
-
-
-            voiceBox.appendChild(
-                audio
-            );
-
-            bubble.appendChild(
-                voiceBox
-            );
-
-        }
-
-
-        /* -------------------------------------------------
-           TIME
-        ------------------------------------------------- */
-
-        const time =
-            document.createElement("small");
-
-        time.style.color =
-            "#888";
-
-        time.style.fontSize =
-            "12px";
-
-        time.style.display =
-            "block";
-
-        time.style.marginTop =
-            "8px";
-
-        time.textContent =
-            reply.created_at;
-
-
-        bubble.appendChild(
-            time
-        );
-
-
-        message.appendChild(
-            bubble
-        );
-
-        repliesBox.appendChild(
-            message
-        );
-
-
-        message.scrollIntoView({
-            behavior: "smooth",
-            block: "end"
-        });
-
-    }
-
-
-    /* =========================================================
-       SEND MESSAGE / PHOTO / VIDEO / VOICE
-       AJAX — NO PAGE REFRESH
-    ========================================================= */
-
-    form.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const text =
-                messageInput.value.trim();
-
-            const file =
-                attachmentInput.files[0];
-
-
-            if (
-                !text &&
-                !file &&
-                !recordedVoiceFile
-            ) {
-
-                errorBox.textContent =
-                    "Please enter a message, attach a photo/video, or record a voice message.";
-
-                errorBox.style.display =
-                    "block";
-
-                return;
-
-            }
-
-
-            errorBox.style.display =
-                "none";
-
-
-            submitButton.disabled =
-                true;
-
-            submitButton.textContent =
-                "Sending...";
-
-
-            const formData =
-                new FormData(form);
-
-
-            /* -------------------------------------------------
-               ADD RECORDED VOICE TO FORM
-            ------------------------------------------------- */
-
-            if (recordedVoiceFile) {
+            if (file) {
 
                 formData.append(
-                    "voice_message",
-                    recordedVoiceFile
+                    "attachment",
+                    file
                 );
 
             }
 
 
-            fetch(
+            if (voiceFile) {
+
+                formData.append(
+                    "voice_message",
+                    voiceFile
+                );
+
+            }
+
+
+            return fetch(
                 "{% url 'chat:human_support' %}",
                 {
                     method: "POST",
-
                     body: formData,
-
                     headers: {
                         "X-Requested-With":
                             "XMLHttpRequest"
@@ -1389,186 +1816,337 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             )
             .then(
-                function (response) {
+                async function (response) {
 
-                    return response.json()
-                        .then(
-                            function (data) {
+                    const data =
+                        await response.json();
 
-                                if (!response.ok) {
 
-                                    throw new Error(
-                                        data.error ||
-                                        "Request failed."
-                                    );
-
-                                }
-
-                                return data;
-
-                            }
-                        );
-
-                }
-            )
-            .then(
-                function (data) {
-
-                    if (!data.success) {
+                    if (!response.ok) {
 
                         throw new Error(
                             data.error ||
-                            "Something went wrong."
+                            "Could not start support chat."
                         );
 
                     }
 
 
-                    /* =========================================
-                       NEW TICKET
-                    ========================================= */
+                    return data;
 
-                    if (data.ticket) {
+                }
+            );
 
-                        const newTicketId =
-                            data.ticket.id;
+        }
 
 
-                        ticketInput.value =
-                            newTicketId;
+        /* =====================================================
+           SEND ATTACHMENT / VOICE MESSAGE
+        ===================================================== */
+
+        function sendMediaMessage(
+            text,
+            file,
+            voiceFile
+        ) {
+
+            const formData =
+                new FormData();
 
 
-                        ticketIdBox.textContent =
-                            newTicketId;
+            const csrfToken =
+                document.querySelector(
+                    "[name=csrfmiddlewaretoken]"
+                ).value;
 
 
-                        successBox.style.display =
-                            "block";
+            formData.append(
+                "csrfmiddlewaretoken",
+                csrfToken
+            );
 
 
-                        replyStatus.style.display =
-                            "block";
+            formData.append(
+                "ticket_id",
+                getTicketId()
+            );
 
 
-                        addCustomerMessage(
-                            data.ticket.message,
-                            data.ticket.attachment_url,
-                            data.ticket.voice_url
-                        );
+            if (text) {
+
+                formData.append(
+                    "message",
+                    text
+                );
+
+            }
 
 
-                        messageInput.value =
-                            "";
+            if (file) {
+
+                formData.append(
+                    "attachment",
+                    file
+                );
+
+            }
 
 
-                        attachmentInput.value =
-                            "";
+            if (voiceFile) {
 
-                        attachmentPreview
-                            .style
-                            .display =
-                                "none";
+                formData.append(
+                    "voice_message",
+                    voiceFile
+                );
 
-
-                        /* Clear voice */
-
-                        recordedVoiceBlob =
-                            null;
-
-                        recordedVoiceFile =
-                            null;
-
-                        audioChunks = [];
+            }
 
 
-                        voiceStatus.style.display =
-                            "none";
+            return fetch(
+                "{% url 'chat:human_support' %}",
+                {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+                    }
+                }
+            )
+            .then(
+                async function (response) {
+
+                    const data =
+                        await response.json();
 
 
-                        voiceButton.textContent =
-                            "🎤 Voice";
+                    if (!response.ok) {
 
-
-                        startReplyPolling(
-                            newTicketId
+                        throw new Error(
+                            data.error ||
+                            "Message could not be sent."
                         );
 
                     }
 
 
+                    return data;
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           FORM SUBMIT
+        ===================================================== */
+
+        form.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                clearError();
+
+
+                const text =
+                    messageInput.value.trim();
+
+
+                const file =
+                    attachmentInput.files[0];
+
+
+                const voiceFile =
+                    recordedVoiceFile;
+
+
+                if (
+                    !text &&
+                    !file &&
+                    !voiceFile
+                ) {
+
+                    showError(
+                        "Please enter a message, attach a photo/video, or record a voice message."
+                    );
+
+                    return;
+
+                }
+
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "Sending...";
+
+
+                try {
+
                     /* =========================================
-                       EXISTING TICKET MESSAGE
+                       NO TICKET YET
+                       CREATE TICKET FIRST
                     ========================================= */
 
-                    else if (data.message) {
+                    if (!getTicketId()) {
 
-                        addCustomerMessage(
-                            data.message.text,
-                            data.message.attachment_url,
-                            data.message.voice_url
-                        );
+                        const data =
+                            await createFirstTicket(
+                                text,
+                                file,
+                                voiceFile
+                            );
 
+
+                        if (!data.success || !data.ticket_id || !data.message) {
+    throw new Error(data.error || "Could not start support conversation.");
+}
+
+const newTicketId = data.ticket_id;
+
+ticketInput.value = newTicketId;
+
+// Keep the ticket in the browser URL so
+// refreshing the page restores this conversation.
+window.history.replaceState(
+    {},
+    "",
+    "?ticket=" + encodeURIComponent(newTicketId)
+);
+
+ticketIdBox.textContent = newTicketId;
+
+successBox.style.display = "block";
+replyStatus.style.display = "block";
+
+addCustomerMessage(
+    data.message.text,
+    data.message.attachment_url,
+    data.message.voice_url,
+    data.message.id
+);
+
+clearComposer();
+
+connectWebSocket(newTicketId);
+
+
+                    }
+
+
+                    /* =========================================
+                       EXISTING TICKET
+                    ========================================= */
+
+                    else {
+
+                        /*
+                         * Text-only messages use WebSocket.
+                         */
 
                         if (
-                            data.message.id >
-                            lastCustomerMessageId
+                            text &&
+                            !file &&
+                            !voiceFile
                         ) {
 
-                            lastCustomerMessageId =
-                                data.message.id;
+                            if (
+                                !socket ||
+                                socket.readyState !==
+                                WebSocket.OPEN
+                            ) {
+
+                                throw new Error(
+                                    "You are not connected to WaziTrade Support yet. Please wait a moment and try again."
+                                );
+
+                            }
+
+
+                            socket.send(
+                                JSON.stringify({
+                                    message: text
+                                })
+                            );
+
+
+                            /*
+                             * Show immediately.
+                             */
+
+                            addCustomerMessage(
+                                text,
+                                null,
+                                null
+                            );
+
+
+                            clearComposer();
 
                         }
 
 
-                        messageInput.value =
-                            "";
+                        /*
+                         * Files/voice use HTTP.
+                         */
+
+                        else {
+
+                            const data =
+                                await sendMediaMessage(
+                                    text,
+                                    file,
+                                    voiceFile
+                                );
 
 
-                        attachmentInput.value =
-                            "";
+                            if (
+                                !data.success
+                            ) {
 
-                        attachmentPreview
-                            .style
-                            .display =
-                                "none";
+                                throw new Error(
+                                    data.error ||
+                                    "Message could not be sent."
+                                );
 
-
-                        /* Clear voice */
-
-                        recordedVoiceBlob =
-                            null;
-
-                        recordedVoiceFile =
-                            null;
-
-                        audioChunks = [];
+                            }
 
 
-                        voiceStatus.style.display =
-                            "none";
+                            if (
+                                data.message
+                            ) {
+
+                                addCustomerMessage(
+                                    data.message.text,
+                                    data.message.attachment_url,
+                                    data.message.voice_url,
+                                    data.message.id
+                                );
+
+                            }
 
 
-                        voiceButton.textContent =
-                            "🎤 Voice";
+                            clearComposer();
+
+                        }
 
                     }
 
                 }
-            )
-            .catch(
-                function (error) {
+                catch (error) {
 
-                    errorBox.textContent =
+                    showError(
                         error.message ||
-                        "Something went wrong. Please try again.";
-
-                    errorBox.style.display =
-                        "block";
+                        "Something went wrong. Please try again."
+                    );
 
                 }
-            )
-            .finally(
-                function () {
+                finally {
 
                     submitButton.disabled =
                         false;
@@ -1577,194 +2155,72 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Send";
 
                 }
+
+            }
+        );
+
+
+        /* =====================================================
+           ENTER TO SEND
+        ===================================================== */
+
+        messageInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter" &&
+                    !event.shiftKey
+                ) {
+
+                    event.preventDefault();
+
+                    form.requestSubmit();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           EXISTING TICKET
+        ===================================================== */
+
+        const existingTicketId =
+            getTicketId();
+
+
+        if (existingTicketId) {
+
+            connectWebSocket(
+                existingTicketId
             );
 
         }
-    );
+        else {
 
+            /*
+             * IMPORTANT:
+             * The composer remains enabled because
+             * the customer must be able to create
+             * the first ticket.
+             */
 
-    /* =========================================================
-       POLL FOR NEW REPLIES
-    ========================================================= */
+            enableControls();
 
-    let pollingStarted =
-        false;
+            connectionStatus.textContent =
+                "Ready";
 
-
-    function startReplyPolling(ticketId) {
-
-        if (pollingStarted) {
-            return;
-        }
-
-
-        pollingStarted =
-            true;
-
-
-        function checkReplies() {
-
-            fetch(
-                "{% url 'chat:ticket_replies' %}" +
-                "?ticket_id=" +
-                encodeURIComponent(ticketId) +
-                "&after_reply_id=" +
-                encodeURIComponent(lastReplyId) +
-                "&after_customer_id=" +
-                encodeURIComponent(lastCustomerMessageId),
-                {
-                    method: "GET",
-
-                    headers: {
-                        "X-Requested-With":
-                            "XMLHttpRequest"
-                    }
-                }
-            )
-            .then(
-                function (response) {
-
-                    if (!response.ok) {
-
-                        throw new Error(
-                            "Reply request failed."
-                        );
-
-                    }
-
-                    return response.json();
-
-                }
-            )
-            .then(
-                function (data) {
-
-                    /* =========================================
-                       AGENT REPLIES
-                    ========================================= */
-
-                    if (data.replies) {
-
-                        data.replies.forEach(
-                            function (reply) {
-
-                                if (
-                                    reply.id <=
-                                    lastReplyId
-                                ) {
-
-                                    return;
-
-                                }
-
-
-                                addAgentReply(
-                                    reply
-                                );
-
-
-                                lastReplyId =
-                                    reply.id;
-
-
-                                replyStatus
-                                    .textContent =
-                                    "A WaziTrade support agent has replied.";
-
-                            }
-                        );
-
-                    }
-
-
-                    /* =========================================
-                       CUSTOMER MESSAGES
-                    ========================================= */
-
-                    if (data.customer_messages) {
-
-                        data.customer_messages
-                            .forEach(
-                                function (message) {
-
-                                    if (
-                                        message.id <=
-                                        lastCustomerMessageId
-                                    ) {
-
-                                        return;
-
-                                    }
-
-
-                                    lastCustomerMessageId =
-                                        message.id;
-
-                                }
-                            );
-
-                    }
-
-                }
-            )
-            .catch(
-                function () {
-
-                    /*
-                     * Do nothing.
-                     * Next polling cycle will retry.
-                     */
-
-                }
-            );
+            replyStatus.textContent =
+                "Send your message to start a support conversation.";
 
         }
 
-
-        /* Check immediately */
-
-        checkReplies();
-
-
-        /* Then every 3 seconds */
-
-        setInterval(
-            checkReplies,
-            3000
-        );
-
     }
-
-
-    /* =========================================================
-       START POLLING FOR EXISTING TICKET
-    ========================================================= */
-
-    const existingTicket =
-        ticketIdBox
-            ? ticketIdBox
-                .textContent
-                .trim()
-            : "";
-
-
-    if (existingTicket) {
-
-        startReplyPolling(
-            existingTicket
-        );
-
-    }
-
-});
+);
 
 </script>
 
-
-
-
-    </div>
-
-</div>
-
 {% endblock %}
+

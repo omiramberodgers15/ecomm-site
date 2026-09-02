@@ -26,6 +26,11 @@ from .models import Seller
 
 from .models import HelpCategory, HelpArticle,Promotion
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
+from django.shortcuts import redirect
+
 logger = logging.getLogger(__name__)
 
 # ---------------------
@@ -168,6 +173,7 @@ class TicketReplyInline(admin.StackedInline):
     class Media:
         js = ("core/js/ticket_reply_admin.js",)
 
+
 class CustomerTicketMessageInline(admin.StackedInline):
     model = CustomerTicketMessage
     extra = 0
@@ -177,14 +183,16 @@ class CustomerTicketMessageInline(admin.StackedInline):
     readonly_fields = (
         "message",
         "attachment",
+        "voice_message",
         "created_at",
     )
 
     fields = (
         "message",
         "attachment",
+        "voice_message",
         "created_at",
-    )
+    )    
 
 
 @admin.register(SupportTicket)
@@ -211,6 +219,16 @@ class SupportTicketAdmin(admin.ModelAdmin):
         CustomerTicketMessageInline,
     ]
 
+    def response_change(self, request, obj):
+        """
+        After saving a support ticket, stay on the same
+        conversation instead of returning to the ticket list.
+        """
+        return redirect(
+            "admin:core_supportticket_change",
+            obj.pk,
+        )
+    
     def save_formset(self, request, form, formset, change):
         """Save support replies and notify the customer by email."""
 
@@ -226,6 +244,50 @@ class SupportTicketAdmin(admin.ModelAdmin):
                 obj.save()
 
                 ticket = obj.ticket
+
+                # Send the new support reply to the customer's WebSocket
+                attachment_url = None
+                voice_url = None
+
+                if obj.attachment:
+                    try:
+                        attachment_url = obj.attachment.url
+                    except Exception:
+                        attachment_url = None
+
+                if obj.voice_message:
+                    try:
+                        voice_url = obj.voice_message.url
+                    except Exception:
+                        voice_url = None
+
+                channel_layer = get_channel_layer()
+
+                try:
+                    async_to_sync(channel_layer.group_send)(
+                        f"human_support_{ticket.id}",
+                        {
+                            "type": "agent_reply",
+                            "reply_id": obj.id,
+                            "message": obj.reply_text or "",
+                            "attachment_url": attachment_url,
+                            "voice_url": voice_url,
+                            "created_at": obj.created_at.strftime(
+                                "%d %b %Y, %H:%M"
+                            ),
+                        },
+                    )
+
+                    logger.info(
+                        "WebSocket support reply sent for ticket #%s",
+                        ticket.id,
+                    )
+
+                except Exception as e:
+                    logger.error(
+                        "Failed to send WebSocket support reply "
+                        f"for ticket #{ticket.id}: {e}"
+                    )
 
                 if ticket.email:
 
@@ -285,7 +347,7 @@ class SupportTicketAdmin(admin.ModelAdmin):
                 )
 
         formset.save_m2m()
-
+    
 
 @admin.register(CustomerTicketMessage)
 class CustomerTicketMessageAdmin(admin.ModelAdmin):
