@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 {% block title %}
 WaziTrade Support
@@ -48,7 +50,10 @@ WaziTrade Support
 
       <div class="bubble">
 
-        👋 Welcome to WaziTrade Support.
+        <<span class="material-symbols-outlined welcome-icon">
+    waving_hand
+</span>
+        Welcome to WaziTrade Support.
 
         <br><br>
 
@@ -82,10 +87,9 @@ WaziTrade Support
            font-weight: 600;
          ">
 
-        <span class="material-symbols-outlined"
-              style="margin-right: 8px;">
-          chat
-        </span>
+        <span class="material-symbols-outlined chat-icon">
+    chat
+</span>
 
         Continue on WaziTrade
 
@@ -94,29 +98,34 @@ WaziTrade Support
 
       <!-- CONTINUE ON WHATSAPP -->
 
-      <a href="https://wa.me/256762318421" target="_blank"
-         rel="noopener"
-         style="
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           min-height: 52px;
-           padding: 14px 18px;
-           border-radius: 10px;
-           background: #f2f2f2;
-           color: #222222;
-           text-decoration: none;
-           font-weight: 600;
-         ">
+<a href="https://wa.me/256762318421"
+target="_blank"
+rel="noopener"
+style="
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: #f2f2f2;
+  color: #222222;
+  text-decoration: none;
+  font-weight: 600;
+">
 
-        <span class="material-symbols-outlined"
-              style="margin-right: 8px;">
-          phone
-        </span>
+<svg class="whatsapp-icon"
+    viewBox="0 0 24 24"
+    aria-hidden="true">
 
-        Continue on WhatsApp
+<path d="M20.52 3.48A11.84 11.84 0 0 0 12.04 0C5.5 0 .18 5.32.18 11.86c0 2.09.55 4.13 1.59 5.92L.1 24l6.37-1.67a11.86 11.86 0 0 0 5.57 1.42h.01c6.54 0 11.86-5.32 11.86-11.86 0-3.17-1.23-6.15-3.39-8.41ZM12.05 21.7h-.01a9.82 9.82 0 0 1-5-1.37l-.36-.21-3.78.99 1.01-3.69-.23-.38a9.82 9.82 0 1 1 8.37 4.66Zm5.39-7.36c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.96 1.18-.18.2-.35.23-.65.08-.3-.15-1.27-.47-2.42-1.5-.89-.79-1.5-1.77-1.68-2.07-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.68-1.64-.93-2.24-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.53.08-.81.38-.28.3-1.06 1.04-1.06 2.54s1.09 2.95 1.24 3.15c.15.2 2.14 3.27 5.19 4.59.73.32 1.3.51 1.74.65.73.23 1.39.2 1.91.12.58-.09 1.78-.73 2.03-1.44.25-.71.25-1.32.18-1.44-.08-.13-.28-.2-.58-.35Z"/>
 
-      </a>
+  </svg>
+
+Continue on WhatsApp
+
+</a>
+
 
     </div>
 
@@ -135,7 +144,10 @@ WaziTrade Support
 
       <div class="bubble">
 
-        👋 Hi {{ request.user.username }}, welcome to WaziTrade Support.
+        <span class="material-symbols-outlined welcome-icon">
+    waving_hand
+</span>
+        Hi {{ request.user.username }}, welcome to WaziTrade Support.
 
         <br><br>
 
@@ -176,10 +188,9 @@ WaziTrade Support
      box-sizing: border-box;
    ">
 
-  <span class="material-symbols-outlined"
-        style="font-size: 28px;">
+  <span class="material-symbols-outlined delivery-icon">
     local_shipping
-  </span>
+</span>
 
   <span>
     <strong>Track my delivery</strong>
@@ -211,10 +222,9 @@ WaziTrade Support
      box-sizing: border-box;
    ">
 
-  <span class="material-symbols-outlined"
-        style="font-size: 28px;">
+  <span class="material-symbols-outlined payment-icon">
     payments
-  </span>
+</span>
 
   <span>
     <strong>MTN / Airtel payment</strong>
@@ -247,10 +257,9 @@ WaziTrade Support
      box-sizing: border-box;
    ">
 
-  <span class="material-symbols-outlined"
-        style="font-size: 28px;">
+  <span class="material-symbols-outlined warranty-icon">
     shield
-  </span>
+</span>
 
   <span>
     <strong>Warranty / Technical issue</strong>
@@ -283,10 +292,9 @@ WaziTrade Support
      box-sizing: border-box;
    ">
 
-  <span class="material-symbols-outlined"
-        style="font-size: 28px;">
+  <span class="material-symbols-outlined returns-icon">
     assignment_return
-  </span>
+</span>
 
   <span>
     <strong>Returns & refunds</strong>
@@ -312,12 +320,13 @@ WaziTrade Support
                 display: flex;
                 align-items: center;
                 gap: 14px;
+                text-decoration: none;
                 cursor: pointer;
               ">
 
-    <span class="material-symbols-outlined">
-        support_agent
-    </span>
+    <span class="material-symbols-outlined human-support-icon">
+    support_agent
+</span>
 
     <span>
         <strong>Talk to a human</strong>
@@ -336,5 +345,58 @@ WaziTrade Support
   {% endif %}
 
 </div>
+
+
+<style>
+/* =========================================================
+   WAZITRADE SUPPORT ICON COLORS
+   ========================================================= */
+
+.welcome-icon {
+    color: #D99923;
+    font-size: 24px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.chat-icon {
+    color: #ffffff;
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.delivery-icon {
+    color: #1976D2;
+    font-size: 28px;
+}
+
+.payment-icon {
+    color: #F9A825;
+    font-size: 28px;
+}
+
+.warranty-icon {
+    color: #2E7D32;
+    font-size: 28px;
+}
+
+.returns-icon {
+    color: #E67E22;
+    font-size: 28px;
+}
+
+.human-support-icon {
+    color: #ffffff;
+    font-size: 28px;
+}
+
+.whatsapp-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    fill: #25D366;
+    flex-shrink: 0;
+}
+</style>
 
 {% endblock %}

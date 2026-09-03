@@ -1,59 +1,488 @@
 {% extends "base.html" %}
+
 {% block title %}Seller Dashboard{% endblock %}
 
 {% block content %}
-<div class="container">
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-success">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
 
-    <h2>Welcome, {{ request.user.username }}! Your seller account is active. 🎉</h2>
-
-    <h2>Seller Dashboard</h2>
-
-    <!-- Add Product -->
-    <a href="{% url 'core:seller-add-product' %}">Add Product</a>
-
-    <!-- Messages Link with Unread Badge -->
-    <p>
-        <a href="{% url 'core:seller-messages' %}">
-            Messages
-            {% if unread_count > 0 %}
-                <span class="badge">{{ unread_count }}</span>
-            {% endif %}
-        </a>
-    </p>
-
-    <hr>
-
-    <h3>Your Products</h3>
-    {% if products %}
-        {% for product in products %}
-            <div class="product-item">
-                <strong>{{ product.name }}</strong> — ${{ product.base_price }}
-                {% if not product.approved %}
-                    <span style="color: red;">(Pending Approval)</span>
-                {% endif %}
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No products yet. <a href="{% url 'core:seller-add-product' %}">Add one</a></p>
-    {% endif %}
-</div>
-
-<!-- Optional CSS for badge -->
 <style>
-.badge {
-    background-color: red;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 50%;
-    font-size: 12px;
-    vertical-align: top;
-    margin-left: 4px;
-}
+    .seller-dashboard-page {
+        min-height: calc(100vh - 120px);
+        background: #f7f7f7;
+        padding: 35px 16px 60px;
+    }
+
+    .seller-dashboard {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Welcome Banner */
+    .seller-welcome {
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        padding: 24px 26px;
+        margin-bottom: 22px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .seller-welcome-content {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .seller-welcome-icon {
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #fff4df;
+        color: #d99923;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .seller-welcome-icon .material-symbols-outlined {
+        font-size: 28px;
+    }
+
+    .seller-welcome h2 {
+        margin: 0;
+        color: #222;
+        font-size: 20px;
+        line-height: 1.4;
+    }
+
+    .seller-welcome p {
+        margin: 5px 0 0;
+        color: #777;
+        font-size: 14px;
+    }
+
+    /* Dashboard Header */
+    .dashboard-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-header h2 {
+        margin: 0;
+        color: #222;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    /* Action Buttons */
+    .dashboard-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .dashboard-action {
+        min-height: 70px;
+        padding: 15px 18px;
+        border-radius: 12px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-sizing: border-box;
+        transition: transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    .dashboard-action:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .add-product-action {
+        background: #d99923;
+        color: #ffffff;
+    }
+
+    .messages-action {
+        background: #ffffff;
+        color: #222;
+        border: 1px solid #e2e2e2;
+    }
+
+    .dashboard-action-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .add-product-action .dashboard-action-icon {
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    .messages-action .dashboard-action-icon {
+        background: #fff4df;
+        color: #d99923;
+    }
+
+    .dashboard-action-icon .material-symbols-outlined {
+        font-size: 24px;
+    }
+
+    .dashboard-action-text strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .dashboard-action-text small {
+        font-size: 12px;
+        opacity: 0.8;
+    }
+
+    .messages-action .dashboard-action-text small {
+        color: #777;
+        opacity: 1;
+    }
+
+    .unread-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        margin-left: 6px;
+        border-radius: 10px;
+        background: #d32f2f;
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 700;
+        vertical-align: middle;
+        box-sizing: border-box;
+    }
+
+    /* Products */
+    .products-card {
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .products-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #eeeeee;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .products-header .material-symbols-outlined {
+        color: #d99923;
+        font-size: 25px;
+    }
+
+    .products-header h3 {
+        margin: 0;
+        color: #222;
+        font-size: 18px;
+    }
+
+    .product-list {
+        padding: 8px 20px;
+    }
+
+    .product-item {
+        padding: 17px 2px;
+        border-bottom: 1px solid #eeeeee;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .product-item:last-child {
+        border-bottom: none;
+    }
+
+    .product-info {
+        min-width: 0;
+    }
+
+    .product-name {
+        display: block;
+        color: #222;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        word-break: break-word;
+    }
+
+    .product-price {
+        color: #d99923;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .product-status {
+        flex-shrink: 0;
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #fff3f3;
+        color: #c62828;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .empty-products {
+        padding: 35px 20px;
+        text-align: center;
+        color: #777;
+    }
+
+    .empty-products .material-symbols-outlined {
+        color: #d99923;
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+
+    .empty-products p {
+        margin: 5px 0 15px;
+        font-size: 14px;
+    }
+
+    .empty-products a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        background: #d99923;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* Alerts */
+    .seller-alert {
+        margin-bottom: 18px;
+        padding: 13px 16px;
+        border-radius: 9px;
+        background: #edf8ee;
+        border: 1px solid #c8e6c9;
+        color: #2e7d32;
+        font-size: 14px;
+    }
+
+    @media (max-width: 650px) {
+        .seller-dashboard-page {
+            padding: 24px 12px 45px;
+        }
+
+        .seller-welcome {
+            padding: 20px;
+        }
+
+        .seller-welcome h2 {
+            font-size: 17px;
+        }
+
+        .dashboard-header h2 {
+            font-size: 22px;
+        }
+
+        .dashboard-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .product-item {
+            align-items: flex-start;
+        }
+
+        .product-status {
+            font-size: 10px;
+        }
+    }
 </style>
+
+<div class="seller-dashboard-page">
+
+    <div class="seller-dashboard">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="seller-alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Welcome -->
+        <div class="seller-welcome">
+
+            <div class="seller-welcome-content">
+
+                <div class="seller-welcome-icon">
+                    <span class="material-symbols-outlined">
+                        verified
+                    </span>
+                </div>
+
+                <div>
+                    <h2>
+                        Welcome, {{ request.user.username }}!
+                    </h2>
+
+                    <p>
+                        Your WaziTrade seller account is active.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Dashboard Heading -->
+        <div class="dashboard-header">
+            <h2>Seller Dashboard</h2>
+        </div>
+
+        <!-- Dashboard Actions -->
+        <div class="dashboard-actions">
+
+            <a href="{% url 'core:seller-add-product' %}"
+               class="dashboard-action add-product-action">
+
+                <div class="dashboard-action-icon">
+                    <span class="material-symbols-outlined">
+                        add_box
+                    </span>
+                </div>
+
+                <div class="dashboard-action-text">
+                    <strong>Add Product</strong>
+                    <small>List a new product for customers</small>
+                </div>
+
+            </a>
+
+
+            <a href="{% url 'core:seller-messages' %}"
+               class="dashboard-action messages-action">
+
+                <div class="dashboard-action-icon">
+                    <span class="material-symbols-outlined">
+                        chat
+                    </span>
+                </div>
+
+                <div class="dashboard-action-text">
+
+                    <strong>
+                        Messages
+
+                        {% if unread_count > 0 %}
+                            <span class="unread-badge">
+                                {{ unread_count }}
+                            </span>
+                        {% endif %}
+                    </strong>
+
+                    <small>
+                        View messages from customers
+                    </small>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- Products -->
+        <div class="products-card">
+
+            <div class="products-header">
+
+                <span class="material-symbols-outlined">
+                    inventory_2
+                </span>
+
+                <h3>Your Products</h3>
+
+            </div>
+
+
+            {% if products %}
+
+                <div class="product-list">
+
+                    {% for product in products %}
+
+                        <div class="product-item">
+
+                            <div class="product-info">
+
+                                <span class="product-name">
+                                    {{ product.name }}
+                                </span>
+
+                                <span class="product-price">
+                                    ${{ product.base_price }}
+                                </span>
+
+                            </div>
+
+                            {% if not product.approved %}
+                                <span class="product-status">
+                                    Pending Approval
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-products">
+
+                    <span class="material-symbols-outlined">
+                        inventory_2
+                    </span>
+
+                    <p>
+                        You haven't added any products yet.
+                    </p>
+
+                    <a href="{% url 'core:seller-add-product' %}">
+                        <span class="material-symbols-outlined"
+                              style="font-size:18px;">
+                            add
+                        </span>
+                        Add your first product
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

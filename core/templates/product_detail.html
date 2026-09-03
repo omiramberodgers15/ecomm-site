@@ -1,271 +1,1094 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
 
-<div class="product-page">
-  <!-- ========================= -->
-  <!-- IMAGE GALLERY -->
-  <!-- ========================= -->
+{% block title %}
+{{ product.name }} | WaziTrade
+{% endblock %}
 
-  <section class="gallery-section">
-    <div class="gallery-container">
-      
+{% block content %}
 
-      <div class="gallery-slider" id="gallerySlider">
-        {% if product.main_image %}
-        <div class="gallery-slide">
-          <img
-            src="{{ product.main_image.url }}"
-            id="mainImage"
-            alt="{{ product.name }}"
-          />
-        </div>
-        {% endif %} {% for image in product.images.all %}
-        <div class="gallery-slide">
-          <img
-            src="{{ image.image.url }}"
-            data-color="{{ image.color }}"
-            alt="{{ product.name }}"
-          />
-        </div>
-        {% endfor %}
-      </div>
+<style>
+/* =========================================================
+   WAZITRADE PRODUCT DETAIL
+   ========================================================= */
 
-    </div>
+.product-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 18px 110px;
+    background: #fff;
+}
 
-    
-  </section>
+/* =========================================================
+   PRODUCT TOP
+   ========================================================= */
 
-  <!-- ========================= -->
-  <!-- PRODUCT INFO -->
-  <!-- ========================= -->
+.product-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    gap: 42px;
+    align-items: start;
+}
 
-  <section class="product-info">
-    <div class="price-box">
-      <div class="current-price">Ush {{ product.base_price }}</div>
+/* =========================================================
+   IMAGE GALLERY
+   ========================================================= */
 
-      {% if product.initial_price %}
+.gallery-section {
+    width: 100%;
+}
 
-      <div class="old-price">UGX {{ product.initial_price }}</div>
+.gallery-container {
+    position: relative;
+    width: 100%;
+}
 
-      <div class="discount">SAVE</div>
+.gallery-slider {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    border-radius: 16px;
+    background: #f8f8f8;
+    border: 1px solid #eeeeee;
+}
 
-      {% endif %}
-    </div>
-    <h1>{{ product.name }}</h1>
+.gallery-slider::-webkit-scrollbar {
+    display: none;
+}
 
-    <div class="rating-row">
-    <span class="stars">★★★★★</span>
-    <span>{{ reviews.count }} Reviews</span>
-</div>
+.gallery-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    min-height: 470px;
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8;
+}
 
-    
-  </section>
+.gallery-slide img {
+    width: 100%;
+    height: 470px;
+    object-fit: contain;
+    display: block;
+    padding: 24px;
+}
 
-  <!-- ========================= -->
-  <!-- COLORS -->
-  <!-- ========================= -->
+/* Gallery arrows */
 
-  {% if colors %}
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: 1px solid #e3e3e3;
+    border-radius: 50%;
+    background: rgba(255,255,255,.95);
+    color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    transition: .2s ease;
+}
 
-  <section class="color-section">
-    <h3>Select Color</h3>
+.gallery-arrow:hover {
+    background: #D99923;
+    color: #fff;
+    border-color: #D99923;
+}
 
-    <div class="color-list">
-      {% for color in colors %}
+.gallery-prev {
+    left: 14px;
+}
 
-      <button class="color-btn" data-color="{{ color|lower }}">
-        {{ color }}
-      </button>
+.gallery-next {
+    right: 14px;
+}
 
-      {% endfor %}
-    </div>
-  </section>
+/* Gallery dots */
 
-  {% endif %}
+.gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 12px;
+}
 
-  <section class="delivery-card">
-    <h3>🚚 Delivery</h3>
+.gallery-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #d6d6d6;
+    cursor: pointer;
+    transition: .2s ease;
+}
 
-    <div class="delivery-item">
-      <span>Destination</span>
+.gallery-dot.active {
+    width: 22px;
+    border-radius: 8px;
+    background: #D99923;
+}
 
-      <strong>Uganda</strong>
-    </div>
+/* =========================================================
+   PRODUCT INFORMATION
+   ========================================================= */
 
-    <div class="delivery-item">
-      <span>Estimated</span>
+.product-info {
+    min-width: 0;
+}
 
-      <strong>Tomorrow - 3 Days</strong>
-    </div>
+.product-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 7px;
+    background: #fff4df;
+    color: #9b6813;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    margin-bottom: 12px;
+}
 
-    <div class="delivery-item">
-      <span>Shipping Fee</span>
+.product-info h1 {
+    margin: 0 0 12px;
+    color: #202020;
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.2;
+    font-weight: 700;
+}
 
-      <strong> UGX {{ transport_fee }} </strong>
-    </div>
-  </section>
-  
-  <section class="description-card">
-    <h2>Product Description</h2>
+.short-description {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 18px;
+}
 
-    <p>{{ product.description|linebreaks }}</p>
-  </section>
+/* Rating */
 
-  <section class="description-card">
-    <h2>Shipping Information</h2>
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    color: #777;
+    font-size: 14px;
+}
 
-    <p>{{ product.shipping_info }}</p>
-  </section>
-  <section class="description-card">
-    <h2>Product Protection</h2>
+.stars {
+    color: #f5a623;
+    font-size: 19px;
+    letter-spacing: 2px;
+}
 
-    <p>{{ product.product_protection }}</p>
-  </section>
+/* Price */
 
-<!-- ========================= -->
-<!-- STICKY ACTION BAR -->
-<!-- ========================= -->
+.price-box {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 0;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 20px;
+}
 
-<div class="sticky-cart">
-  <a href="{% url 'cart:cart_add' product.id %}" class="cart-btn">
-    🛒 Add to Cart
-  </a>
+.current-price {
+    color: #222;
+    font-size: 30px;
+    font-weight: 800;
+}
 
-  {% if user.is_authenticated %}
-  <a href="{% url 'core:buy_now' product.id %}" class="buy-btn"> Buy Now </a>
-  {% else %}
-  <a
-    href="{% url 'core:login' %}?next={% url 'core:buy_now' product.id %}"
-    class="buy-btn"
-  >
-    Buy Now
-  </a>
-  {% endif %}
-</div>
+.old-price {
+    color: #999;
+    font-size: 16px;
+    text-decoration: line-through;
+}
 
+.discount {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 8px;
+    border-radius: 5px;
+    background: #fff0e9;
+    color: #d45122;
+    font-size: 11px;
+    font-weight: 800;
+}
 
-  <section class="related-products">
-    <h2>Related Products</h2>
+/* =========================================================
+   COLOR OPTIONS
+   ========================================================= */
 
-    <div class="related-slider">
-      {% for item in related_products %}
+.color-section {
+    margin-top: 22px;
+}
 
-      <a href="{% url 'core:product_detail' item.id %}" class="related-card">
-        {% if item.main_image %}
+.color-section h3 {
+    margin: 0 0 11px;
+    font-size: 15px;
+    color: #333;
+}
 
-        <img src="{{ item.main_image.url }}" />
+.color-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
 
-        {% endif %}
+.color-btn {
+    min-width: 76px;
+    padding: 10px 16px;
+    border: 1px solid #d7d7d7;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: .2s ease;
+}
 
-        <h4>{{ item.name }}</h4>
+.color-btn:hover,
+.color-btn.active {
+    border-color: #D99923;
+    color: #9b6813;
+    background: #fff9ef;
+}
 
-        <p>UGX {{ item.base_price }}</p>
-      </a>
+/* =========================================================
+   DELIVERY
+   ========================================================= */
 
-      {% endfor %}
-    </div>
-  </section>
-</div>
+.delivery-card {
+    margin-top: 28px;
+    padding: 20px;
+    border: 1px solid #e8e8e8;
+    border-radius: 14px;
+    background: #fafafa;
+}
 
+.delivery-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 15px;
+    color: #252525;
+    font-size: 17px;
+}
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const slider = document.querySelector(".gallery-slider");
+.delivery-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 11px 0;
+    border-top: 1px solid #ededed;
+    font-size: 14px;
+}
 
-    const slides = document.querySelectorAll(".gallery-slide");
+.delivery-item:first-of-type {
+    border-top: 0;
+}
 
-    const dots = document.querySelectorAll(".dot");
+.delivery-item span {
+    color: #777;
+}
 
-    const next = document.querySelector(".next");
+.delivery-item strong {
+    color: #333;
+    text-align: right;
+}
 
-    const prev = document.querySelector(".prev");
+/* =========================================================
+   INFORMATION CARDS
+   ========================================================= */
 
-    let index = 0;
+.product-details {
+    margin-top: 38px;
+}
 
-    function updateGallery() {
-      slider.scrollTo({
-        left: index * slider.clientWidth,
+.description-card {
+    padding: 25px 0;
+    border-top: 1px solid #e9e9e9;
+}
 
-        behavior: "smooth",
-      });
+.description-card h2 {
+    margin: 0 0 12px;
+    color: #222;
+    font-size: 21px;
+}
 
-      dots.forEach((d) => d.classList.remove("active"));
+.description-card p {
+    margin: 0;
+    color: #666;
+    font-size: 15px;
+    line-height: 1.8;
+}
 
-      if (dots[index]) {
-        dots[index].classList.add("active");
-      }
+.description-card ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #666;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   STICKY ACTION BAR
+   ========================================================= */
+
+.sticky-cart {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: rgba(255,255,255,.97);
+    border-top: 1px solid #e5e5e5;
+    box-shadow: 0 -4px 18px rgba(0,0,0,.08);
+    backdrop-filter: blur(8px);
+}
+
+.cart-btn,
+.buy-btn {
+    min-width: 190px;
+    padding: 14px 22px;
+    border-radius: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.cart-btn {
+    border: 1px solid #D99923;
+    background: #fff;
+    color: #9b6813;
+}
+
+.cart-btn:hover {
+    background: #fff8eb;
+}
+
+.buy-btn {
+    border: 1px solid #D99923;
+    background: #D99923;
+    color: #fff;
+}
+
+.buy-btn:hover {
+    background: #bf8119;
+    border-color: #bf8119;
+}
+
+/* =========================================================
+   RELATED PRODUCTS
+   ========================================================= */
+
+.related-products {
+    margin-top: 45px;
+}
+
+.related-products h2 {
+    margin: 0 0 18px;
+    color: #222;
+    font-size: 23px;
+}
+
+.related-slider {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.related-card {
+    display: block;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    border-radius: 12px;
+    background: #fff;
+    text-decoration: none;
+    color: inherit;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.related-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+
+.related-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: contain;
+    display: block;
+    padding: 12px;
+    background: #f8f8f8;
+}
+
+.related-card-content {
+    padding: 13px;
+}
+
+.related-card h4 {
+    margin: 0 0 7px;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.related-card p {
+    margin: 0;
+    color: #9b6813;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .product-page {
+        padding: 12px 12px 105px;
     }
 
-    next.addEventListener("click", () => {
-      if (index < slides.length - 1) {
-        index++;
-      }
+    .product-top {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
 
-      updateGallery();
-    });
+    .gallery-slide {
+        min-height: 360px;
+    }
 
-    prev.addEventListener("click", () => {
-      if (index > 0) {
-        index--;
-      }
+    .gallery-slide img {
+        height: 360px;
+        padding: 18px;
+    }
 
-      updateGallery();
-    });
+    .product-info h1 {
+        font-size: 27px;
+    }
 
-    slider.addEventListener("scroll", () => {
-      const width = slider.clientWidth;
+    .current-price {
+        font-size: 27px;
+    }
 
-      index = Math.round(slider.scrollLeft / width);
+    .related-slider {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-      dots.forEach((d) => d.classList.remove("active"));
+    .related-card img {
+        height: 155px;
+    }
+}
 
-      if (dots[index]) {
-        dots[index].classList.add("active");
-      }
-    });
-  });
-</script>
+@media (max-width: 520px) {
+
+    .product-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .gallery-slide {
+        min-height: 300px;
+    }
+
+    .gallery-slide img {
+        height: 300px;
+    }
+
+    .gallery-arrow {
+        width: 36px;
+        height: 36px;
+    }
+
+    .gallery-prev {
+        left: 8px;
+    }
+
+    .gallery-next {
+        right: 8px;
+    }
+
+    .delivery-card {
+        padding: 16px;
+    }
+
+    .delivery-item {
+        font-size: 13px;
+    }
+
+    .sticky-cart {
+        padding: 9px 10px;
+        gap: 8px;
+    }
+
+    .cart-btn,
+    .buy-btn {
+        min-width: 0;
+        flex: 1;
+        padding: 13px 8px;
+        font-size: 14px;
+    }
+
+    .related-slider {
+        gap: 10px;
+    }
+}
+</style>
+
+
+<div class="product-page">
+
+    <!-- =====================================================
+         PRODUCT TOP
+         ===================================================== -->
+
+    <div class="product-top">
+
+        <!-- ================= IMAGE GALLERY ================= -->
+
+        <section class="gallery-section">
+
+            <div class="gallery-container">
+
+                <div class="gallery-slider" id="gallerySlider">
+
+                    {% if product.main_image %}
+                    <div class="gallery-slide">
+                        <img
+                            src="{{ product.main_image.url }}"
+                            id="mainImage"
+                            alt="{{ product.name }}"
+                        >
+                    </div>
+                    {% endif %}
+
+                    {% for image in product.images.all %}
+                    <div class="gallery-slide">
+                        <img
+                            src="{{ image.image.url }}"
+                            data-color="{{ image.color|lower }}"
+                            alt="{{ product.name }}"
+                        >
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                {% if product.main_image or product.images.all %}
+
+                <button
+                    type="button"
+                    class="gallery-arrow gallery-prev"
+                    id="galleryPrev"
+                    aria-label="Previous image"
+                >
+                    <span class="material-symbols-outlined">
+                        chevron_left
+                    </span>
+                </button>
+
+                <button
+                    type="button"
+                    class="gallery-arrow gallery-next"
+                    id="galleryNext"
+                    aria-label="Next image"
+                >
+                    <span class="material-symbols-outlined">
+                        chevron_right
+                    </span>
+                </button>
+
+                <div class="gallery-dots" id="galleryDots"></div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PRODUCT INFORMATION ================= -->
+
+        <section class="product-info">
+
+            {% if product.is_clearance %}
+            <div class="product-badge">
+                <span class="material-symbols-outlined" style="font-size:16px;">
+                    local_offer
+                </span>
+                Clearance
+            </div>
+            {% endif %}
+
+            <h1>{{ product.name }}</h1>
+
+            {% if product.short_description %}
+            <p class="short-description">
+                {{ product.short_description }}
+            </p>
+            {% endif %}
+
+            <div class="rating-row">
+                <span class="stars">★★★★★</span>
+                <span>{{ reviews.count }} Reviews</span>
+            </div>
+
+            <div class="price-box">
+
+                <div class="current-price">
+                    UGX {{ product.base_price }}
+                </div>
+
+                {% if product.initial_price %}
+                <div class="old-price">
+                    UGX {{ product.initial_price }}
+                </div>
+
+                <div class="discount">
+                    SAVE
+                </div>
+                {% endif %}
+
+            </div>
+
+
+            <!-- ================= COLORS ================= -->
+
+            {% if colors %}
+            <div class="color-section">
+
+                <h3>Select Color</h3>
+
+                <div class="color-list">
+
+                    {% for color in colors %}
+
+                    <button
+                        type="button"
+                        class="color-btn"
+                        data-color="{{ color|lower }}"
+                    >
+                        {{ color }}
+                    </button>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+            {% endif %}
+
+
+            <!-- ================= DELIVERY ================= -->
+
+            <section class="delivery-card">
+
+                <h3>
+                    <span
+                        class="material-symbols-outlined"
+                        style="color:#D99923;"
+                    >
+                        local_shipping
+                    </span>
+                    Delivery
+                </h3>
+
+                <div class="delivery-item">
+                    <span>Destination</span>
+                    <strong>Uganda</strong>
+                </div>
+
+                <div class="delivery-item">
+                    <span>Estimated</span>
+                    <strong>Tomorrow - 3 Days</strong>
+                </div>
+
+                <div class="delivery-item">
+                    <span>Shipping Fee</span>
+                    <strong>UGX {{ transport_fee }}</strong>
+                </div>
+
+            </section>
+
+        </section>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRODUCT DETAILS
+         ===================================================== -->
+
+    <div class="product-details">
+
+        {% if product.description %}
+        <section class="description-card">
+
+            <h2>Product Description</h2>
+
+            <p>
+                {{ product.description|linebreaks }}
+            </p>
+
+        </section>
+        {% endif %}
+
+
+        {% if product.shipping_info %}
+        <section class="description-card">
+
+            <h2>Shipping Information</h2>
+
+            <p>
+                {{ product.shipping_info|linebreaks }}
+            </p>
+
+        </section>
+        {% endif %}
+
+
+        {% if product.product_protection %}
+        <section class="description-card">
+
+            <h2>Product Protection</h2>
+
+            <p>
+                {{ product.product_protection|linebreaks }}
+            </p>
+
+        </section>
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================================
+         RELATED PRODUCTS
+         ===================================================== -->
+
+    {% if related_products %}
+
+    <section class="related-products">
+
+        <h2>Related Products</h2>
+
+        <div class="related-slider">
+
+            {% for item in related_products %}
+
+            <a
+                href="{% url 'core:product_detail' item.id %}"
+                class="related-card"
+            >
+
+                {% if item.main_image %}
+                <img
+                    src="{{ item.main_image.url }}"
+                    alt="{{ item.name }}"
+                >
+                {% endif %}
+
+                <div class="related-card-content">
+
+                    <h4>
+                        {{ item.name }}
+                    </h4>
+
+                    <p>
+                        UGX {{ item.base_price }}
+                    </p>
+
+                </div>
+
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================================
+     STICKY ACTION BAR
+     ========================================================= -->
+
+<div class="sticky-cart">
+
+    <a
+        href="{% url 'cart:cart_add' product.id %}"
+        class="cart-btn"
+    >
+        Add to Cart
+    </a>
+
+
+    {% if user.is_authenticated %}
+
+    <a
+        href="{% url 'core:buy_now' product.id %}"
+        class="buy-btn"
+    >
+        Buy Now
+    </a>
+
+    {% else %}
+
+    <a
+        href="{% url 'core:login' %}?next={% url 'core:buy_now' product.id %}"
+        class="buy-btn"
+    >
+        Buy Now
+    </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================================
+     GALLERY + COLOR JAVASCRIPT
+     ========================================================= -->
 
 <script>
 
-  const colorImages={{ color_images_json|safe }};
+document.addEventListener("DOMContentLoaded", function () {
 
-  const colorButtons=document.querySelectorAll(".color-btn");
+    const slider = document.getElementById("gallerySlider");
+    const prev = document.getElementById("galleryPrev");
+    const next = document.getElementById("galleryNext");
+    const dotsContainer = document.getElementById("galleryDots");
 
-  const gallery=document.querySelector(".gallery-slider");
+    if (!slider) return;
 
-  colorButtons.forEach(btn=>{
+    let slides = slider.querySelectorAll(".gallery-slide");
+    let index = 0;
 
-  btn.onclick=function(){
 
-  colorButtons.forEach(b=>b.classList.remove("active"));
+    /* ==============================================
+       CREATE DOTS
+       ============================================== */
 
-  this.classList.add("active");
+    function createDots() {
 
-  const color=this.dataset.color;
+        if (!dotsContainer) return;
 
-  if(colorImages[color]){
+        dotsContainer.innerHTML = "";
 
-  gallery.innerHTML="";
+        slides = slider.querySelectorAll(".gallery-slide");
 
-  colorImages[color].forEach(img=>{
+        slides.forEach(function (_, i) {
 
-  gallery.innerHTML+=`
+            const dot = document.createElement("button");
 
-  <div class="gallery-slide">
+            dot.type = "button";
+            dot.className = "gallery-dot";
 
-  <img src="${img}">
+            if (i === 0) {
+                dot.classList.add("active");
+            }
 
-  </div>
+            dot.setAttribute("aria-label", "Go to image " + (i + 1));
 
-  `;
+            dot.addEventListener("click", function () {
+                index = i;
+                updateGallery();
+            });
 
-  });
+            dotsContainer.appendChild(dot);
 
-  }
+        });
 
-  };
+    }
 
-  });
+
+    /* ==============================================
+       UPDATE GALLERY
+       ============================================== */
+
+    function updateGallery() {
+
+        slides = slider.querySelectorAll(".gallery-slide");
+
+        if (!slides.length) return;
+
+        if (index < 0) {
+            index = 0;
+        }
+
+        if (index >= slides.length) {
+            index = slides.length - 1;
+        }
+
+        slider.scrollTo({
+            left: index * slider.clientWidth,
+            behavior: "smooth"
+        });
+
+        if (dotsContainer) {
+
+            const dots = dotsContainer.querySelectorAll(".gallery-dot");
+
+            dots.forEach(function (dot) {
+                dot.classList.remove("active");
+            });
+
+            if (dots[index]) {
+                dots[index].classList.add("active");
+            }
+
+        }
+
+    }
+
+
+    /* ==============================================
+       NEXT / PREVIOUS
+       ============================================== */
+
+    if (next) {
+
+        next.addEventListener("click", function () {
+
+            if (index < slides.length - 1) {
+                index++;
+            } else {
+                index = 0;
+            }
+
+            updateGallery();
+
+        });
+
+    }
+
+
+    if (prev) {
+
+        prev.addEventListener("click", function () {
+
+            if (index > 0) {
+                index--;
+            } else {
+                index = slides.length - 1;
+            }
+
+            updateGallery();
+
+        });
+
+    }
+
+
+    /* ==============================================
+       DETECT MANUAL SWIPING / SCROLLING
+       ============================================== */
+
+    slider.addEventListener("scroll", function () {
+
+        const width = slider.clientWidth;
+
+        if (!width) return;
+
+        index = Math.round(slider.scrollLeft / width);
+
+        if (dotsContainer) {
+
+            const dots = dotsContainer.querySelectorAll(".gallery-dot");
+
+            dots.forEach(function (dot) {
+                dot.classList.remove("active");
+            });
+
+            if (dots[index]) {
+                dots[index].classList.add("active");
+            }
+
+        }
+
+    });
+
+
+    createDots();
+
+
+    /* ==============================================
+       COLOR IMAGE SWITCHING
+       ============================================== */
+
+    const colorImages = {{ color_images_json|safe }};
+    const colorButtons = document.querySelectorAll(".color-btn");
+
+
+    colorButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            colorButtons.forEach(function (btn) {
+                btn.classList.remove("active");
+            });
+
+            this.classList.add("active");
+
+            const color = this.dataset.color;
+
+            if (!colorImages[color]) {
+                return;
+            }
+
+            slider.innerHTML = "";
+
+            colorImages[color].forEach(function (img) {
+
+                slider.innerHTML += `
+                    <div class="gallery-slide">
+                        <img
+                            src="${img}"
+                            alt="{{ product.name }}"
+                        >
+                    </div>
+                `;
+
+            });
+
+            index = 0;
+
+            createDots();
+            updateGallery();
+
+        });
+
+    });
+
+});
+
 </script>
 
 {% endblock %}

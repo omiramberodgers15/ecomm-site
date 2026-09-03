@@ -3,16 +3,232 @@
 {% block title %}Seller Registration{% endblock %}
 
 {% block content %}
-<h2 style="margin-bottom: 16px;padding-left: 16px;text-align: center;color:goldenrod;font-size: 20px;">Register as Seller</h2>
 
-<form method="POST" id="register-form" action="" style="margin-bottom:8px;padding-left: 24px;padding-right: 24px;min-width: 48px;max-width: 100%;">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" style="padding: 12px ;border-radius: 12px;background: #febd69;border: none;font-size: 16px;text-transform: uppercase;">Register</button>
-</form>
+<style>
+    .seller-register-page {
+        min-height: calc(100vh - 120px);
+        background: #f7f7f7;
+        padding: 40px 16px 60px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
 
+    .seller-register-card {
+        width: 100%;
+        max-width: 520px;
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
 
-{% for message in messages %}
-<p >{{ message }}</p>
-{% endfor %}
+    .seller-register-header {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .seller-register-icon {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 14px;
+        border-radius: 50%;
+        background: #fff4df;
+        color: #d99923;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
+
+    .seller-register-header h2 {
+        margin: 0;
+        color: #222;
+        font-size: 26px;
+        font-weight: 700;
+    }
+
+    .seller-register-header p {
+        margin: 8px 0 0;
+        color: #777;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    #register-form {
+        margin: 0;
+        padding: 0;
+    }
+
+    #register-form p {
+        margin: 0 0 18px;
+    }
+
+    #register-form label {
+        display: block;
+        margin-bottom: 7px;
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    #register-form input,
+    #register-form textarea,
+    #register-form select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #d8d8d8;
+        border-radius: 9px;
+        background: #fff;
+        color: #222;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #register-form input:focus,
+    #register-form textarea:focus,
+    #register-form select:focus {
+        border-color: #d99923;
+        box-shadow: 0 0 0 3px rgba(217, 153, 35, 0.12);
+    }
+
+    #register-form ul.errorlist {
+        margin: 6px 0 8px;
+        padding: 0;
+        list-style: none;
+        color: #c62828;
+        font-size: 13px;
+    }
+
+    #register-form .helptext {
+        display: block;
+        margin-top: 6px;
+        color: #888;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    #register-form button[type="submit"] {
+        width: 100%;
+        min-height: 52px;
+        margin-top: 4px;
+        padding: 14px 20px;
+        border: none;
+        border-radius: 10px;
+        background: #d99923;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    #register-form button[type="submit"]:hover {
+        background: #c88918;
+    }
+
+    #register-form button[type="submit"]:active {
+        transform: scale(0.99);
+    }
+
+    .seller-register-note {
+        margin-top: 22px;
+        padding: 13px 14px;
+        border-radius: 9px;
+        background: #fafafa;
+        border: 1px solid #eeeeee;
+        color: #777;
+        font-size: 12px;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .seller-message {
+        width: 100%;
+        max-width: 520px;
+        box-sizing: border-box;
+        margin: 18px auto 0;
+        padding: 13px 15px;
+        border-radius: 9px;
+        background: #edf8ee;
+        border: 1px solid #c8e6c9;
+        color: #2e7d32;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    @media (max-width: 600px) {
+        .seller-register-page {
+            padding: 24px 12px 40px;
+        }
+
+        .seller-register-card {
+            padding: 24px 18px;
+            border-radius: 14px;
+        }
+
+        .seller-register-header h2 {
+            font-size: 23px;
+        }
+    }
+</style>
+
+<div class="seller-register-page">
+
+    <div style="width:100%;max-width:520px;">
+
+        <div class="seller-register-card">
+
+            <div class="seller-register-header">
+
+                <div class="seller-register-icon">
+                    <span class="material-symbols-outlined">
+                        store
+                    </span>
+                </div>
+
+                <h2>Register as Seller</h2>
+
+                <p>
+                    Create your WaziTrade seller account and start selling
+                    your products to customers.
+                </p>
+
+            </div>
+
+            <form method="POST"
+                  id="register-form"
+                  action="">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button type="submit">
+                    Register
+                </button>
+
+            </form>
+
+            <div class="seller-register-note">
+                By registering, you agree to provide accurate business
+                information for your WaziTrade seller account.
+            </div>
+
+        </div>
+
+        {% for message in messages %}
+            <div class="seller-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
 {% endblock %}
