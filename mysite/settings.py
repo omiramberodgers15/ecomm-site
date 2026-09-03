@@ -124,7 +124,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',  # allauth
 ]
 
-SITE_ID = 1
+SITE_ID = 2
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/cart/checkout/'
@@ -136,19 +136,6 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
 ACCOUNT_LOGIN_METHOD = "email"  # or "username"
 # then adjust ACCOUNT_SIGNUP_FIELDS accordingly
-
-
-
-# Google OAuth
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': os.environ.get("GOOGLE_CLIENT_ID", ""),
-            'secret': os.environ.get("GOOGLE_CLIENT_SECRET", ""),
-            'key': ''
-        }
-    }
-}
 
 
 # --------------------------
