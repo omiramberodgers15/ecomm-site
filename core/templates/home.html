@@ -1,290 +1,901 @@
-{% extends "base.html" %}{% load static %}{% load humanize %}{% block title %}
-Home - WaziTrade {% endblock %}{% block content %}
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+Home - WaziTrade
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================
+     PROMOTIONAL BANNER
+========================================================= -->
 
 
+{% if promotions %}
+
+<!-- =========================================================
+     WAZITRADE PROMOTIONAL CAROUSEL
+========================================================= -->
+
+<section class="home-hero-carousel" aria-label="WaziTrade promotions">
+
+    <div class="home-hero-slides">
+
+        {% for promotion in promotions %}
+
+        <a
+            href="{{ promotion.link|default:'#' }}"
+            class="home-hero-slide {% if forloop.first %}active{% endif %}"
+            data-slide="{{ forloop.counter0 }}"
+            aria-label="{{ promotion.title }}"
+        >
+
+            <!-- PROMOTION IMAGE -->
+
+            <div class="home-hero-media">
+
+                <img
+                    src="{{ promotion.image.url }}"
+                    alt="{{ promotion.title }}"
+                    class="home-hero-image"
+                >
+
+                <!-- Dark readability overlay -->
+                <div class="home-hero-overlay"></div>
+
+                <!-- Animated shine -->
+                <div class="home-hero-shine"></div>
 
 
+                <!-- PROMOTION CONTENT -->
 
-<!-- ======= WEEKEND DEALS BANNER ======= -->
- <!-- =======
-<div class="promo-banner">
+                <div class="home-hero-content">
 
-	<div class="promo-content">
-		<h2>{{ promotions.title }}</h2>
+                    <span class="home-hero-badge">
+                        WaziTrade
+                    </span>
 
-		<p>{{ promotions.description }}</p>
+                    <h1>
+                        {{ promotion.title }}
+                    </h1>
 
-		<a href="{{ promotions.link }}" class="promo-btn">
-			{{ promotions.button_text }}
-		</a>
-	</div>
+                    {% if promotion.description %}
+                    <p class="home-hero-description">
+                        {{ promotion.description }}
+                    </p>
+                    {% endif %}
 
-	<div class="promo-image">
-		<img src="{{ promotions.image.url }}" alt="{{ promotions.title }}">
-	</div>
+                    <span class="home-hero-button">
 
-</div>
- ======= -->
+                        {{ promotion.button_text|default:"Shop Now" }}
 
- <div class="promo-banner">
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
 
-	<a href="{{ promotions.link }}" class="promo-image">
-		<img
-			src="{{ promotions.image.url }}"
-			alt="{{ promotions.title }}"
-		>
-	</a>
+                    </span>
 
-</div>
+                </div>
 
-<!-- ======= PRODUCT HORIZONTAL SLIDER ======= -->
+            </div>
 
-<div class="product-slider-section">
-	<div class="section-header">
-		<h2>Popular Products</h2>
+        </a>
 
-		<a href="{% url 'core:search' %}?sort=popular">
-			View All
-		</a>
-	</div>
-		<div class="product-slider">
+        {% endfor %}
 
-		<div class="slider-track">
+    </div>
 
-			{% for product in popular_products %}
 
-			<a href="{% url 'core:product_detail' product.id %}"
-			   class="slider-item">
+    <!-- PREVIOUS BUTTON -->
 
-				{% if product.images.exists %}
+    {% if promotions|length > 1 %}
 
-					<img
-						src="{{ product.images.first.image.url }}"
-						alt="{{ product.name }}"
-					/>
+    <button
+        type="button"
+        class="home-hero-arrow home-hero-prev"
+        aria-label="Previous promotion"
+    >
+        <span class="material-symbols-outlined">
+            chevron_left
+        </span>
+    </button>
 
-				{% elif product.main_image %}
 
-					<img
-						src="{{ product.main_image.url }}"
-						alt="{{ product.name }}"
-					/>
+    <!-- NEXT BUTTON -->
 
-				{% else %}
+    <button
+        type="button"
+        class="home-hero-arrow home-hero-next"
+        aria-label="Next promotion"
+    >
+        <span class="material-symbols-outlined">
+            chevron_right
+        </span>
+    </button>
 
-					<img
-						src="{% static 'images/placeholder.png' %}"
-						alt="No image"
-					/>
 
-				{% endif %}
+    <!-- DOTS -->
 
-				<span class="product-title">
-					{{ product.name|truncatechars:18 }}
-				</span>
+    <div class="home-hero-dots" aria-label="Promotion navigation">
 
-			</a>
+        {% for promotion in promotions %}
 
-			{% endfor %}
+        <button
+            type="button"
+            class="home-hero-dot {% if forloop.first %}active{% endif %}"
+            data-slide="{{ forloop.counter0 }}"
+            aria-label="Go to promotion {{ forloop.counter }}"
+        ></button>
 
-		</div>
+        {% endfor %}
 
-	</div>
+    </div>
 
-	</div>
-	
-</div>
+    {% endif %}
 
-<!-- ============= NEW ARRIVALS ============= -->
- <div class="scroll-container-section">
-	 <h3 class="section-title">New Arrivals</h3>
+</section>
 
-<div class="scroll-wrapper">
-  <div class="products-horizontal scroll-container">
-	{% for product in new_arrivals %}
-	<div class="product-card">
-	  <a href="{% url 'core:product_detail' product.id %}">
-		{% if product.main_image %}
-		<img src="{{ product.main_image.url }}" alt="{{ product.name }}" />
-		{% else %}
-		<img src="{% static 'core/default-product.jpg' %}" />
-		{% endif %}
-	  </a>
+{% endif %}
 
-	  <div class="price-row">
-		<span class="new-price" style="color:#f60; font-weight: 700;font-size: 14px;"
-		  >Ush {{ product.base_price|floatformat:0|intcomma }}</span
-		>
-	  </div>
-	  <p class="prod-name" style="margin-left: 0px;padding-left: 0px;color:#666;" >{{ product.name }}</p>
-	</div>
-	{% empty %}
-	<p>No new arrivals yet.</p>
-	{% endfor %}
-  </div>
+<!-- =========================================================
+     POPULAR PRODUCTS
+========================================================= -->
 
-  
-</div>
+<section class="home-section popular-section">
 
- </div>
 
-<!-- ============= TOP DEALS ============= -->
-<!-- <h3 class="section-title">Top Deals</h3>
-<div class="products-default">
-	{% for product in top_deals %}
-	<div class="product-card">
+<div class="home-section-header">
+    <div>
+        <h2>Popular Products</h2>
+        <p>What shoppers are viewing now</p>
+    </div>
 
-		<a href="{% url 'core:product_detail' product.id %}">
-			{% if product.main_image %}
-			<img src="{{ product.main_image.url }}" alt="{{ product.name }}">
-			{% else %}
-			<img src="{% static 'core/default-product.jpg' %}">
-			{% endif %}
-		</a>
-
-		<p class="prod-name">{{ product.name }}</p>
-
-		<div class="price-row">
-			{% if product.initial_price %}
-			<span class="old-price">UGX {{ product.initial_price }}</span>
-			{% endif %}
-			<span class="new-price">UGX {{ product.base_price }}</span>
-		</div>
-
-	</div>
-	{% empty %}
-	<p>No top deals right now.</p>
-	{% endfor %}
-</div>
-
--->
-
-<!-- ============= BEST SELLERS ============= -->
-<h3 class="section-title">Top Sellers</h3>
-<div class="products-vertical">
-  {% for product in best_sellers %}
-  <div class="product-card">
-	<a href="{% url 'core:product_detail' product.id %}">
-	  {% if product.main_image %}
-	  <img src="{{ product.main_image.url }}" alt="{{ product.name }}" />
-	  {% else %}
-	  <img src="{% static 'core/default-product.jpg' %}" />
-	  {% endif %}
-	</a>
-	<div class="price-row">
-	  <span class="new-price"
-		>Ush {{ product.base_price|floatformat:0|intcomma }}</span
-	  >
-	</div>
-	<div class="prod-name-row">
-		<p class="prod-name">{{ product.name }}</p>
-		<p class="prod-review">{{ product.review_count }} reviews</p>
-	</div>
-	
-
-	
-  </div>
-  {% empty %}
-  <p>No best sellers yet.</p>
-  {% endfor %}
+    <a
+        href="{% url 'core:search' %}?sort=popular"
+        class="view-all-link"
+    >
+        View All
+    </a>
 </div>
 
-{% endblock %} {% block extra_scripts %}
+<div class="popular-slider">
 
+    <div class="popular-slider-track">
+
+        {% for product in popular_products %}
+
+        <a
+            href="{% url 'core:product_detail' product.id %}"
+            class="popular-product-card"
+        >
+
+            <div class="popular-image">
+
+                {% if product.images.exists %}
+
+                <img
+                    src="{{ product.images.first.image.url }}"
+                    alt="{{ product.name }}"
+                >
+
+                {% elif product.main_image %}
+
+                <img
+                    src="{{ product.main_image.url }}"
+                    alt="{{ product.name }}"
+                >
+
+                {% else %}
+
+                <img
+                    src="{% static 'images/placeholder.png' %}"
+                    alt="No image"
+                >
+
+                {% endif %}
+
+            </div>
+
+            <span class="popular-product-name">
+                {{ product.name|truncatechars:24 }}
+            </span>
+
+        </a>
+
+        {% empty %}
+
+        <div class="home-empty">
+            <span class="material-symbols-outlined">
+                inventory_2
+            </span>
+            <p>No popular products yet.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+</section>
+
+<!-- =========================================================
+     NEW ARRIVALS
+========================================================= -->
+
+<section class="home-section new-arrivals-section">
+
+
+<div class="home-section-header">
+
+    <div>
+        <h2>New Arrivals</h2>
+        <p>Fresh products added to WaziTrade</p>
+    </div>
+
+    <a
+        href="{% url 'core:new-products' %}"
+        class="view-all-link"
+    >
+        View All
+    </a>
+
+</div>
+
+
+<div class="home-product-grid">
+
+    {% for product in new_arrivals %}
+
+    <article class="home-product-card">
+
+        <a
+            href="{% url 'core:product_detail' product.id %}"
+            class="home-product-image-link"
+        >
+
+            {% if product.main_image %}
+
+            <img
+                src="{{ product.main_image.url }}"
+                alt="{{ product.name }}"
+                class="home-product-image"
+            >
+
+            {% else %}
+
+            <img
+                src="{% static 'core/default-product.jpg' %}"
+                alt="{{ product.name }}"
+                class="home-product-image"
+            >
+
+            {% endif %}
+
+        </a>
+
+        <div class="home-product-info">
+
+            <p class="home-product-name">
+                {{ product.name }}
+            </p>
+
+            <div class="home-product-price">
+                Ush {{ product.base_price|floatformat:0|intcomma }}
+            </div>
+
+        </div>
+
+    </article>
+
+    {% empty %}
+
+    <div class="home-empty">
+        <span class="material-symbols-outlined">
+            inventory_2
+        </span>
+        <p>No new arrivals yet.</p>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+</section>
+
+<!-- =========================================================
+     TOP SELLERS
+========================================================= -->
+
+<section class="home-section top-sellers-section">
+
+
+<div class="home-section-header">
+
+    <div>
+        <h2>Top Sellers</h2>
+        <p>Popular choices from our marketplace</p>
+    </div>
+
+    <a
+        href="{% url 'core:best-sellers' %}"
+        class="view-all-link"
+    >
+        View All
+    </a>
+
+</div>
+
+
+<div class="home-product-grid">
+
+    {% for product in best_sellers %}
+
+    <article class="home-product-card">
+
+        <a
+            href="{% url 'core:product_detail' product.id %}"
+            class="home-product-image-link"
+        >
+
+            {% if product.main_image %}
+
+            <img
+                src="{{ product.main_image.url }}"
+                alt="{{ product.name }}"
+                class="home-product-image"
+            >
+
+            {% else %}
+
+            <img
+                src="{% static 'core/default-product.jpg' %}"
+                alt="{{ product.name }}"
+                class="home-product-image"
+            >
+
+            {% endif %}
+
+        </a>
+
+
+        <div class="home-product-info">
+
+            <div class="home-product-price">
+                Ush {{ product.base_price|floatformat:0|intcomma }}
+            </div>
+
+            <p class="home-product-name">
+                {{ product.name }}
+            </p>
+
+            <div class="home-product-rating">
+
+                <span class="rating-stars">
+                    ★
+                </span>
+
+                <span>
+                    {{ product.review_count }} reviews
+                </span>
+
+            </div>
+
+        </div>
+
+    </article>
+
+    {% empty %}
+
+    <div class="home-empty">
+        <span class="material-symbols-outlined">
+            trending_up
+        </span>
+        <p>No best sellers yet.</p>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<!-- =========================================================
+     WAZITRADE PROMOTIONAL CAROUSEL JAVASCRIPT
+========================================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const carousel = document.querySelector(".home-hero-carousel");
+
+    if (!carousel) return;
+
+    const slides = carousel.querySelectorAll(".home-hero-slide");
+    const dots = carousel.querySelectorAll(".home-hero-dot");
+    const prevButton = carousel.querySelector(".home-hero-prev");
+    const nextButton = carousel.querySelector(".home-hero-next");
+
+    if (slides.length <= 1) return;
+
+
+    let currentSlide = 0;
+    let autoSlide = null;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+
+    /* =========================================================
+       SHOW SLIDE
+    ========================================================= */
+
+    function showSlide(index) {
+
+        if (index >= slides.length) {
+            index = 0;
+        }
+
+        if (index < 0) {
+            index = slides.length - 1;
+        }
+
+        currentSlide = index;
+
+
+        /* Remove active state */
+
+        slides.forEach(function (slide) {
+            slide.classList.remove("active");
+        });
+
+
+        dots.forEach(function (dot) {
+            dot.classList.remove("active");
+        });
+
+
+        /* Activate selected slide */
+
+        slides[currentSlide].classList.add("active");
+
+
+        /* Activate selected dot */
+
+        if (dots[currentSlide]) {
+            dots[currentSlide].classList.add("active");
+        }
+
+    }
+
+
+    /* =========================================================
+       NEXT SLIDE
+    ========================================================= */
+
+    function nextSlide() {
+
+        showSlide(currentSlide + 1);
+
+    }
+
+
+    /* =========================================================
+       PREVIOUS SLIDE
+    ========================================================= */
+
+    function previousSlide() {
+
+        showSlide(currentSlide - 1);
+
+    }
+
+
+    /* =========================================================
+       START AUTOMATIC SLIDING
+    ========================================================= */
+
+    function startAutoSlide() {
+
+        stopAutoSlide();
+
+        autoSlide = setInterval(function () {
+
+            nextSlide();
+
+        }, 5500);
+
+    }
+
+
+    /* =========================================================
+       STOP AUTOMATIC SLIDING
+    ========================================================= */
+
+    function stopAutoSlide() {
+
+        if (autoSlide) {
+
+            clearInterval(autoSlide);
+
+            autoSlide = null;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RESTART AFTER USER INTERACTION
+    ========================================================= */
+
+    function restartAutoSlide() {
+
+        stopAutoSlide();
+
+        setTimeout(function () {
+
+            startAutoSlide();
+
+        }, 2000);
+
+    }
+
+
+    /* =========================================================
+       PREVIOUS BUTTON
+    ========================================================= */
+
+    if (prevButton) {
+
+        prevButton.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            previousSlide();
+
+            restartAutoSlide();
+
+        });
+
+    }
+
+
+    /* =========================================================
+       NEXT BUTTON
+    ========================================================= */
+
+    if (nextButton) {
+
+        nextButton.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            nextSlide();
+
+            restartAutoSlide();
+
+        });
+
+    }
+
+
+    /* =========================================================
+       DOT NAVIGATION
+    ========================================================= */
+
+    dots.forEach(function (dot, index) {
+
+        dot.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            showSlide(index);
+
+            restartAutoSlide();
+
+        });
+
+    });
+
+
+    /* =========================================================
+       PAUSE WHEN MOUSE HOVERS
+    ========================================================= */
+
+    carousel.addEventListener("mouseenter", function () {
+
+        stopAutoSlide();
+
+    });
+
+
+    /* =========================================================
+       RESUME WHEN MOUSE LEAVES
+    ========================================================= */
+
+    carousel.addEventListener("mouseleave", function () {
+
+        startAutoSlide();
+
+    });
+
+
+    /* =========================================================
+       MOBILE TOUCH — START
+    ========================================================= */
+
+    carousel.addEventListener("touchstart", function (event) {
+
+        stopAutoSlide();
+
+        touchStartX = event.changedTouches[0].screenX;
+
+    }, { passive: true });
+
+
+    /* =========================================================
+       MOBILE TOUCH — END
+    ========================================================= */
+
+    carousel.addEventListener("touchend", function (event) {
+
+        touchEndX = event.changedTouches[0].screenX;
+
+        handleSwipe();
+
+        restartAutoSlide();
+
+    }, { passive: true });
+
+
+    /* =========================================================
+       HANDLE MOBILE SWIPE
+    ========================================================= */
+
+    function handleSwipe() {
+
+        const swipeDistance = touchEndX - touchStartX;
+
+        const minimumSwipeDistance = 50;
+
+
+        /* Swipe left */
+
+        if (swipeDistance < -minimumSwipeDistance) {
+
+            nextSlide();
+
+        }
+
+
+        /* Swipe right */
+
+        else if (swipeDistance > minimumSwipeDistance) {
+
+            previousSlide();
+
+        }
+
+    }
+
+
+    /* =========================================================
+       KEYBOARD NAVIGATION
+       (Useful for accessibility)
+    ========================================================= */
+
+    carousel.addEventListener("keydown", function (event) {
+
+        if (event.key === "ArrowLeft") {
+
+            previousSlide();
+
+            restartAutoSlide();
+
+        }
+
+
+        if (event.key === "ArrowRight") {
+
+            nextSlide();
+
+            restartAutoSlide();
+
+        }
+
+    });
+
+
+    /* =========================================================
+       INITIALIZE
+    ========================================================= */
+
+    showSlide(0);
+
+    startAutoSlide();
+
+});
+</script>
+
+
+<!-- =========================================================
+     EXISTING POPULAR PRODUCTS JAVASCRIPT
+     DO NOT MODIFY
+========================================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const slider = document.querySelector(".popular-slider");
+    const track = document.querySelector(".popular-slider-track");
+
+    if (!slider || !track) return;
+
+    const products = track.querySelectorAll(".popular-product-card");
+
+    if (products.length <= 3) return;
+
+    let currentPage = 0;
+    let autoSlide;
+
+
+    function getPageWidth() {
+        return slider.clientWidth;
+    }
+
+
+    function slideNext() {
+
+        const cardsPerPage =
+            window.innerWidth <= 576 ? 3 : 5;
+
+        const totalPages =
+            Math.ceil(products.length / cardsPerPage);
+
+        currentPage++;
+
+        if (currentPage >= totalPages) {
+            currentPage = 0;
+        }
+
+        slider.scrollTo({
+            left: currentPage * getPageWidth(),
+            behavior: "smooth"
+        });
+    }
+
+
+    function startAutoSlide() {
+
+        clearInterval(autoSlide);
+
+        autoSlide = setInterval(slideNext, 4500);
+    }
+
+
+    function stopAutoSlide() {
+
+        clearInterval(autoSlide);
+    }
+
+
+    slider.addEventListener("touchstart", stopAutoSlide);
+    slider.addEventListener("mousedown", stopAutoSlide);
+    slider.addEventListener("mouseenter", stopAutoSlide);
+
+
+    slider.addEventListener("touchend", function () {
+        setTimeout(startAutoSlide, 2000);
+    });
+
+
+    slider.addEventListener("mouseup", function () {
+        setTimeout(startAutoSlide, 2000);
+    });
+
+
+    slider.addEventListener("mouseleave", function () {
+        startAutoSlide();
+    });
+
+
+    startAutoSlide();
+
+});
+</script>
 
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-	const slider = document.querySelector(".product-slider");
-	const track = document.querySelector(".slider-track");
+    const slider = document.querySelector(".popular-slider");
+    const track = document.querySelector(".popular-slider-track");
 
-	if (!slider || !track) return;
+    if (!slider || !track) return;
 
-	const products = track.querySelectorAll(".slider-item");
+    const products = track.querySelectorAll(".popular-product-card");
 
-	if (products.length <= 3) return;
+    if (products.length <= 3) return;
 
-	let currentPage = 0;
-	let autoSlide;
-
-
-	function getPageWidth() {
-
-		return slider.clientWidth;
-
-	}
+    let currentPage = 0;
+    let autoSlide;
 
 
-	function slideNext() {
-
-		const totalPages = Math.ceil(products.length / 3);
-
-		currentPage++;
-
-		if (currentPage >= totalPages) {
-
-			currentPage = 0;
-
-		}
-
-		slider.scrollTo({
-
-			left: currentPage * getPageWidth(),
-
-			behavior: "smooth"
-
-		});
-
-	}
+    function getPageWidth() {
+        return slider.clientWidth;
+    }
 
 
-	function startAutoSlide() {
+    function slideNext() {
 
-		clearInterval(autoSlide);
+        const cardsPerPage =
+            window.innerWidth <= 576 ? 3 : 5;
 
-		autoSlide = setInterval(slideNext, 4000);
+        const totalPages =
+            Math.ceil(products.length / cardsPerPage);
 
-	}
+        currentPage++;
 
+        if (currentPage >= totalPages) {
+            currentPage = 0;
+        }
 
-	function stopAutoSlide() {
-
-		clearInterval(autoSlide);
-
-	}
-
-
-	slider.addEventListener("touchstart", stopAutoSlide);
-
-	slider.addEventListener("mousedown", stopAutoSlide);
-
-	slider.addEventListener("mouseenter", stopAutoSlide);
+        slider.scrollTo({
+            left: currentPage * getPageWidth(),
+            behavior: "smooth"
+        });
+    }
 
 
-	slider.addEventListener("touchend", function () {
+    function startAutoSlide() {
 
-		setTimeout(startAutoSlide, 2000);
+        clearInterval(autoSlide);
 
-	});
-
-
-	slider.addEventListener("mouseup", function () {
-
-		setTimeout(startAutoSlide, 2000);
-
-	});
+        autoSlide = setInterval(slideNext, 4500);
+    }
 
 
-	slider.addEventListener("mouseleave", function () {
+    function stopAutoSlide() {
 
-		startAutoSlide();
+        clearInterval(autoSlide);
+    }
 
-	});
+
+    slider.addEventListener("touchstart", stopAutoSlide);
+    slider.addEventListener("mousedown", stopAutoSlide);
+    slider.addEventListener("mouseenter", stopAutoSlide);
 
 
-	startAutoSlide();
+    slider.addEventListener("touchend", function () {
+        setTimeout(startAutoSlide, 2000);
+    });
+
+
+    slider.addEventListener("mouseup", function () {
+        setTimeout(startAutoSlide, 2000);
+    });
+
+
+    slider.addEventListener("mouseleave", function () {
+        startAutoSlide();
+    });
+
+
+    startAutoSlide();
 
 });
 </script>
+
 {% endblock %}
