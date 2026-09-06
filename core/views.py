@@ -41,7 +41,7 @@ from django.db.models import Sum, Q
 from django.core.cache import cache
 from django.utils import timezone
 
-
+from .models import ProductView
 # ---------- DEALS (Dynamic) ----------
 
 from .models import Deal,Promotion
@@ -56,20 +56,128 @@ from django.http import HttpResponse
 
 # ---------- HOME & PRODUCTS ----------
 def home(request):
-    all_categories = Category.objects.all()  # <-- add this
-    new_arrivals = Product.objects.filter(approved=True).order_by("-created_at")[:10]
-    top_deals = Product.objects.filter(approved=True, initial_price__isnull=False, initial_price__gt=F('base_price')).order_by("-created_at")[:10]
-    best_sellers = Product.objects.filter(approved=True).annotate(reviews_count=Count("reviews")).order_by("-reviews_count")[:10]
-    popular_products = Product.objects.all()[0:10]  # example
-    promotions = Promotion.objects.filter(active=True).order_by("-id")[:5]
+    all_categories = Category.objects.all()
+
+    # =========================================================
+    # NEW ARRIVALS
+    # Only approved products, newest first
+    # =========================================================
+    new_arrivals = (
+        Product.objects
+        .filter(approved=True)
+        .select_related("category", "subcategory", "seller")
+        .order_by("-created_at")[:10]
+    )
+
+    # =========================================================
+    # TOP DEALS
+    # Products whose original price is higher than current price
+    # =========================================================
+    top_deals = (
+        Product.objects
+        .filter(
+            approved=True,
+            initial_price__isnull=False,
+            initial_price__gt=F("base_price"),
+        )
+        .select_related("category", "subcategory", "seller")
+        .order_by("-created_at")[:10]
+    )
+
+    # =========================================================
+    # BEST SELLERS
+    # Rank products by REAL PAID SALES, not review count.
+    # =========================================================
+    # =========================================================
+# BEST SELLERS
+# Only products with at least one paid sale.
+# Rank by real paid sales, then reviews, then newest.
+# =========================================================
+    best_sellers = (
+        Product.objects
+        .filter(approved=True)
+        .annotate(
+            sold_count=Sum(
+                "cart_items__quantity",
+                filter=Q(cart_items__orders__paid=True),
+            ),
+            reviews_count=Count("reviews", distinct=True),
+        )
+        .filter(sold_count__gt=0)
+        .select_related("category", "subcategory", "seller")
+        .order_by(
+            "-sold_count",
+            "-reviews_count",
+            "-created_at",
+        )[:10]
+    )
+
+    # =========================================================
+    # POPULAR PRODUCTS
+    # For now, use products that have customer reviews.
+    # This is temporary until we add proper activity tracking.
+    # =========================================================
+
+    popular_products = (
+    Product.objects
+    .filter(approved=True)
+    .annotate(
+        reviews_count=Count("reviews", distinct=True),
+    )
+    .select_related("category", "subcategory", "seller")
+    .order_by(
+        "-views",
+        "-reviews_count",
+        "-created_at",
+    )[:10]
+  )
+
+    # =========================================================
+# TRENDING PRODUCTS
+# Rank by views received in the last 7 days.
+# =========================================================
+    seven_days_ago = timezone.now() - timezone.timedelta(days=7)
+
+    trending_products = (
+        Product.objects
+        .filter(
+            approved=True,
+            view_events__viewed_at__gte=seven_days_ago,
+        )
+        .annotate(
+            recent_views=Count(
+                "view_events",
+                filter=Q(view_events__viewed_at__gte=seven_days_ago),
+                distinct=True,
+            ),
+            reviews_count=Count("reviews", distinct=True),
+        )
+        .select_related("category", "subcategory", "seller")
+        .order_by(
+            "-recent_views",
+            "-reviews_count",
+            "-created_at",
+        )[:10]
+    )
+    # =========================================================
+    # PROMOTIONS
+    # =========================================================
+    promotions = (
+        Promotion.objects
+        .filter(active=True)
+        .order_by("-id")[:5]
+    )
+
     context = {
-        "all_categories": all_categories,   # <-- pass it
+        "all_categories": all_categories,
         "new_arrivals": new_arrivals,
         "top_deals": top_deals,
         "best_sellers": best_sellers,
         "popular_products": popular_products,
-        "promotions": promotions,   # <-- ADD THIS
+        "trending_products": trending_products,
+        "promotions": promotions,
     }
+
     return render(request, "home.html", context)
 
 
@@ -97,6 +205,9 @@ def products_by_subcategory(request, subcategory_id):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    product.views += 1
+    product.save(update_fields=["views"])
+    ProductView.objects.create(product=product)
     color_images = {}
     for img in product.images.all():
         color_images.setdefault(img.color or "default", []).append(img.image.url)
@@ -190,7 +301,7 @@ def custom_login(request):
                 messages.warning(request, "Please login via Seller Login for your account.")
                 return redirect('core:seller-login')
             return redirect(next_url or 'core:home')
-        
+
         else:
             messages.error(request, "Invalid username or password.")
             return redirect('core:login')
@@ -325,7 +436,7 @@ def seller_dashboard(request):
         return redirect('core:seller-pending')
 
     products = seller.products.all()
-    
+
     # Count unread messages for this seller
     unread_count = Message.objects.filter(receiver=request.user, read=False).count()
 
@@ -564,37 +675,74 @@ def new_products_by_path(request, slug_path):
 
 def best_sellers(request):
     """
-    Show automatic best sellers. Uses Order.items -> CartItem.quantity summed
-    only for paid orders. Cached for 10 minutes.
-    """
-    cache_key = "core:best_sellers_v1"
-    cached = cache.get(cache_key)
-    if cached is not None:
-        return render(request, "best_sellers.html", {"top_products": cached})
+    Automatic, category-aware Best Sellers.
 
-    # annotate each product with sold_count = sum of quantities for cartitems that belong to paid orders
-    products_qs = Product.objects.filter(approved=True).annotate(
-        sold_count=Sum(
-            "cart_items__quantity",
-            filter=Q(cart_items__orders__paid=True)
-        ),
-        reviews_count=Count("reviews")
+    Products are ranked by real paid sales.
+    A category can optionally be selected using:
+        /best-sellers/?category=<category-slug>
+    """
+
+    category_slug = request.GET.get("category", "").strip()
+
+    # Start with approved products only.
+    products_qs = (
+        Product.objects
+        .filter(approved=True)
+        .annotate(
+            sold_count=Sum(
+                "cart_items__quantity",
+                filter=Q(cart_items__orders__paid=True),
+            ),
+            reviews_count=Count("reviews", distinct=True),
+        )
+        .select_related("category", "subcategory", "seller")
     )
 
-    # Ensure sold_count default 0 and order
-    products = products_qs.order_by("-sold_count", "-reviews_count", "-created_at")[:100]
+    # ---------------------------------------------------------
+    # CATEGORY FILTER
+    # ---------------------------------------------------------
+    current_category = None
 
-    # normalise sold_count to 0 where None (so template doesn't show None)
-    top_list = []
-    for p in products:
-        p.sold_count = p.sold_count or 0
-        top_list.append(p)
+    if category_slug:
+        current_category = Category.objects.filter(
+            slug=category_slug
+        ).first()
 
-    # cache for 10 minutes (600s)
-    cache.set(cache_key, top_list, 600)
+        if current_category:
+            products_qs = products_qs.filter(
+                category=current_category
+            )
 
-    return render(request, "best_sellers.html", {"top_products": top_list})
+    # ---------------------------------------------------------
+    # AUTOMATIC BEST-SELLER RANKING
+    # ---------------------------------------------------------
+    products = (
+        products_qs
+        .order_by(
+            "-sold_count",
+            "-reviews_count",
+            "-created_at",
+        )[:100]
+    )
 
+    # ---------------------------------------------------------
+    # NORMALISE SALES COUNT
+    # ---------------------------------------------------------
+    for product in products:
+        product.sold_count = product.sold_count or 0
+
+    context = {
+        "top_products": products,
+        "categories": Category.objects.all(),
+        "current_category": current_category,
+        "category_slug": category_slug,
+    }
+
+    return render(
+        request,
+        "best_sellers.html",
+        context
+    )
 
 def contact_page(request):
     if request.method == 'POST':

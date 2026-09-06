@@ -97,7 +97,7 @@ class Product(models.Model):
     shipping_info = models.TextField(blank=True, null=True)
     product_protection = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    views = models.PositiveIntegerField(default=0)
     related_searches = models.ManyToManyField(
         'self',
         blank=True,
@@ -131,6 +131,16 @@ class Product(models.Model):
     def review_count(self):
         return self.reviews.count()
 
+class ProductView(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="view_events",
+    )
+    viewed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.viewed_at}"
 
 
 class PriceOption(models.Model):

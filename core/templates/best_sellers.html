@@ -2,23 +2,92 @@
 {% block title %}Best Sellers — WaziTrade{% endblock %}
 
 {% block content %}
-<h2 style="padding:10px;">🔥 Best Sellers</h2>
+
+<h2 style="padding:10px;">
+    🔥
+    {% if current_category %}
+        Best Sellers in {{ current_category.name }}
+    {% else %}
+        Best Sellers
+    {% endif %}
+</h2>
+
+<!-- CATEGORY FILTER -->
+<div style="padding:0 10px 12px;">
+    <form method="get">
+        <select
+            name="category"
+            onchange="this.form.submit()"
+            style="
+                width:100%;
+                max-width:320px;
+                padding:10px 12px;
+                border:1px solid #ddd;
+                border-radius:6px;
+                background:#fff;
+                font-size:14px;
+                cursor:pointer;
+            "
+        >
+            <option value="">All Categories</option>
+
+            {% for category in categories %}
+                <option
+                    value="{{ category.slug }}"
+                    {% if current_category and current_category.id == category.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+
 
 {% if top_products %}
+
 <div class="product-grid">
+
     {% for p in top_products %}
+
     <div class="product-card">
-        <a href="{% url 'core:product_detail' p.id %}" style="text-decoration: none; color: inherit;">
+
+        <a href="{% url 'core:product_detail' p.id %}"
+           style="text-decoration:none; color:inherit;">
+
             {% if p.main_image %}
                 <img src="{{ p.main_image.url }}" alt="{{ p.name }}">
             {% else %}
                 <img src="/static/default-product.jpg" alt="No Image">
             {% endif %}
-            <h3 style="font-size: 14px;color: #313133;text-align: left !important; margin:8px 0 4px;">{{ p.name }}</h3>
+
+            <h3 style="
+                font-size:14px;
+                color:#313133;
+                text-align:left !important;
+                margin:8px 0 4px;
+            ">
+                {{ p.name }}
+            </h3>
+
             {% if p.initial_price %}
-                <p style="margin:0 0 4px;"><del>UGX {{ p.initial_price }}</del></p>
+                <p style="margin:0 0 4px;">
+                    <del>UGX {{ p.initial_price }}</del>
+                </p>
             {% endif %}
-            <p class="price" style="font-size: 16px;color: #222222;text-align: left; margin:0;font-weight: 700;">UGX {{ p.base_price }}</p>
+
+            <p class="price" style="
+                font-size:16px;
+                color:#222222;
+                text-align:left;
+                margin:0;
+                font-weight:700;
+            ">
+                UGX {{ p.base_price }}
+            </p>
+
         </a>
 
         <p style="font-size:12px;margin-top:4px;">
@@ -26,14 +95,22 @@
         </p>
 
     </div>
+
     {% endfor %}
+
 </div>
+
 {% else %}
-    <p style="padding:15px;">No best sellers yet — try adding some orders (paid) or check back later.</p>
+
+    <p style="padding:15px;">
+        No best sellers yet — try adding some orders (paid)
+        or check back later.
+    </p>
+
 {% endif %}
 
+
 <style>
-/* reuse your existing styles for .product-grid/.product-card */
 
 .product-grid {
     display: grid;
@@ -42,13 +119,14 @@
     padding-top: 4px;
     padding-bottom: 16px;
 }
+
 .product-card {
     padding-top: 4px;
     padding-bottom: 4px;
     position: relative;
     text-align: left;
-    
 }
+
 .product-card img {
     display: block;
     width: 100%;
@@ -58,5 +136,7 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
 </style>
+
 {% endblock %}

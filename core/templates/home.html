@@ -9,65 +9,84 @@ Home - WaziTrade
 {% block content %}
 
 <!-- =========================================================
-     PROMOTIONAL BANNER
+     WAZITRADE FEATURED DEALS & PROMOTIONS
+     ROW 1 = ANIMATED
+     ROW 2 = HORIZONTAL SCROLL
 ========================================================= -->
-
 
 {% if promotions %}
 
-<!-- =========================================================
-     WAZITRADE PROMOTIONAL CAROUSEL
-========================================================= -->
+<section class="home-promotions" aria-label="Featured Deals and Promotions">
 
-<section class="home-hero-carousel" aria-label="WaziTrade promotions">
+    <!-- =====================================================
+         PROMOTIONS HEADER
+    ====================================================== -->
 
-    <div class="home-hero-slides">
+    <div class="home-promotions-header">
 
-        {% for promotion in promotions %}
+        <div>
+            <h2>Featured Deals & Promotions</h2>
+            <p>Discover special offers from WaziTrade sellers</p>
+        </div>
 
         <a
-            href="{{ promotion.link|default:'#' }}"
-            class="home-hero-slide {% if forloop.first %}active{% endif %}"
-            data-slide="{{ forloop.counter0 }}"
-            aria-label="{{ promotion.title }}"
+            href="{% url 'core:search' %}"
+            class="home-promotions-view-all"
         >
+            View All
+        </a>
 
-            <!-- PROMOTION IMAGE -->
-
-            <div class="home-hero-media">
-
-                <img
-                    src="{{ promotion.image.url }}"
-                    alt="{{ promotion.title }}"
-                    class="home-hero-image"
-                >
-
-                <!-- Dark readability overlay -->
-                <div class="home-hero-overlay"></div>
-
-                <!-- Animated shine -->
-                <div class="home-hero-shine"></div>
+    </div>
 
 
-                <!-- PROMOTION CONTENT -->
+    <!-- =====================================================
+         ROW 1 — ANIMATED PROMOTIONAL CAROUSEL
+    ====================================================== -->
 
-                <div class="home-hero-content">
+    <div class="home-promo-featured">
 
-                    <span class="home-hero-badge">
-                        WaziTrade
+        <div class="home-promo-featured-track">
+
+            {% for promotion in promotions %}
+
+            <a
+                href="{{ promotion.link|default:'#' }}"
+                class="home-promo-featured-slide {% if forloop.first %}active{% endif %}"
+                data-promo-slide="{{ forloop.counter0 }}"
+                aria-label="{{ promotion.title }}"
+            >
+
+                <div class="home-promo-featured-image">
+
+                    <img
+                        src="{{ promotion.image.url }}"
+                        alt="{{ promotion.title }}"
+                    >
+
+                    <div class="home-promo-featured-overlay"></div>
+
+                </div>
+
+
+                <div class="home-promo-featured-content">
+
+                    <span class="home-promo-sponsored">
+                        Featured Promotion
                     </span>
 
-                    <h1>
+                    <h3>
                         {{ promotion.title }}
-                    </h1>
+                    </h3>
 
                     {% if promotion.description %}
-                    <p class="home-hero-description">
+
+                    <p>
                         {{ promotion.description }}
                     </p>
+
                     {% endif %}
 
-                    <span class="home-hero-button">
+                    <span class="home-promo-featured-button">
 
                         {{ promotion.button_text|default:"Shop Now" }}
 
@@ -79,61 +98,112 @@ Home - WaziTrade
 
                 </div>
 
-            </div>
+            </a>
 
-        </a>
+            {% endfor %}
 
-        {% endfor %}
-
-    </div>
+        </div>
 
 
-    <!-- PREVIOUS BUTTON -->
-
-    {% if promotions|length > 1 %}
-
-    <button
-        type="button"
-        class="home-hero-arrow home-hero-prev"
-        aria-label="Previous promotion"
-    >
-        <span class="material-symbols-outlined">
-            chevron_left
-        </span>
-    </button>
-
-
-    <!-- NEXT BUTTON -->
-
-    <button
-        type="button"
-        class="home-hero-arrow home-hero-next"
-        aria-label="Next promotion"
-    >
-        <span class="material-symbols-outlined">
-            chevron_right
-        </span>
-    </button>
-
-
-    <!-- DOTS -->
-
-    <div class="home-hero-dots" aria-label="Promotion navigation">
-
-        {% for promotion in promotions %}
+        {% if promotions|length > 1 %}
 
         <button
             type="button"
-            class="home-hero-dot {% if forloop.first %}active{% endif %}"
-            data-slide="{{ forloop.counter0 }}"
-            aria-label="Go to promotion {{ forloop.counter }}"
-        ></button>
 
-        {% endfor %}
+            aria-label="Previous promotion"
+        >
+
+        </button>
+
+
+        <button
+            type="button"
+
+            aria-label="Next promotion"
+        >
+
+        </button>
+
+
+        <div class="home-promo-featured-dots">
+
+            {% for promotion in promotions %}
+
+            <button
+                type="button"
+                class="home-promo-featured-dot {% if forloop.first %}active{% endif %}"
+                data-promo-slide="{{ forloop.counter0 }}"
+                aria-label="Show promotion {{ forloop.counter }}"
+            ></button>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
 
     </div>
 
-    {% endif %}
+
+    <!-- =====================================================
+         ROW 2 — SCROLLABLE PROMOTIONAL CARDS
+    ====================================================== -->
+
+    <div class="home-promo-scroll-wrapper">
+
+        <div class="home-promo-scroll">
+
+            {% for promotion in promotions %}
+
+            <a
+                href="{{ promotion.link|default:'#' }}"
+                class="home-promo-card"
+                aria-label="{{ promotion.title }}"
+            >
+
+                <div class="home-promo-card-image">
+
+                    <img
+                        src="{{ promotion.image.url }}"
+                        alt="{{ promotion.title }}"
+                    >
+
+                </div>
+
+
+                <div class="home-promo-card-content">
+
+                    <span class="home-promo-card-label">
+                        Featured
+                    </span>
+
+                    <strong>
+                        {{ promotion.title }}
+                    </strong>
+
+                    {% if promotion.description %}
+
+                    <span class="home-promo-card-description">
+                        {{ promotion.description|truncatechars:55 }}
+                    </span>
+
+                    {% endif %}
+
+                    <span class="home-promo-card-link">
+
+                        {{ promotion.button_text|default:"Shop Now" }}
+
+                    </span>
+
+                </div>
+
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
 
 </section>
 
@@ -219,6 +289,101 @@ Home - WaziTrade
 
 </div>
 
+
+</section>
+
+<!-- =========================================================
+     TRENDING PRODUCTS
+========================================================= -->
+
+<section class="home-section trending-section">
+
+    <div class="home-section-header">
+
+        <div>
+            <h2>🔥 Trending Products</h2>
+            <p>Products shoppers are viewing most this week</p>
+        </div>
+
+        <a
+            href="{% url 'core:search' %}?sort=trending"
+            class="view-all-link"
+        >
+            View All
+        </a>
+
+    </div>
+
+
+    <div class="home-product-grid">
+
+        {% for product in trending_products %}
+
+        <article class="home-product-card">
+
+            <a
+                href="{% url 'core:product_detail' product.id %}"
+                class="home-product-image-link"
+            >
+
+                {% if product.main_image %}
+
+                <img
+                    src="{{ product.main_image.url }}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% elif product.images.exists %}
+
+                <img
+                    src="{{ product.images.first.image.url }}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% else %}
+
+                <img
+                    src="{% static 'core/default-product.jpg' %}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% endif %}
+
+            </a>
+
+
+            <div class="home-product-info">
+
+                <p class="home-product-name">
+                    {{ product.name }}
+                </p>
+
+                <div class="home-product-price">
+                    Ush {{ product.base_price|floatformat:0|intcomma }}
+                </div>
+
+            </div>
+
+        </article>
+
+        {% empty %}
+
+        <div class="home-empty">
+
+            <span class="material-symbols-outlined">
+                trending_up
+            </span>
+
+            <p>No trending products yet.</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </section>
 
@@ -410,325 +575,213 @@ Home - WaziTrade
 {% block extra_scripts %}
 
 <!-- =========================================================
-     WAZITRADE PROMOTIONAL CAROUSEL JAVASCRIPT
+     FEATURED PROMOTIONS — ROW 1 CAROUSEL
 ========================================================= -->
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const carousel = document.querySelector(".home-hero-carousel");
+    const carousel = document.querySelector(".home-promo-featured");
 
     if (!carousel) return;
 
-    const slides = carousel.querySelectorAll(".home-hero-slide");
-    const dots = carousel.querySelectorAll(".home-hero-dot");
-    const prevButton = carousel.querySelector(".home-hero-prev");
-    const nextButton = carousel.querySelector(".home-hero-next");
+    const track = carousel.querySelector(".home-promo-featured-track");
+    const slides = carousel.querySelectorAll(".home-promo-featured-slide");
+    const prevButton = carousel.querySelector(".home-promo-featured-prev");
+    const nextButton = carousel.querySelector(".home-promo-featured-next");
+    const dots = carousel.querySelectorAll(".home-promo-featured-dot");
 
-    if (slides.length <= 1) return;
-
+    if (!track || slides.length <= 1) return;
 
     let currentSlide = 0;
-    let autoSlide = null;
-    let touchStartX = 0;
-    let touchEndX = 0;
+    let autoSlide;
 
-
-    /* =========================================================
-       SHOW SLIDE
-    ========================================================= */
 
     function showSlide(index) {
 
-        if (index >= slides.length) {
-            index = 0;
-        }
-
-        if (index < 0) {
-            index = slides.length - 1;
-        }
-
-        currentSlide = index;
-
-
-        /* Remove active state */
-
-        slides.forEach(function (slide) {
-            slide.classList.remove("active");
-        });
-
-
-        dots.forEach(function (dot) {
-            dot.classList.remove("active");
-        });
-
-
-        /* Activate selected slide */
-
-        slides[currentSlide].classList.add("active");
-
-
-        /* Activate selected dot */
-
-        if (dots[currentSlide]) {
-            dots[currentSlide].classList.add("active");
-        }
-
+    if (index >= slides.length) {
+        index = 0;
     }
 
+    if (index < 0) {
+        index = slides.length - 1;
+    }
 
-    /* =========================================================
-       NEXT SLIDE
-    ========================================================= */
+    currentSlide = index;
+
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+
+    track.style.transform =
+        "translateX(-" +
+        ((slideWidth + gap) * currentSlide) +
+        "px)";
+
+    dots.forEach(function (dot, dotIndex) {
+        dot.classList.toggle(
+            "active",
+            dotIndex === currentSlide
+        );
+    });
+}
+
+
+    /* =====================================================
+       NEXT
+    ===================================================== */
 
     function nextSlide() {
-
         showSlide(currentSlide + 1);
-
     }
 
 
-    /* =========================================================
-       PREVIOUS SLIDE
-    ========================================================= */
+    /* =====================================================
+       PREVIOUS
+    ===================================================== */
 
     function previousSlide() {
-
         showSlide(currentSlide - 1);
-
     }
 
 
-    /* =========================================================
-       START AUTOMATIC SLIDING
-    ========================================================= */
-
-    function startAutoSlide() {
-
-        stopAutoSlide();
-
-        autoSlide = setInterval(function () {
-
-            nextSlide();
-
-        }, 5500);
-
-    }
-
-
-    /* =========================================================
-       STOP AUTOMATIC SLIDING
-    ========================================================= */
-
-    function stopAutoSlide() {
-
-        if (autoSlide) {
-
-            clearInterval(autoSlide);
-
-            autoSlide = null;
-
-        }
-
-    }
-
-
-    /* =========================================================
-       RESTART AFTER USER INTERACTION
-    ========================================================= */
-
-    function restartAutoSlide() {
-
-        stopAutoSlide();
-
-        setTimeout(function () {
-
-            startAutoSlide();
-
-        }, 2000);
-
-    }
-
-
-    /* =========================================================
-       PREVIOUS BUTTON
-    ========================================================= */
-
-    if (prevButton) {
-
-        prevButton.addEventListener("click", function (event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            previousSlide();
-
-            restartAutoSlide();
-
-        });
-
-    }
-
-
-    /* =========================================================
-       NEXT BUTTON
-    ========================================================= */
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
 
     if (nextButton) {
-
         nextButton.addEventListener("click", function (event) {
-
             event.preventDefault();
-            event.stopPropagation();
-
             nextSlide();
-
             restartAutoSlide();
-
         });
+    }
 
+    if (prevButton) {
+        prevButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            previousSlide();
+            restartAutoSlide();
+        });
     }
 
 
-    /* =========================================================
-       DOT NAVIGATION
-    ========================================================= */
+    /* =====================================================
+       DOTS
+    ===================================================== */
 
     dots.forEach(function (dot, index) {
 
         dot.addEventListener("click", function (event) {
 
             event.preventDefault();
-            event.stopPropagation();
 
             showSlide(index);
 
             restartAutoSlide();
-
         });
 
     });
 
 
-    /* =========================================================
-       PAUSE WHEN MOUSE HOVERS
-    ========================================================= */
+    /* =====================================================
+       AUTOMATIC SLIDING
+    ===================================================== */
 
-    carousel.addEventListener("mouseenter", function () {
+    function startAutoSlide() {
 
-        stopAutoSlide();
-
-    });
-
-
-    /* =========================================================
-       RESUME WHEN MOUSE LEAVES
-    ========================================================= */
-
-    carousel.addEventListener("mouseleave", function () {
-
-        startAutoSlide();
-
-    });
-
-
-    /* =========================================================
-       MOBILE TOUCH — START
-    ========================================================= */
-
-    carousel.addEventListener("touchstart", function (event) {
-
-        stopAutoSlide();
-
-        touchStartX = event.changedTouches[0].screenX;
-
-    }, { passive: true });
-
-
-    /* =========================================================
-       MOBILE TOUCH — END
-    ========================================================= */
-
-    carousel.addEventListener("touchend", function (event) {
-
-        touchEndX = event.changedTouches[0].screenX;
-
-        handleSwipe();
-
-        restartAutoSlide();
-
-    }, { passive: true });
-
-
-    /* =========================================================
-       HANDLE MOBILE SWIPE
-    ========================================================= */
-
-    function handleSwipe() {
-
-        const swipeDistance = touchEndX - touchStartX;
-
-        const minimumSwipeDistance = 50;
-
-
-        /* Swipe left */
-
-        if (swipeDistance < -minimumSwipeDistance) {
-
+        autoSlide = setInterval(function () {
             nextSlide();
-
-        }
-
-
-        /* Swipe right */
-
-        else if (swipeDistance > minimumSwipeDistance) {
-
-            previousSlide();
-
-        }
+        }, 5000);
 
     }
 
 
-    /* =========================================================
-       KEYBOARD NAVIGATION
-       (Useful for accessibility)
-    ========================================================= */
+    function stopAutoSlide() {
 
-    carousel.addEventListener("keydown", function (event) {
+        clearInterval(autoSlide);
 
-        if (event.key === "ArrowLeft") {
-
-            previousSlide();
-
-            restartAutoSlide();
-
-        }
+    }
 
 
-        if (event.key === "ArrowRight") {
+    function restartAutoSlide() {
 
-            nextSlide();
+        stopAutoSlide();
+        startAutoSlide();
 
-            restartAutoSlide();
+    }
 
-        }
 
+    /* =====================================================
+       PAUSE WHILE MOUSE IS OVER CAROUSEL
+    ===================================================== */
+
+    carousel.addEventListener("mouseenter", function () {
+        stopAutoSlide();
+    });
+
+    carousel.addEventListener("mouseleave", function () {
+        startAutoSlide();
     });
 
 
-    /* =========================================================
-       INITIALIZE
-    ========================================================= */
+    /* =====================================================
+       MOBILE TOUCH SWIPE
+    ===================================================== */
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    carousel.addEventListener(
+        "touchstart",
+        function (event) {
+
+            touchStartX = event.touches[0].clientX;
+
+            stopAutoSlide();
+
+        },
+        { passive: true }
+    );
+
+
+    carousel.addEventListener(
+        "touchend",
+        function (event) {
+
+            touchEndX = event.changedTouches[0].clientX;
+
+            const difference = touchStartX - touchEndX;
+
+            /*
+             * Swipe LEFT
+             */
+            if (difference > 50) {
+                nextSlide();
+            }
+
+            /*
+             * Swipe RIGHT
+             */
+            else if (difference < -50) {
+                previousSlide();
+            }
+
+            startAutoSlide();
+
+        },
+        { passive: true }
+    );
+
+
+    /* =====================================================
+       START
+    ===================================================== */
 
     showSlide(0);
-
     startAutoSlide();
 
 });
 </script>
-
 
 <!-- =========================================================
      EXISTING POPULAR PRODUCTS JAVASCRIPT
@@ -897,5 +950,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+
+
 
 {% endblock %}

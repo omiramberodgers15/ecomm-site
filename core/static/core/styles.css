@@ -4,11 +4,11 @@
   box-sizing: border-box;
   margin: 0;
   padding:0;
-  
+
 }
 .navbar-toggler{
     border: none;
-    
+
     font-size: 0px;
     text-transform:none;
     fill: #313133;
@@ -18,12 +18,12 @@
 
 .category-block p{
    word-wrap: break-word;
-   
+
 }
 
 .category-block{
    padding:0 20px ;
-   
+
 }
 
 .products-horizontal {
@@ -33,13 +33,13 @@
   overflow-y: hidden;    /* only vertical padding */
   scroll-snap-type: x mandatory;
   width: 100vw;              /* full viewport width */
-  box-sizing: border-box;    
+  box-sizing: border-box;
 
 }
 
 
 .section-title{
-  
+
   font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
   font-style: normal;
   font-size:14.4px;
@@ -57,7 +57,7 @@
     word-break: break-all;
 }
 .products-horizontal .product-card {
- 
+
   border: 0px;
   display: flex;
   flex-direction: column;
@@ -69,7 +69,7 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-   
+
 }
 
 .products-horizontal .product-card img {
@@ -77,8 +77,8 @@
   aspect-ratio: 1/1;
   object-fit: cover;
   border-radius: 4px;
-  
-  
+
+
 }
 
 .products-horizontal .product-card p {
@@ -98,7 +98,7 @@
   padding-right: 8px;    /* only vertical padding */
   gap:6px;
   background: #ffffff;
-  
+
 }
 .products-vertical .product-card {
   background: #fff;
@@ -108,14 +108,14 @@
   flex-direction: column;
   padding-left: 4px;
   padding-right: 4px;
-  
+
   justify-content: space-between;
-  
+
 }
 
 .products-vertical .product-card img {
   width: 100%;
-  
+
       height: auto;
       border-style: none;
           aspect-ratio:1/1;
@@ -167,7 +167,7 @@ nav.navbar .navbar-dark{
     padding: 0;
     text-decoration: none;
     font-family: Arial, Helvetica, sans-serif;
-    
+
 }
 
 .topbar-left {
@@ -202,7 +202,7 @@ nav.navbar .navbar-dark{
     opacity: 1;
     padding: 5px 10px;
     border: 1px solid #ccc;
-    
+
 }
 
 
@@ -234,7 +234,7 @@ nav.navbar .navbar-dark{
 .menubar{
   padding: 6px;
   margin-bottom: 30px;
-  
+
 }
 .menubar a{
   text-decoration: none;
@@ -251,14 +251,14 @@ nav.navbar .navbar-dark{
     position: relative;
     display: inline-block;
     padding: 6px 8px;
-    
+
 }
 
 /* Dropdown button (clickable) */
 .menu-btn {
     cursor: pointer;
     display: inline-block;
-    
+
 }
 
 /* Dropdown panel */
@@ -272,7 +272,7 @@ nav.navbar .navbar-dark{
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     min-width: 150px;
     z-index: 99999;
-    
+
 }
 
 /* Dropdown items */
@@ -326,7 +326,7 @@ nav.navbar .navbar-dark{
   font-size: 24px;
   font-weight: 700;
   color: #222;
-  
+
 }
 
 
@@ -417,10 +417,10 @@ nav.navbar .navbar-dark{
 
 /* Cards */
 .product-card {
-    
+
     position: relative;
     text-align: left;
-    
+
 }
 .product-card img {
     display: block;
@@ -455,7 +455,7 @@ img {
 
 /* Text spacing */
 .product-card p {
-   
+
     text-overflow: ellipsis;
     text-wrap: wrap;
     overflow: hidden;
@@ -467,7 +467,7 @@ img {
 
 
 .prod-container {
-    /* Text spacing 
+    /* Text spacing
     max-width: 480px;
     margin: 0 auto;
     padding: 10px;
@@ -524,7 +524,7 @@ img {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    
+
 }
 
 .prod-cta .btn:hover {
@@ -612,7 +612,7 @@ body.product-page .footer {
     box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
     background-color: #fff;
     border-top: 1px solid #ddd;
-    
+
 }
 
 .fixed-prod-cta .btn {
@@ -644,13 +644,13 @@ body.product-page .prod-container {
 
 .prod-colors ul {
     display: flex;
-    
+
     flex-wrap: wrap;
     color:rgba(0, 0, 0, 0.65) !important;/* soft black */
     list-style:none;
     font-weight: 500;
-    
-    
+
+
 }
 
 .prod-colors li {
@@ -742,7 +742,7 @@ body.product-page .prod-container {
   width: 100%;
   display: block;
   padding: 10px;
- 
+
   text-align: center;
   font-weight: bold;
   border-radius: 6px;
@@ -757,7 +757,7 @@ body.product-page .prod-container {
   background-color: goldenrod;
   color: #000;
 
-  
+
 }
 
 /* Floating chat button */
@@ -810,7 +810,7 @@ body.product-page .prod-container {
 
 
 .chat-header {
-    
+
     padding: 16px;
     background:#f60 !important;
     width: 100%;
@@ -822,12 +822,12 @@ body.product-page .prod-container {
     top: 0;
     left: 0;
     margin-bottom:0 px;
-    
+
 }
 
 
 
-.chat-messages { 
+.chat-messages {
     padding: 10px;
     overflow-y: auto;
     height: 100%;
@@ -886,10 +886,10 @@ div .new-price{
     color: #555 !important;
     font-weight: 400;
     font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
-   
+
 }
 
- 
+
 
 
 
@@ -899,7 +899,7 @@ div .new-price{
     'wght' 400,
     'GRAD' 0,
     'opsz' 20,
-   
+
 }
 
 
@@ -910,8 +910,8 @@ div .new-price{
 .mobile-footer-floating {
     position: fixed;
     bottom: 12px;
-    margin: 0 auto;   
-    
+    margin: 0 auto;
+
     width: 100%;
     background: #ffffff;
     height: 60px;
@@ -965,7 +965,7 @@ div .new-price{
     gap: 6px;
 }
 .scroll-container-section {
-    
+
     background-color: hsl(24, 100%, 90%);
 }
 /* Scrollable row */
@@ -1023,7 +1023,7 @@ div .new-price{
 
 /* Wrapper */
 .contact-wrapper {
-    
+
     font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     padding-left: 16px;
     padding-right: 16px;
@@ -1032,8 +1032,8 @@ div .new-price{
 
 /* Headings */
 .contact-wrapper h2 {
-    
-    
+
+
     text-align: center;
     font-size: 24px;
     font-weight: bold;
@@ -1042,11 +1042,11 @@ div .new-price{
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
-   
+
 }
 
 .intro-text {
-    
+
     line-height: 1.33;
     color: #000;
     font-weight: bold;
@@ -1079,20 +1079,20 @@ form textarea {
     width: 100%;
     background-color:#FF0000;
     color: white;
-   
-    
+
+
     border: none;
-    
+
     cursor: pointer;
 
-    
+
     padding: 4px 8px;
 
 
-        
+
     font-size: 1.2rem !important;
     padding: 8px 16px;
-    
+
     border-radius: 8px;
     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 15%);
     }
@@ -1123,8 +1123,8 @@ form textarea {
 /* Horizontal product slider container */
 .product-slider-section {
    background-color:#f8f8f8;
-    
-    
+
+
 }
 
 .section-header {
@@ -1151,8 +1151,8 @@ form textarea {
 }
 
 .product-slider {
-   
-    
+
+
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -1197,18 +1197,18 @@ form textarea {
     font-size: .875rem;
     color: #313133;
     text-decoration: none;
-    background-color: #fff;    
+    background-color: #fff;
 }
 
 .slider-item img {
-    
+
 
         width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 4px;
-   
-    
+
+
 }
 
 /* Product text */
@@ -1222,7 +1222,7 @@ form textarea {
     padding-top: 6px;
     padding-bottom: 6px;
     font-weight: 400;
-    
+
 }
 
 
@@ -1258,7 +1258,7 @@ form textarea {
 
     /* Make input height smaller like Amazon */
     .search-input {
-       
+
         padding-right:12px;
         padding-top: 12px;
         padding-bottom:12px;
@@ -1280,11 +1280,11 @@ form textarea {
         border-bottom: 1px solid #f0f0f0f0;
     }
 
-   
+
 
     /* Make button exactly same height */
     .search-btn {
-        
+
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1309,7 +1309,7 @@ form textarea {
         font-size: 24px;
         line-height: 1;
         border: none;
-        
+
         margin-left: 16px;
     }
 }
@@ -1430,7 +1430,7 @@ form textarea {
 
 
 .chat-header h5 {
-    
+
     margin:0;
     font-weight:600;
 
@@ -1569,7 +1569,7 @@ form textarea {
     margin:0 auto;
     background:#ffffff;
     min-height:100vh;
-    
+
 }
 
 .legal-header{
@@ -1641,14 +1641,14 @@ padding:8px 16px;
 
 
 .help-section-title{
-   
+
 
 
   font-family: "-apple-system,blink more system font,'segoe ui' roboto sanserif";
   color:#313133;/* natural black */
-  
+
   font-style: normal;
-  
+
   font-size:14.4px;
   line-height: 1.5;
   text-overflow: ellipsis;
@@ -1670,7 +1670,7 @@ padding:8px 16px;
 }
 
 .footer-section{
-    
+
 
      padding-right: 16px;
     padding-left:16px ;
@@ -1724,7 +1724,7 @@ padding:8px 16px;
 
 .social-icons a{
 
-    
+
 
     font-size:16px;
 
@@ -1747,7 +1747,7 @@ padding:8px 16px;
 }
 
 .help-card{
-     
+
       padding-left: 16px;
       padding-bottom:8px ;
       color: #222;
@@ -1757,9 +1757,9 @@ padding:8px 16px;
       text-decoration: none;
       align-items: center;
       display: flex;
-      
-    
-  
+
+
+
 }
 
 .help-card:hover{
@@ -1987,7 +1987,7 @@ font-weight:bold;
 
 .product-info{
     background:white;
-    
+
 }
 
 .product-info h1{
@@ -2013,7 +2013,7 @@ font-weight:bold;
     font-size:12px;
     color:#286fe3;
     text-decoration:none;
-    
+
 }
 .stars{
     color:goldenrod;
@@ -2368,7 +2368,7 @@ font-weight:bold;
 .help-category-container {
     padding-left: 16px;
     padding-right: 16px;
-    
+
 }
 
 
@@ -2386,7 +2386,7 @@ font-weight:bold;
 .legal-container{
     padding-left: 16px;
     padding-right: 16px;
-   
+
 }
 
 .legal-card{
@@ -2445,7 +2445,7 @@ font-weight:bold;
 .promo-banner {
     width: 100%;
     overflow: hidden;
-    
+
 }
 
 .promo-image {
@@ -3257,1196 +3257,325 @@ min-width: 0;
 
 
 /* =========================================================
-   WAZITRADE HERO — PREMIUM ANIMATION
-========================================================= */
-
-.home-hero {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background: #111;
-    animation: wazitradeHeroEnter 1.1s cubic-bezier(.22, 1, .36, 1) both;
-}
-
-.home-hero-link {
-    display: block;
-    width: 100%;
-    color: inherit;
-    text-decoration: none;
-}
-
-.home-hero-media {
-    position: relative;
-    width: 100%;
-    min-height: 340px;
-    overflow: hidden;
-}
-
-/* IMAGE ZOOM */
-.home-hero-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    min-height: 340px;
-    object-fit: cover;
-
-    transform: scale(1);
-    animation: wazitradeHeroZoom 10s ease-out forwards;
-
-    will-change: transform;
-}
-
-
-/* DARK GRADIENT */
-.home-hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0, 0, 0, .78) 0%,
-            rgba(0, 0, 0, .58) 28%,
-            rgba(0, 0, 0, .25) 58%,
-            rgba(0, 0, 0, .05) 100%
-        );
-}
-
-
-/* CONTENT */
-.home-hero-content {
-    position: absolute;
-    z-index: 5;
-
-    top: 50%;
-    left: 7%;
-
-    max-width: 560px;
-
-    transform:
-        translateY(-50%)
-        translateX(-100px)
-        scale(.92);
-
-    opacity: 0;
-
-    animation:
-        wazitradeHeroContent
-        1.2s
-        .35s
-        cubic-bezier(.16, 1, .3, 1)
-        forwards;
-
-    will-change: transform, opacity;
-}
-
-
-/* WAZITRADE BADGE */
-.home-hero-badge {
-    display: inline-flex;
-    align-items: center;
-
-    padding: 7px 14px;
-    margin-bottom: 14px;
-
-    border-radius: 999px;
-
-    background: rgba(255, 102, 0, .95);
-    color: #fff;
-
-    font-family: "Rubik", sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: .5px;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, .22);
-
-    animation:
-        wazitradeBadge
-        .8s
-        .7s
-        cubic-bezier(.22, 1, .36, 1)
-        both;
-}
-
-
-/* PROMOTION TITLE */
-.home-hero-content h1 {
-    margin: 0 0 22px;
-
-    color: #fff;
-
-    font-family:
-        "Playfair Display",
-        Georgia,
-        serif;
-
-    font-size: clamp(32px, 5vw, 60px);
-    font-weight: 700;
-
-    line-height: 1.05;
-    letter-spacing: -.8px;
-
-    text-shadow:
-        0 5px 25px rgba(0, 0, 0, .35);
-
-    animation:
-        wazitradeTitle
-        1s
-        .9s
-        cubic-bezier(.22, 1, .36, 1)
-        both;
-}
-
-
-/* SHOP BUTTON */
-.home-hero-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-
-    padding: 13px 20px;
-
-    border-radius: 8px;
-
-    background: #f60;
-    color: #fff;
-
-    font-family: "Rubik", sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, .25);
-
-    animation:
-        wazitradeButton
-        .9s
-        1.15s
-        cubic-bezier(.22, 1, .36, 1)
-        both;
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        background .25s ease;
-}
-
-.home-hero-button .material-symbols-outlined {
-    font-size: 20px;
-    transition: transform .25s ease;
-}
-
-
-/* BUTTON HOVER */
-.home-hero-link:hover .home-hero-button {
-    transform: translateY(-3px);
-    box-shadow:
-        0 14px 32px rgba(0, 0, 0, .3);
-    background: #ff720f;
-}
-
-.home-hero-link:hover
-.home-hero-button
-.material-symbols-outlined {
-    transform: translateX(5px);
-}
-
-
-/* =========================================================
-   SHINE EFFECT
-========================================================= */
-
-.home-hero-shine {
-    position: absolute;
-    z-index: 4;
-
-    top: -20%;
-    left: -35%;
-
-    width: 18%;
-    height: 140%;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, .25),
-            transparent
-        );
-
-    transform: skewX(-20deg);
-
-    animation:
-        wazitradeHeroShine
-        6s
-        1.5s
-        ease-in-out
-        infinite;
-}
-
-
-/* =========================================================
-   PAGE LOAD
-========================================================= */
-
-@keyframes wazitradeHeroEnter {
-
-    0% {
-        opacity: 0;
-        transform: translateY(35px);
-    }
-
-    60% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* =========================================================
-   IMAGE CAMERA ZOOM
-========================================================= */
-
-@keyframes wazitradeHeroZoom {
-
-    0% {
-        transform: scale(1);
-    }
-
-    100% {
-        transform: scale(1.12);
-    }
-}
-
-
-/* =========================================================
-   MAIN CONTENT SLIDE
-========================================================= */
-
-@keyframes wazitradeHeroContent {
-
-    0% {
-        opacity: 0;
-
-        transform:
-            translateY(-50%)
-            translateX(-100px)
-            scale(.92);
-    }
-
-    60% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 1;
-
-        transform:
-            translateY(-50%)
-            translateX(0)
-            scale(1);
-    }
-}
-
-
-/* =========================================================
-   BADGE
-========================================================= */
-
-@keyframes wazitradeBadge {
-
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(.8);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-
-/* =========================================================
-   TITLE
-========================================================= */
-
-@keyframes wazitradeTitle {
-
-    0% {
-        opacity: 0;
-        transform: translateY(35px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-@keyframes wazitradeButton {
-
-    0% {
-        opacity: 0;
-        transform: translateY(25px) scale(.9);
-    }
-
-    70% {
-        opacity: 1;
-        transform: translateY(-3px) scale(1.03);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-
-/* =========================================================
-   SHINE
-========================================================= */
-
-@keyframes wazitradeHeroShine {
-
-    0% {
-        left: -35%;
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    35% {
-        left: 120%;
-        opacity: 0;
-    }
-
-    100% {
-        left: 120%;
-        opacity: 0;
-    }
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 576px) {
-
-    .home-hero-media {
-        min-height: 390px;
-    }
-
-    .home-hero-image {
-        min-height: 390px;
-    }
-
-    .home-hero-overlay {
-        background:
-            linear-gradient(
-                180deg,
-                rgba(0, 0, 0, .25),
-                rgba(0, 0, 0, .75)
-            );
-    }
-
-    .home-hero-content {
-        left: 6%;
-        right: 6%;
-        max-width: none;
-    }
-
-    .home-hero-content h1 {
-        font-size: 36px;
-    }
-
-}
-
-
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .home-hero,
-    .home-hero-image,
-    .home-hero-content,
-    .home-hero-badge,
-    .home-hero-content h1,
-    .home-hero-button,
-    .home-hero-shine {
-        animation: none !important;
-        transition: none !important;
-    }
-
-    .home-hero {
-        opacity: 1;
-        transform: none;
-    }
-
-    .home-hero-image {
-        transform: scale(1);
-    }
-
-    .home-hero-content {
-        opacity: 1;
-        transform: translateY(-50%);
-    }
-}
-
-
-
-
-
-
-
-
-/* =========================================================
-   WAZITRADE PROMOTIONAL CAROUSEL
+   WAZITRADE PROMOTIONAL HERO
+   Clean single system — desktop + mobile
 ========================================================= */
 
 .home-hero-carousel {
     position: relative;
     width: 100%;
     overflow: hidden;
-    background: #111;
+    background: #ffffff;
 }
-
-
-/* =========================================================
-   SLIDES CONTAINER
-========================================================= */
 
 .home-hero-slides {
     position: relative;
     width: 100%;
-    min-height: 340px;
 }
-
-
-/* =========================================================
-   INDIVIDUAL SLIDE
-========================================================= */
 
 .home-hero-slide {
-    position: absolute;
-    inset: 0;
-
-    display: block;
+    display: none;
+    position: relative;
     width: 100%;
-    height: 100%;
-
-    color: inherit;
     text-decoration: none;
-
-    opacity: 0;
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity .8s ease,
-        visibility .8s ease;
+    color: inherit;
 }
-
-
-/* ACTIVE SLIDE */
 
 .home-hero-slide.active {
-    position: relative;
-
-    opacity: 1;
-    visibility: visible;
-
-    pointer-events: auto;
-
-    z-index: 2;
+    display: block;
 }
-
-
-/* =========================================================
-   HERO MEDIA
-========================================================= */
 
 .home-hero-media {
-     position: relative;
+    position: relative;
     width: 100%;
     overflow: hidden;
-    background: #111;
+    background: #f5f5f5;
 }
-
-
-/* =========================================================
-   HERO IMAGE
-========================================================= */
 
 .home-hero-image {
     display: block;
     width: 100%;
     height: auto;
     min-height: 0;
+    max-height: 520px;
     object-fit: contain;
-    transform: scale(1);
-    transition: none;
-
 }
 
-
-/* ACTIVE IMAGE ZOOM */
-
-.home-hero-slide.active .home-hero-image {
-    transform: scale(1);
-}
-
-
-/* =========================================================
-   DARK OVERLAY
-========================================================= */
-
+/* Dark gradient for readable promotional text */
 .home-hero-overlay {
     position: absolute;
     inset: 0;
-
-    z-index: 1;
-
     background:
         linear-gradient(
             90deg,
-            rgba(0, 0, 0, .78) 0%,
-            rgba(0, 0, 0, .58) 30%,
-            rgba(0, 0, 0, .25) 60%,
-            rgba(0, 0, 0, .04) 100%
+            rgba(0, 0, 0, 0.62) 0%,
+            rgba(0, 0, 0, 0.32) 38%,
+            rgba(0, 0, 0, 0.05) 72%,
+            rgba(0, 0, 0, 0) 100%
         );
+    pointer-events: none;
 }
 
-
-/* =========================================================
-   HERO CONTENT
-========================================================= */
-
+/* Promotional content */
 .home-hero-content {
     position: absolute;
-
-    z-index: 5;
-
     top: 50%;
     left: 7%;
-
-    max-width: 560px;
-
-    transform:
-        translateY(-50%)
-        translateX(-45px);
-
-    opacity: 0;
-
-    transition:
-        opacity .9s ease .25s,
-        transform 1s cubic-bezier(.22, 1, .36, 1) .25s;
+    z-index: 2;
+    width: min(520px, 48%);
+    transform: translateY(-50%);
+    color: #ffffff;
 }
-
-
-/* ACTIVE CONTENT */
-
-.home-hero-slide.active .home-hero-content {
-    opacity: 1;
-
-    transform:
-        translateY(-50%)
-        translateX(0);
-}
-
-
-/* =========================================================
-   WAZITRADE BADGE
-========================================================= */
 
 .home-hero-badge {
     display: inline-flex;
     align-items: center;
-
-    padding: 7px 14px;
-    margin-bottom: 14px;
-
-    border-radius: 999px;
-
-    background: rgba(255, 102, 0, .95);
-
-    color: #fff;
-
-    font-family: "Rubik", sans-serif;
-
-    font-size: 13px;
+    min-height: 26px;
+    padding: 4px 10px;
+    margin-bottom: 12px;
+    border-radius: 3px;
+    background: #ff6a00;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
     font-weight: 700;
-
-    letter-spacing: .5px;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, .22);
-
-    opacity: 0;
-
-    transform:
-        translateY(20px)
-        scale(.85);
-
-    transition:
-        opacity .6s ease .45s,
-        transform .7s cubic-bezier(.22, 1, .36, 1) .45s;
+    line-height: 1;
 }
-
-
-/* ACTIVE BADGE */
-
-.home-hero-slide.active .home-hero-badge {
-    opacity: 1;
-
-    transform:
-        translateY(0)
-        scale(1);
-}
-
-
-/* =========================================================
-   TITLE
-========================================================= */
 
 .home-hero-content h1 {
-    margin: 0 0 14px;
-
-    color: #fff;
-
-    font-family:
-        "Playfair Display",
-        Georgia,
-        serif;
-
-    font-size: clamp(32px, 5vw, 60px);
-
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
     font-weight: 700;
-
-    line-height: 1.05;
-
-    letter-spacing: -.8px;
-
-    text-shadow:
-        0 5px 25px rgba(0, 0, 0, .35);
-
-    opacity: 0;
-
-    transform:
-        translateY(30px);
-
-    transition:
-        opacity .7s ease .6s,
-        transform .8s cubic-bezier(.22, 1, .36, 1) .6s;
+    line-height: 1.08;
 }
-
-
-/* ACTIVE TITLE */
-
-.home-hero-slide.active .home-hero-content h1 {
-    opacity: 1;
-
-    transform:
-        translateY(0);
-}
-
-
-/* =========================================================
-   DESCRIPTION
-========================================================= */
 
 .home-hero-description {
-    margin: 0 0 22px;
-
-    max-width: 480px;
-
-    color: rgba(255, 255, 255, .92);
-
-    font-family: "Rubik", sans-serif;
-
-    font-size: 16px;
-
-    line-height: 1.55;
-
-    text-shadow:
-        0 2px 10px rgba(0, 0, 0, .35);
-
-    opacity: 0;
-
-    transform:
-        translateY(25px);
-
-    transition:
-        opacity .7s ease .8s,
-        transform .8s cubic-bezier(.22, 1, .36, 1) .8s;
+    max-width: 470px;
+    margin: 0 0 18px;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
 }
-
-
-/* ACTIVE DESCRIPTION */
-
-.home-hero-slide.active .home-hero-description {
-    opacity: 1;
-
-    transform:
-        translateY(0);
-}
-
-
-/* =========================================================
-   SHOP BUTTON
-========================================================= */
 
 .home-hero-button {
     display: inline-flex;
-
     align-items: center;
-
-    gap: 9px;
-
-    padding: 13px 20px;
-
-    border-radius: 8px;
-
-    background: #f60;
-
-    color: #fff;
-
-    font-family: "Rubik", sans-serif;
-
-    font-size: 14px;
-
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 15px;
+    border-radius: 4px;
+    background: #ff6a00;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
     font-weight: 700;
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, .25);
-
-    opacity: 0;
-
-    transform:
-        translateY(25px)
-        scale(.9);
-
-    transition:
-        opacity .7s ease 1s,
-        transform .8s cubic-bezier(.22, 1, .36, 1) 1s,
-        background .25s ease,
-        box-shadow .25s ease;
+    text-decoration: none;
 }
-
-
-/* ACTIVE BUTTON */
-
-.home-hero-slide.active .home-hero-button {
-    opacity: 1;
-
-    transform:
-        translateY(0)
-        scale(1);
-}
-
-
-/* BUTTON HOVER */
-
-.home-hero-slide:hover .home-hero-button {
-    background: #ff720f;
-
-    box-shadow:
-        0 14px 32px rgba(0, 0, 0, .30);
-
-    transform:
-        translateY(-3px)
-        scale(1.02);
-}
-
-
-/* ARROW ICON */
 
 .home-hero-button .material-symbols-outlined {
-    font-size: 20px;
-
-    transition:
-        transform .25s ease;
+    font-size: 18px;
+    line-height: 1;
 }
 
-
-.home-hero-slide:hover
-.home-hero-button
-.material-symbols-outlined {
-    transform:
-        translateX(5px);
-}
-
-
-/* =========================================================
-   CAROUSEL ARROWS
-========================================================= */
-
+/* Arrows */
 .home-hero-arrow {
     position: absolute;
-
     top: 50%;
-
-    z-index: 10;
-
-    width: 44px;
-    height: 44px;
-
+    z-index: 5;
+    width: 40px;
+    height: 64px;
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     padding: 0;
-
     border: 0;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, .18);
-
-    color: #fff;
-
-    backdrop-filter:
-        blur(10px);
-
-    -webkit-backdrop-filter:
-        blur(10px);
-
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.28);
+    color: #ffffff;
+    transform: translateY(-50%);
     cursor: pointer;
-
-    opacity: .75;
-
-    transform:
-        translateY(-50%);
-
-    transition:
-        background .25s ease,
-        opacity .25s ease,
-        transform .25s ease;
+    transition: background 0.2s ease;
 }
-
 
 .home-hero-arrow:hover {
-    background:
-        rgba(255, 255, 255, .30);
-
-    opacity: 1;
-
-    transform:
-        translateY(-50%)
-        scale(1.08);
+    background: rgba(0, 0, 0, 0.5);
 }
-
 
 .home-hero-arrow .material-symbols-outlined {
-    font-size: 25px;
+    font-size: 28px;
 }
-
 
 .home-hero-prev {
-    left: 20px;
+    left: 12px;
 }
-
 
 .home-hero-next {
-    right: 20px;
+    right: 12px;
 }
 
-
-/* =========================================================
-   CAROUSEL DOTS
-========================================================= */
-
+/* Dots */
 .home-hero-dots {
     position: absolute;
-
-    z-index: 10;
-
     left: 50%;
-
-    bottom: 18px;
-
+    bottom: 12px;
+    z-index: 5;
     display: flex;
-
     align-items: center;
-
     gap: 7px;
-
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 }
-
 
 .home-hero-dot {
-    width: 8px;
-    height: 8px;
-
+    width: 7px;
+    height: 7px;
     padding: 0;
-
     border: 0;
-
     border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, .55);
-
+    background: rgba(255, 255, 255, 0.55);
     cursor: pointer;
-
-    transition:
-        width .3s ease,
-        background .3s ease,
-        transform .3s ease;
 }
-
 
 .home-hero-dot.active {
-    width: 24px;
-
-    border-radius: 999px;
-
-    background: #fff;
+    width: 20px;
+    border-radius: 10px;
+    background: #ffffff;
 }
-
-
-.home-hero-dot:hover {
-    transform:
-        scale(1.15);
-}
-
 
 /* =========================================================
-   SHINE EFFECT
+   MOBILE HERO
 ========================================================= */
 
-.home-hero-shine {
-    position: absolute;
-
-    z-index: 4;
-
-    top: -20%;
-    left: -35%;
-
-    width: 18%;
-    height: 140%;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, .25),
-            transparent
-        );
-
-    transform:
-        skewX(-20deg);
-
-    opacity: 0;
-
-    pointer-events: none;
-}
-
-
-/* Shine only on active slide */
-
-.home-hero-slide.active .home-hero-shine {
-    animation:
-        wazitradeCarouselShine
-        5.5s
-        1.3s
-        ease-in-out
-        infinite;
-}
-
-
-@keyframes wazitradeCarouselShine {
-
-    0% {
-        left: -35%;
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    35% {
-        left: 120%;
-        opacity: 0;
-    }
-
-    100% {
-        left: 120%;
-        opacity: 0;
-    }
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width:576px) {
+@media (max-width: 576px) {
 
     .home-hero-carousel {
-        height: auto;
-        min-height: 0;
-    }
-
-    .home-hero-slides {
-        height: auto;
-        min-height: 0;
-    }
-
-    .home-hero-slide,
-    .home-hero-slide.active {
-        height: auto;
-        min-height: 0;
+        width: 100%;
+        margin: 0;
+        border: 0;
     }
 
     .home-hero-media {
-        height: auto;
-        min-height: 0;
+        width: 100%;
+        background: #f5f5f5;
     }
 
     .home-hero-image {
         width: 100%;
         height: auto;
         min-height: 0;
+        max-height: none;
         object-fit: contain;
     }
 
     .home-hero-overlay {
-        background: linear-gradient(
-            180deg,
-            rgba(0,0,0,.10),
-            rgba(0,0,0,.35)
-        );
+        background:
+            linear-gradient(
+                90deg,
+                rgba(0, 0, 0, 0.52) 0%,
+                rgba(0, 0, 0, 0.22) 55%,
+                rgba(0, 0, 0, 0) 100%
+            );
     }
 
     .home-hero-content {
-        left: 6%;
-        right: 6%;
-        max-width: none;
+        top: 50%;
+        left: 18px;
+        width: calc(100% - 70px);
+        transform: translateY(-50%);
+    }
+
+    .home-hero-badge {
+        min-height: 22px;
+        padding: 3px 8px;
+        margin-bottom: 7px;
+        font-size: 10px;
+    }
+
+    .home-hero-content h1 {
+        margin-bottom: 6px;
+        font-size: 22px;
+        line-height: 1.1;
+    }
+
+    .home-hero-description {
+        max-width: 250px;
+        margin-bottom: 10px;
+        font-size: 11px;
+        line-height: 1.3;
+    }
+
+    .home-hero-button {
+        min-height: 31px;
+        padding: 0 11px;
+        gap: 4px;
+        font-size: 11px;
+    }
+
+    .home-hero-button .material-symbols-outlined {
+        font-size: 15px;
     }
 
     .home-hero-arrow {
-        width: 38px;
-        height: 38px;
+        width: 30px;
+        height: 46px;
+    }
+
+    .home-hero-arrow .material-symbols-outlined {
+        font-size: 22px;
     }
 
     .home-hero-prev {
-        left: 10px;
+        left: 5px;
     }
 
     .home-hero-next {
-        right: 10px;
+        right: 5px;
     }
 
     .home-hero-dots {
-        bottom: 14px;
+        bottom: 7px;
+        gap: 5px;
+    }
+
+    .home-hero-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .home-hero-dot.active {
+        width: 16px;
     }
 }
 
 
 /* =========================================================
-   REDUCED MOTION
+   VERY SMALL PHONES
 ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width: 390px) {
 
-    .home-hero-slide,
-    .home-hero-image,
-    .home-hero-content,
-    .home-hero-badge,
-    .home-hero-content h1,
-    .home-hero-description,
-    .home-hero-button,
-    .home-hero-shine {
-        transition: none !important;
-        animation: none !important;
+    .home-hero-content {
+        left: 14px;
+        width: calc(100% - 55px);
     }
 
-    .home-hero-image {
-        transform: scale(1) !important;
+    .home-hero-content h1 {
+        font-size: 19px;
     }
 
+    .home-hero-description {
+        font-size: 10px;
+        max-width: 220px;
+    }
+
+    .home-hero-button {
+        min-height: 29px;
+        padding: 0 9px;
+        font-size: 10px;
+    }
 }
-
-
-
-
-
-
-
-
-/* =========================================================
-   WAZITRADE HERO - SHOW FULL PROMOTIONAL IMAGE
-========================================================= */
-
-.home-hero-carousel {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    overflow: hidden;
-    background: #111;
-}
-
-.home-hero-slides {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-}
-
-.home-hero-slide {
-    height: auto;
-    min-height: 0;
-}
-
-.home-hero-slide.active {
-    height: auto;
-    min-height: 0;
-}
-
-.home-hero-media {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    overflow: hidden;
-}
-
-.home-hero-image {
-    display: block;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    object-fit: contain;
-    transform: none !important;
-    transition: none !important;
-}
-
-
-
-
 
 /* =========================================================
    WAZITRADE RESPONSIVE PRODUCT GRID
@@ -4931,39 +4060,54 @@ min-width: 0;
 
 
 /* =========================================================
-   390px — JUMIA-STYLE MOBILE
+   SMALL PHONE — AMAZON-STYLE MOBILE NAVIGATION
+   576px and below
 ========================================================= */
 
 @media (max-width: 576px) {
 
-    .wazitrade-navbar-container {
+    /* =====================================================
+       MAIN MOBILE HEADER
+    ===================================================== */
 
+    .wazitrade-navbar-container {
+        width: 100%;
         min-height: 0;
 
         display: flex;
-
         flex-wrap: wrap;
-
         align-items: center;
 
         gap: 0;
 
-        padding: 7px 8px 9px;
+        padding: 6px 8px 8px;
+
+        background: #ffffff;
     }
 
 
-    /* -----------------------------------------------------
-       TOP ROW
-    ----------------------------------------------------- */
+    /* =====================================================
+       ROW 1
+       MENU + LOGO + CART + ACCOUNT/SELL ACTION
+    ===================================================== */
 
     .wazitrade-menu-btn {
-
         width: 36px;
         height: 36px;
 
         flex: 0 0 36px;
 
-        margin-right: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 5px 0 0;
+        padding: 0;
+
+        border: 0;
+        border-radius: 4px;
+
+        background: transparent;
     }
 
     .wazitrade-menu-btn .material-symbols-outlined {
@@ -4971,34 +4115,56 @@ min-width: 0;
     }
 
 
+    /* -----------------------------------------------------
+       WAZITRADE LOGO
+    ----------------------------------------------------- */
+
     .wazitrade-logo {
+        flex: 1 1 auto;
+
+        min-width: 0;
+
+        margin: 0;
+
+        color: #111111;
 
         font-size: 19px;
+        font-weight: 700;
 
-        letter-spacing: -0.4px;
+        line-height: 36px;
 
-        margin-right: auto;
+        letter-spacing: -0.3px;
+
+        white-space: nowrap;
     }
 
 
-    /* -----------------------------------------------------
-       CART
-    ----------------------------------------------------- */
+    /* =====================================================
+       MOBILE ACTIONS
+    ===================================================== */
 
     .wazitrade-nav-action {
-
-        min-width: 38px;
         width: 38px;
-
+        min-width: 38px;
         height: 36px;
 
         flex: 0 0 38px;
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0;
         padding: 0;
+
+        border-radius: 4px;
+
+        background: transparent;
     }
 
     .wazitrade-nav-action .material-symbols-outlined {
         font-size: 23px;
+        line-height: 1;
     }
 
     .wazitrade-nav-label {
@@ -5006,606 +4172,1044 @@ min-width: 0;
     }
 
 
-    /* -----------------------------------------------------
-       SELL
-       Hide from the tiny top row.
-       Still available inside the menu.
-    ----------------------------------------------------- */
+    /* =====================================================
+       SELL SHOULD NOT APPEAR IN THE SMALL PHONE HEADER
+       It remains available inside the hamburger menu.
+    ===================================================== */
+
+    .wazitrade-sell-action {
+        display: none;
+    }
+
+
+   /* =========================================================
+   AMAZON-STYLE MOBILE SEARCH BAR
+========================================================= */
+
+.wazitrade-search-form {
+    order: 10;
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: none;
+    height: 42px;
+    margin: 7px 0 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    position: relative;
+}
+
+/* SEARCH INPUT */
+.wazitrade-search-input {
+    width: 100%;
+    height: 42px;
+    flex: 1 1 auto;
+    min-width: 0;
+
+    padding: 0 48px 0 14px;
+
+    border: 1px solid #a6a6a6;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #111;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+
+    outline: none;
+    box-shadow: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+/* PLACEHOLDER */
+.wazitrade-search-input::placeholder {
+    color: #565959;
+    opacity: 1;
+}
+
+/* FOCUS */
+.wazitrade-search-input:focus {
+    background: #ffffff;
+    border-color: #007185;
+    box-shadow: 0 0 0 2px rgba(0, 113, 133, 0.15);
+}
+
+/* SEARCH BUTTON */
+.wazitrade-search-btn {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 0 5px 5px 0;
+
+    background: #febd69;
+    color: #111;
+
+    cursor: pointer;
+}
+
+/* SEARCH ICON */
+.wazitrade-search-btn .material-symbols-outlined {
+    font-size: 21px;
+    line-height: 1;
+}
+
+/* HOVER */
+.wazitrade-search-btn:hover {
+    background: #f3a847;
+    color: #111;
+}
 
 
 
-    /* -----------------------------------------------------
-       SEARCH — SECOND ROW
-    ----------------------------------------------------- */
+    /* =========================================================
+   AMAZON-STYLE MOBILE LINK ROW
+========================================================= */
 
-    .wazitrade-search-form {
+.wazitrade-category-nav {
+    width: 100%;
+    height: 44px;
 
-        order: 10;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-        flex: 0 0 100%;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 
+    background: #ffffff;
+
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.wazitrade-category-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.wazitrade-category-nav-inner {
+    width: max-content;
+    min-width: 100%;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0;
+
+    padding: 0 8px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION LINKS
+========================================================= */
+
+.wazitrade-category-nav-inner > a,
+.wazitrade-all-categories {
+    height: 44px;
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+
+    flex: 0 0 auto;
+
+    margin: 0;
+    padding: 0 13px;
+
+    border: 0;
+    border-radius: 0;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+
+/* ALL CATEGORIES */
+.wazitrade-all-categories {
+    font-weight: 700;
+}
+
+
+/* HOVER */
+.wazitrade-category-nav-inner > a:hover,
+.wazitrade-all-categories:hover {
+    background: transparent;
+    color: #111111;
+}
+
+
+/* ACTIVE / PRESS */
+.wazitrade-category-nav-inner > a:active,
+.wazitrade-all-categories:active {
+    background: #eeeeee;
+}
+
+
+/* =========================================================
+   SMALL SCREEN SPACING
+========================================================= */
+
+@media (max-width: 390px) {
+
+    .wazitrade-category-nav-inner > a,
+    .wazitrade-all-categories {
+        padding-left: 11px;
+        padding-right: 11px;
+        font-size: 11px;
+    }
+}
+
+
+    /* =====================================================
+       TOUCH FEEDBACK
+    ===================================================== */
+
+    .wazitrade-menu-btn:active,
+    .wazitrade-nav-action:active,
+    .wazitrade-category-nav-inner > a:active {
+        background: #eeeeee;
+    }
+}
+
+
+
+
+
+/* =========================================================
+   WAZITRADE PROMOTIONS
+   ONE SHARED COLUMN — JUMIA-STYLE TWO ROWS
+========================================================= */
+
+.home-promotions {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 18px 20px 20px;
+    background: #f5f5f5;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PROMOTIONS HEADER
+========================================================= */
+
+.home-promotions-header {
+    width: 100%;
+    margin: 0 0 12px;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+}
+
+.home-promotions-header h2 {
+    margin: 0;
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.home-promotions-header p {
+    margin: 4px 0 0;
+    color: #666;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.home-promotions-view-all {
+    color: #007185;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.home-promotions-view-all:hover {
+    color: #c45500;
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   ROW 1 — JUMIA-STYLE PEEKING PROMOTIONAL CAROUSEL
+========================================================= */
+
+.home-promo-featured {
+    position: relative;
+    width: 100%;
+    margin: 0 0 12px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #f5f5f5;
+}
+
+
+/* The moving track */
+
+.home-promo-featured-track {
+    display: flex;
+    align-items: stretch;
+
+    /*
+       Leave a small visible portion of the
+       neighbouring cards.
+    */
+    gap: 12px;
+
+    width: 100%;
+
+    transition: transform 0.55s ease-in-out;
+    will-change: transform;
+}
+
+
+/* =========================================================
+   EACH PROMOTION CARD
+========================================================= */
+
+.home-promo-featured-slide {
+    position: relative;
+
+    /*
+       92% means approximately 8% of the
+       neighbouring card can be seen.
+    */
+    flex: 0 0 92%;
+    width: 92%;
+
+    min-height: 270px;
+
+    overflow: hidden;
+
+    /*
+       Jumia-style compact rounded corners.
+    */
+    border-radius: 16px;
+
+    color: #fff;
+    text-decoration: none;
+
+    background: #222;
+}
+
+.home-promo-featured-slide:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   PROMOTION IMAGE
+========================================================= */
+
+.home-promo-featured-image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.home-promo-featured-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.70) 0%,
+            rgba(0, 0, 0, 0.42) 42%,
+            rgba(0, 0, 0, 0.10) 75%,
+            rgba(0, 0, 0, 0) 100%
+        );
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.home-promo-featured-content {
+    position: absolute;
+
+    left: 6%;
+    top: 50%;
+
+    z-index: 2;
+
+    width: 52%;
+
+    transform: translateY(-50%);
+
+    color: #fff;
+}
+
+.home-promo-featured-badge {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 24px;
+
+    margin-bottom: 9px;
+    padding: 4px 8px;
+
+    border-radius: 3px;
+
+    background: #f68b1e;
+
+    color: #fff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.home-promo-featured-content h3 {
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(23px, 3.3vw, 40px);
+    font-weight: 700;
+    line-height: 1.08;
+}
+
+.home-promo-featured-content p {
+    max-width: 430px;
+
+    margin: 0 0 14px;
+
+    color: #fff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.home-promo-featured-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    min-height: 34px;
+
+    padding: 0 12px;
+
+    border-radius: 4px;
+
+    background: #f68b1e;
+
+    color: #fff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.home-promo-featured-button:hover {
+    background: #e57d12;
+    color: #fff;
+}
+
+.home-promo-featured-button .material-symbols-outlined {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   ARROWS
+========================================================= */
+.home-promo-featured-arrow {
+    position: absolute;
+
+    top: 50%;
+    z-index: 5;
+
+    width: 34px;
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 4px;
+
+
+
+
+
+    transform: translateY(-50%);
+
+    cursor: pointer;
+}
+
+
+
+
+.home-promo-featured-arrow .material-symbols-outlined {
+    font-size: 25px;
+}
+
+
+
+.home-promo-featured-next {
+    right: 7px;
+}
+
+
+/* =========================================================
+   DOTS
+========================================================= */
+
+.home-promo-featured-dots {
+    position: absolute;
+
+    left: 50%;
+    bottom: 8px;
+
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    transform: translateX(-50%);
+}
+
+.home-promo-featured-dot {
+    width: 6px;
+    height: 6px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.55);
+
+    cursor: pointer;
+}
+
+.home-promo-featured-dot.active {
+    width: 16px;
+    border-radius: 8px;
+    background: #fff;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .home-promo-featured {
         width: 100%;
-
-        max-width: none;
-
-        height: 39px;
-
-        margin: 8px 0 0;
+        margin-bottom: 9px;
+        border-radius: 6px;
     }
 
 
-    .wazitrade-search-input {
 
-        height: 39px;
+    .home-promo-featured-slide {
+        /*
+           Main card = most of the screen.
+           Next card visibly peeks from the side.
+        */
+        flex: 0 0 91%;
+        width: 91%;
 
-        padding: 0 11px;
+        min-height: 185px;
 
-        border-radius: 20px 0 0 20px;
-
-        font-size: 12px;
+        border-radius: 16px;
     }
 
-
-    .wazitrade-search-btn {
-
-        width: 41px;
-
-        flex: 0 0 41px;
-
-        height: 39px;
-
-        border-radius: 0 20px 20px 0;
+    .home-promo-featured-content {
+        left: 15px;
+        width: 55%;
     }
 
+    .home-promo-featured-badge {
+        min-height: 20px;
+        margin-bottom: 6px;
+        padding: 3px 7px;
+        font-size: 8px;
+    }
 
-    .wazitrade-search-btn .material-symbols-outlined {
+    .home-promo-featured-content h3 {
+        margin-bottom: 5px;
+        font-size: 20px;
+    }
+
+    .home-promo-featured-content p {
+        max-width: 210px;
+        margin-bottom: 8px;
+        font-size: 9px;
+        line-height: 1.3;
+    }
+
+    .home-promo-featured-button {
+        min-height: 28px;
+        padding: 0 9px;
+        font-size: 9px;
+    }
+
+    .home-promo-featured-button .material-symbols-outlined {
+        font-size: 14px;
+    }
+
+    .home-promo-featured-arrow {
+        width: 27px;
+        height: 42px;
+    }
+
+    .home-promo-featured-arrow .material-symbols-outlined {
         font-size: 20px;
     }
 
 
-    /* -----------------------------------------------------
-       CATEGORY BAR
-    ----------------------------------------------------- */
 
-    .wazitrade-category-nav {
-        overflow-x: auto;
+    .home-promo-featured-next {
+        right: 4px;
     }
 
-
-    .wazitrade-category-nav-inner {
-
-        min-height: 42px;
-
-        gap: 2px;
-
-        padding: 5px 8px;
-
-        width: max-content;
-    }
-
-
-    .wazitrade-all-categories,
-    .wazitrade-category-nav-inner > a {
-
-        min-height: 32px;
-
-        padding: 5px 9px;
-
-        font-size: 11px;
-
-        border-radius: 6px;
+    .home-promo-featured-dots {
+        bottom: 6px;
     }
 }
 
 
 /* =========================================================
-   577px–767px — LARGE MOBILE / SMALL TABLET
+   VERY SMALL PHONES
 ========================================================= */
 
-@media (min-width: 577px) and (max-width: 767px) {
+@media (max-width: 390px) {
 
-    .wazitrade-navbar-container {
-
-        min-height: 62px;
-
-        gap: 9px;
-
-        padding: 8px 14px;
+    .home-promo-featured-slide {
+        flex-basis: 89%;
+        width: 89%;
+        min-height: 165px;
+        border-radius: 16px;
     }
 
-
-    .wazitrade-menu-btn {
-
-        width: 40px;
-        height: 40px;
-
-        flex-basis: 40px;
+    .home-promo-featured-content {
+        left: 13px;
+        width: 56%;
     }
 
-
-    .wazitrade-logo {
-        font-size: 22px;
+    .home-promo-featured-content h3 {
+        font-size: 18px;
     }
 
-
-    .wazitrade-search-form {
-
-        height: 41px;
-
-        max-width: none;
-    }
-
-
-    .wazitrade-search-input {
-
-        height: 41px;
-
-        font-size: 13px;
-    }
-
-
-    .wazitrade-search-btn {
-
-        width: 45px;
-
-        flex-basis: 45px;
-
-        height: 41px;
-    }
-
-
-    .wazitrade-nav-action {
-
-        min-width: 45px;
-
-        height: 41px;
-    }
-
-
-    .wazitrade-nav-action .material-symbols-outlined {
-        font-size: 24px;
-    }
-
-
-    .wazitrade-category-nav-inner {
-
-        padding-left: 14px;
-        padding-right: 14px;
-
-        gap: 3px;
+    .home-promo-featured-content p {
+        max-width: 185px;
+        font-size: 9px;
     }
 }
 
 
+
 /* =========================================================
-   768px — TABLET
+   ROW 2 — HORIZONTAL PROMOTIONAL CARDS
 ========================================================= */
 
-@media (min-width: 768px) and (max-width: 991px) {
+.home-promo-scroll-wrapper {
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+}
 
-    .wazitrade-navbar-container {
+.home-promo-scroll {
+    width: 100%;
+    display: flex;
+    gap: 10px;
 
-        min-height: 66px;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-        display: flex;
+    padding: 0;
 
-        flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 
-        gap: 11px;
+    scroll-behavior: smooth;
+}
 
-        padding: 9px 18px;
-    }
-
-
-    .wazitrade-menu-btn {
-
-        width: 41px;
-        height: 41px;
-
-        flex-basis: 41px;
-    }
-
-
-    .wazitrade-menu-btn .material-symbols-outlined {
-        font-size: 25px;
-    }
+.home-promo-scroll::-webkit-scrollbar {
+    display: none;
+}
 
 
-    .wazitrade-logo {
+/* Individual Row 2 card */
 
-        font-size: 23px;
+.home-promo-card {
+    position: relative;
 
-        flex: 0 0 auto;
-    }
+    flex: 0 0 280px;
+    min-width: 280px;
+
+    display: flex;
+    align-items: stretch;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background: #fff;
+
+    color: #111;
+    text-decoration: none;
+
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
+}
+
+.home-promo-card:hover {
+    color: #111;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
 
 
-    .wazitrade-search-form {
+/* Row 2 image */
 
-        flex: 1 1 auto;
+.home-promo-card-image {
+    flex: 0 0 105px;
+    width: 105px;
+    height: 105px;
 
-        min-width: 150px;
+    overflow: hidden;
 
+    border-radius: 9px 0 0 9px;
+
+    background: #eee;
+}
+
+.home-promo-card-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* Row 2 text */
+
+.home-promo-card-content {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    padding: 13px 12px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.home-promo-card-content span {
+    margin-bottom: 4px;
+
+    color: #ff6a00;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.home-promo-card-content h4 {
+    margin: 0 0 4px;
+
+    color: #111;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.home-promo-card-content p {
+    margin: 0;
+
+    color: #666;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .home-promotions {
+        width: 100%;
         max-width: none;
-
-        height: 42px;
-
         margin: 0;
+        padding: 12px 10px 14px;
     }
 
 
-    .wazitrade-search-input {
+    /* Header */
 
-        height: 42px;
-
-        font-size: 13px;
-
-        padding: 0 13px;
+    .home-promotions-header {
+        margin-bottom: 9px;
     }
 
-
-    .wazitrade-search-btn {
-
-        width: 46px;
-
-        flex-basis: 46px;
-
-        height: 42px;
+    .home-promotions-header h2 {
+        font-size: 17px;
     }
 
-
-    .wazitrade-nav-action {
-
-        min-width: 48px;
-
-        height: 42px;
-
-        flex-basis: 48px;
-
-        padding: 2px 5px;
-    }
-
-
-    .wazitrade-nav-action .material-symbols-outlined {
-        font-size: 24px;
-    }
-
-
-    .wazitrade-category-nav-inner {
-
-        min-height: 44px;
-
-        padding: 5px 18px;
-
-        gap: 4px;
-
-        width: max-content;
-    }
-
-
-    .wazitrade-category-nav-inner > a,
-    .wazitrade-all-categories {
-
-        min-height: 34px;
-
-        padding: 6px 11px;
-
-        font-size: 12px;
-    }
-}
-
-
-/* =========================================================
-   992px–1199px — LAPTOP
-========================================================= */
-
-@media (min-width: 992px) and (max-width: 1199px) {
-
-    .wazitrade-navbar-container {
-
-        min-height: 68px;
-
-        gap: 13px;
-
-        padding: 9px 22px;
-    }
-
-
-    .wazitrade-menu-btn {
-
-        width: 42px;
-        height: 42px;
-
-        flex-basis: 42px;
-    }
-
-
-    .wazitrade-logo {
-        font-size: 24px;
-    }
-
-
-    .wazitrade-search-form {
-
-        flex: 1 1 auto;
-
-        max-width: none;
-
-        height: 43px;
-
-        margin: 0;
-    }
-
-
-    .wazitrade-search-input {
-
-        height: 43px;
-
-        font-size: 14px;
-    }
-
-
-    .wazitrade-search-btn {
-
-        width: 48px;
-
-        flex-basis: 48px;
-
-        height: 43px;
-    }
-
-
-    .wazitrade-nav-action {
-
-        min-width: 53px;
-
-        height: 44px;
-    }
-
-
-    .wazitrade-category-nav-inner {
-
-        min-height: 45px;
-
-        padding: 5px 22px;
-
-        gap: 5px;
-    }
-}
-
-
-/* =========================================================
-   1200px–1439px — LARGE LAPTOP
-========================================================= */
-
-@media (min-width: 1200px) and (max-width: 1439px) {
-
-    .wazitrade-navbar-container {
-
-        min-height: 70px;
-
-        gap: 16px;
-
-        padding: 10px 28px;
-    }
-
-
-    .wazitrade-menu-btn {
-
-        width: 43px;
-        height: 43px;
-
-        flex-basis: 43px;
-    }
-
-
-    .wazitrade-logo {
-        font-size: 26px;
-    }
-
-
-    .wazitrade-search-form {
-
-        max-width: 900px;
-
-        height: 44px;
-    }
-
-
-    .wazitrade-search-input {
-
-        height: 44px;
-
-        font-size: 14px;
-    }
-
-
-    .wazitrade-search-btn {
-
-        width: 50px;
-
-        flex-basis: 50px;
-
-        height: 44px;
-    }
-
-
-    .wazitrade-nav-action {
-
-        min-width: 56px;
-
-        height: 46px;
-    }
-
-
-    .wazitrade-category-nav-inner {
-
-        min-height: 46px;
-
-        padding: 5px 28px;
-
-        gap: 7px;
-    }
-
-
-    .wazitrade-category-nav-inner > a,
-    .wazitrade-all-categories {
-
-        font-size: 13px;
-
-        padding-left: 13px;
-        padding-right: 13px;
-    }
-}
-
-
-/* =========================================================
-   1440px+ — DESKTOP
-========================================================= */
-
-@media (min-width: 1440px) {
-
-    .wazitrade-navbar-container {
-
-        min-height: 74px;
-
-        gap: 19px;
-
-        padding: 11px 40px;
-    }
-
-
-    .wazitrade-menu-btn {
-
-        width: 45px;
-        height: 45px;
-
-        flex-basis: 45px;
-    }
-
-
-    .wazitrade-menu-btn .material-symbols-outlined {
-        font-size: 28px;
-    }
-
-
-    .wazitrade-logo {
-
-        font-size: 28px;
-
-        letter-spacing: -0.5px;
-    }
-
-
-    .wazitrade-search-form {
-
-        flex: 1 1 auto;
-
-        max-width: 1050px;
-
-        height: 46px;
-    }
-
-
-    .wazitrade-search-input {
-
-        height: 46px;
-
-        padding: 0 18px;
-
-        font-size: 14px;
-    }
-
-
-    .wazitrade-search-btn {
-
-        width: 52px;
-
-        flex-basis: 52px;
-
-        height: 46px;
-    }
-
-
-    .wazitrade-nav-action {
-
-        min-width: 60px;
-
-        height: 48px;
-    }
-
-
-    .wazitrade-nav-action .material-symbols-outlined {
-        font-size: 27px;
-    }
-
-
-    .wazitrade-nav-label {
+    .home-promotions-header p {
+        margin-top: 3px;
         font-size: 10px;
     }
 
-
-    .wazitrade-category-nav-inner {
-
-        min-height: 48px;
-
-        padding: 5px 40px;
-
-        gap: 9px;
+    .home-promotions-view-all {
+        font-size: 11px;
     }
 
 
-    .wazitrade-category-nav-inner > a,
-    .wazitrade-all-categories {
+    /* =====================================================
+       ROW 1 MOBILE
+    ===================================================== */
 
-        min-height: 36px;
+    .home-promo-featured {
+        width: 100%;
+        margin-bottom: 9px;
+        border-radius: 8px;
+    }
 
-        padding: 7px 15px;
 
+
+    .home-promo-featured-slide {
+        min-height: 185px;
+        border-radius: 16px;
+    }
+
+    .home-promo-featured-image {
+        object-fit: cover;
+    }
+
+    .home-promo-featured-overlay {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(0, 0, 0, 0.64) 0%,
+                rgba(0, 0, 0, 0.34) 55%,
+                rgba(0, 0, 0, 0) 100%
+            );
+    }
+
+    .home-promo-featured-content {
+        left: 15px;
+        width: calc(100% - 65px);
+    }
+
+    .home-promo-featured-badge {
+        min-height: 21px;
+        margin-bottom: 6px;
+        padding: 3px 7px;
+        font-size: 9px;
+    }
+
+    .home-promo-featured-content h3 {
+        margin-bottom: 5px;
+        font-size: 20px;
+        line-height: 1.08;
+    }
+
+    .home-promo-featured-content p {
+        max-width: 230px;
+        margin-bottom: 8px;
+        font-size: 10px;
+        line-height: 1.3;
+    }
+
+    .home-promo-featured-button {
+        min-height: 29px;
+        padding: 0 9px;
+        gap: 4px;
+        font-size: 10px;
+    }
+
+    .home-promo-featured-button .material-symbols-outlined {
         font-size: 14px;
     }
+
+
+    /* Mobile arrows */
+
+    .home-promo-featured-arrow {
+        width: 29px;
+        height: 44px;
+    }
+
+    .home-promo-featured-arrow .material-symbols-outlined {
+        font-size: 21px;
+    }
+
+
+
+    .home-promo-featured-next {
+        right: 4px;
+    }
+
+
+    /* Mobile dots */
+
+    .home-promo-featured-dots {
+        bottom: 6px;
+        gap: 5px;
+    }
+
+    .home-promo-featured-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .home-promo-featured-dot.active {
+        width: 16px;
+    }
+
+
+    /* =====================================================
+       ROW 2 MOBILE — SCROLLABLE
+    ===================================================== */
+
+    .home-promo-scroll-wrapper {
+        width: 100%;
+    }
+
+    .home-promo-scroll {
+        width: 100%;
+        gap: 8px;
+        padding: 0;
+        overflow-x: auto;
+    }
+
+    .home-promo-card {
+        flex: 0 0 225px;
+        min-width: 225px;
+
+        border-radius: 8px;
+    }
+
+    .home-promo-card-image {
+        flex: 0 0 88px;
+        width: 88px;
+        height: 88px;
+
+        border-radius: 8px 0 0 8px;
+    }
+
+    .home-promo-card-content {
+        padding: 10px 9px;
+    }
+
+    .home-promo-card-content span {
+        font-size: 8px;
+    }
+
+    .home-promo-card-content h4 {
+        font-size: 12px;
+    }
+
+    .home-promo-card-content p {
+        font-size: 9px;
+    }
 }
 
 
 /* =========================================================
-   VERY WIDE DESKTOP — 1600px+
+   VERY SMALL PHONES
 ========================================================= */
 
-@media (min-width: 1600px) {
+@media (max-width: 390px) {
 
-    .wazitrade-navbar-container {
-
-        padding-left: 56px;
-        padding-right: 56px;
-
-        gap: 22px;
+    .home-promotions {
+        padding-left: 8px;
+        padding-right: 8px;
     }
 
-
-    .wazitrade-search-form {
-        max-width: 1150px;
+    .home-promo-featured-slide {
+        min-height: 165px;
+        border-radius: 16px;
     }
 
-
-    .wazitrade-category-nav-inner {
-
-        padding-left: 56px;
-        padding-right: 56px;
+    .home-promo-featured-content {
+        left: 13px;
+        width: calc(100% - 55px);
     }
-}
 
+    .home-promo-featured-content h3 {
+        font-size: 18px;
+    }
 
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
+    .home-promo-featured-content p {
+        max-width: 205px;
+        font-size: 9px;
+    }
 
-.wazitrade-menu-btn:focus-visible,
-.wazitrade-nav-action:focus-visible,
-.wazitrade-all-categories:focus-visible,
-.wazitrade-category-nav-inner > a:focus-visible,
-.wazitrade-search-input:focus-visible,
-.wazitrade-search-btn:focus-visible {
-
-    outline: 2px solid #f60;
-
-    outline-offset: 2px;
+    .home-promo-card {
+        flex-basis: 210px;
+        min-width: 210px;
+    }
 }
