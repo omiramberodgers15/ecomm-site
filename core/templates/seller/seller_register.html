@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block title %}Seller Registration{% endblock %}
-
+{% block navbar %}{% endblock %}
+{% block mobile_footer %}{% endblock %}
 {% block content %}
 
 <style>
@@ -19,7 +20,7 @@
         max-width: 520px;
         background: #ffffff;
         border: 1px solid #e5e5e5;
-        border-radius: 16px;
+        border-radius: 8px;
         padding: 32px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     }
@@ -42,7 +43,7 @@
         font-size: 28px;
     }
 
-    .seller-register-header h2 {
+    -header h2 {
         margin: 0;
         color: #222;
         font-size: 26px;
@@ -50,10 +51,11 @@
     }
 
     .seller-register-header p {
-        margin: 8px 0 0;
-        color: #777;
-        font-size: 14px;
-        line-height: 1.5;
+      margin-bottom: 28px;
+    font-size: 12px;
+    letter-spacing: .5px;
+    color: #0009;
+    font-weight: 400;
     }
 
     #register-form {
@@ -66,26 +68,28 @@
     }
 
     #register-form label {
-        display: block;
-        margin-bottom: 7px;
-        color: #333;
-        font-size: 14px;
-        font-weight: 600;
+            display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
     }
 
     #register-form input,
     #register-form textarea,
     #register-form select {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 13px 14px;
-        border: 1px solid #d8d8d8;
-        border-radius: 9px;
-        background: #fff;
-        color: #222;
-        font-size: 15px;
-        outline: none;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            display: block;
+    width: 100%;
+    height: 45px;
+    margin-bottom: 18px;
+    padding: 0 12px;
+    font-size: 16px;
+    line-height: 24px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    text-decoration: none;
     }
 
     #register-form input:focus,
@@ -112,19 +116,19 @@
     }
 
     #register-form button[type="submit"] {
+      height: 45px;
+    margin-top: 10px;
+    border-radius: 2px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    text-transform: uppercase;
         width: 100%;
-        min-height: 52px;
-        margin-top: 4px;
-        padding: 14px 20px;
+        background-color: #ff6600;
+        outline: none;
         border: none;
-        border-radius: 10px;
-        background: #d99923;
-        color: #ffffff;
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        cursor: pointer;
-        transition: background 0.2s ease, transform 0.1s ease;
+        text-decoration: none;
     }
 
     #register-form button[type="submit"]:hover {
@@ -167,12 +171,18 @@
         }
 
         .seller-register-card {
-            padding: 24px 18px;
-            border-radius: 14px;
+            padding: 34px 24.9px;
+            border-radius: 8px;
         }
 
         .seller-register-header h2 {
-            font-size: 23px;
+                   margin: 18px auto 6px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: .15px;
+    color: #222;
+    text-align: center;
         }
     }
 </style>
@@ -180,10 +190,7 @@
 <div class="seller-register-page">
 
     <div style="width:100%;max-width:520px;">
-
-        <div class="seller-register-card">
-
-            <div class="seller-register-header">
+        <div class="seller-register-header">
 
                 <div class="seller-register-icon">
                     <span class="material-symbols-outlined">
@@ -199,6 +206,9 @@
                 </p>
 
             </div>
+        <div class="seller-register-card">
+
+            
 
             <form method="POST"
                   id="register-form"

@@ -100,7 +100,7 @@
         class="wazitrade-search-input"
         type="search"
         name="q"
-        placeholder="Search products, categories, brands"
+        placeholder="Search products, categories, brands . . ."
         value="{{ request.GET.q }}"
         aria-label="Search products"
       >
@@ -149,47 +149,6 @@
 
   </div>
 
-
-  <!-- =======================================================
-       MARKETPLACE NAVIGATION
-  ======================================================== -->
-
-  <div class="wazitrade-category-nav">
-
-    <div class="wazitrade-category-nav-inner">
-
-      <a
-  class="wazitrade-all-categories"
-  href="#"
-  data-bs-toggle="offcanvas"
-  data-bs-target="#mainMenu"
-  aria-controls="mainMenu"
->
-  All Categories
-</a>
-
-
-      <a href="{% url 'core:deals-page' 'clearance' %}">
-        Deals
-      </a>
-
-      <a href="{% url 'core:best-sellers' %}">
-        Top Sellers
-      </a>
-
-      <a href="{% url 'core:new-products' %}">
-        New Arrivals
-      </a>
-
-      <a href="{% url 'core:help-center' %}">
-        Help
-      </a>
-
-    </div>
-
-  </div>
-
-</nav>
 
 
 <!-- =========================================================

@@ -1,29 +1,117 @@
 {% extends 'base.html' %}
 
+{% block title %}Contact WaziTrade{% endblock %}
+
 {% block content %}
+
 <div class="contact-wrapper">
-    <h2 style="margin-bottom: 16px;margin-top: 8px;">Need Help ?</h2>
-    <div class="content" style="display: flex;flex-direction: column;align-items: center;">
-        <div class="watsapp" style="padding: 6px; text-align: center;font-size: 14px;">
-            For any inquiries,
-           do not hesitate to chat with us via our LiveChat or Whatsapp on<b> 0762318421
-        </b>
-        </div>
-        <div class="watsapp" style="padding: 6px;text-align: center;font-size: 14px;">
-           We are open at any time - monday to friday from 8:00am - 7:30pm and on saturday - sunday, we are available from 9am - 6pm
-        </div>
-        <div class="chat-contact"  style="margin-top: 8px;margin-bottom: 8px;">
-          <p></p>
-          <a href="{% url 'chat:chat' %}" style="color: #ffffff;font-size: 14px;text-transform: uppercase;text-decoration: none;background-color: #ff6600;border-radius: 24px;padding: 12px;font-weight: 600;">
-            Chat with Us
-          </a>
-          <p></p>
-          </div>
-          <div class="watsapp" style="text-align: center;" style="padding-left: 6px;padding-right: 6px;font-size: 14px;">
-           Place your order on wazitrade easy,simply call us on <b>(+256) 791262558 </b> or WhatsApp us <b> 0762318421</b> or Email us <b>omiramberodgers05@gmail.com</b> from Monday to Friday 8am - 7:30pm and Saturday to Sunday 9am - 7pm & Holidays
-        </div>
-        
+
+    <div class="contact-illustration">
+        <svg viewBox="0 0 360 190" role="img" aria-label="WaziTrade customer support">
+            <!-- Background -->
+            <rect x="20" y="20" width="320" height="150" rx="22" fill="#fff7f2"/>
+
+            <!-- Headset -->
+            <path
+                d="M105 91
+                   C105 54 137 38 166 38
+                   C195 38 227 54 227 91"
+                fill="none"
+                stroke="#ff6600"
+                stroke-width="10"
+                stroke-linecap="round"
+            />
+
+            <!-- Left ear piece -->
+            <rect x="94" y="82" width="25" height="48" rx="12"
+                  fill="#ff6600"/>
+
+            <!-- Right ear piece -->
+            <rect x="218" y="82" width="25" height="48" rx="12"
+                  fill="#ff6600"/>
+
+            <!-- Person -->
+            <circle cx="166" cy="78" r="27" fill="#313133"/>
+
+            <!-- Face -->
+            <circle cx="157" cy="75" r="3" fill="#fff"/>
+            <circle cx="175" cy="75" r="3" fill="#fff"/>
+
+            <path
+                d="M157 88 Q166 94 175 88"
+                fill="none"
+                stroke="#fff"
+                stroke-width="3"
+                stroke-linecap="round"
+            />
+
+            <!-- Body -->
+            <path
+                d="M127 142
+                   C130 116 144 105 166 105
+                   C188 105 202 116 205 142"
+                fill="#313133"
+            />
+
+            <!-- Chat bubble -->
+            <rect x="235" y="45" width="58" height="38" rx="12"
+                  fill="#fff"
+                  stroke="#ff6600"
+                  stroke-width="3"/>
+
+            <circle cx="251" cy="64" r="3" fill="#ff6600"/>
+            <circle cx="264" cy="64" r="3" fill="#ff6600"/>
+            <circle cx="277" cy="64" r="3" fill="#ff6600"/>
+
+            <!-- Small connection dots -->
+            <circle cx="70" cy="65" r="7" fill="#ff6600" opacity=".18"/>
+            <circle cx="56" cy="83" r="5" fill="#ff6600" opacity=".25"/>
+            <circle cx="286" cy="118" r="7" fill="#ff6600" opacity=".18"/>
+        </svg>
     </div>
-    
+
+
+    <h2>Need Help?</h2>
+
+    <div class="content">
+
+        <div class="watsapp">
+            For any inquiries, do not hesitate to chat with us via our
+            LiveChat or WhatsApp on
+            <b>0762318421</b>.
+        </div>
+
+        <div class="watsapp">
+            We are available Monday to Friday from
+            <b>8:00am - 7:30pm</b> and Saturday to Sunday from
+            <b>9:00am - 6:00pm</b>.
+        </div>
+
+        <div class="chat-contact">
+            <a href="{% url 'chat:chat' %}">
+                Chat with Us
+            </a>
+        </div>
+
+        <div class="watsapp order-contact">
+            Place your order on WaziTrade easily. Simply call us on
+            <b>(+256) 791262558</b>, WhatsApp us on
+            <b>0762318421</b>, or email us at
+            <b>omiramberodgers05@gmail.com</b>.
+
+            <br><br>
+
+            Monday to Friday:
+            <b>8:00am - 7:30pm</b><br>
+
+            Saturday, Sunday & Holidays:
+            <b>9:00am - 7:00pm</b>
+        </div>
+
+    </div>
+
 </div>
+
 {% endblock %}
+
+

@@ -17,7 +17,7 @@
     <ul style="font-size: 12px;">
         {% for sub in subcategories %}
         <li>
-            <a href="{% url 'core:products_by_subcategory' sub.id %}">
+            <a href="{% url 'core:products_by_subcategory' sub.id %}" style="text-decoration: none;">
                 {{ sub.name }}
             </a>
         </li>
@@ -37,8 +37,9 @@
                 <img src="{% static 'core/default-category.jpg' %}" alt="{{ product.name }}">
             {% endif %}
         </a>
-        <p><strong>UGX {{ product.base_price }}</strong></p>
         <p>{{ product.name }}</p>
+        <p style="color: #111; display: block;font-size: 14px; font-weight: 700; line-height: 20px; margin-bottom: 2px;">UGX {{ product.base_price }}</p>
+        
     </div>
 
     {% empty %}

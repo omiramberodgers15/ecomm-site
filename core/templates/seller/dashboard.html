@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block title %}Seller Dashboard{% endblock %}
-
+{% block navbar %}{% endblock %}
+{% block mobile_footer %}{% endblock %}
 {% block content %}
 
 <style>
@@ -89,13 +90,17 @@
     .dashboard-action {
         min-height: 70px;
         padding: 15px 18px;
-        border-radius: 12px;
+        border-radius: 16px;
         text-decoration: none;
         display: flex;
         align-items: center;
         gap: 14px;
         box-sizing: border-box;
         transition: transform 0.15s ease, box-shadow 0.2s ease;
+    font-size: 20px;
+    font-weight: 500;
+    
+    
     }
 
     .dashboard-action:hover {
@@ -104,7 +109,7 @@
     }
 
     .add-product-action {
-        background: #d99923;
+        background: #ff6600;
         color: #ffffff;
     }
 

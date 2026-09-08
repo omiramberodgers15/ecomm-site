@@ -1,19 +1,57 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Seller Login{% endblock %}
 
+{% block navbar %}{% endblock %}
+{% block mobile_footer %}{% endblock %}
+
 {% block content %}
-<div class="container" style="padding-bottom: 188px;">
-    <h2 style="text-align: center;color:#ff6600;padding-left: 24px;padding-right: 24px;font-size: 16px;">Seller Login</h2>
+
+<div class="seller-login-container">
+
+    {% load static %}
+
+<img
+    src="{% static 'core/images/seller-login.jpg' %}"
+    class="seller-login-illustration"
+    alt="Seller"
+>
+
+    <h2>You are now a Seller</h2>
+
     <form method="POST" action="">
-    {% csrf_token %}
-    <label for="username">Email or Username</label>
-    <input type="text" name="username" id="username" required>
+        {% csrf_token %}
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
+        <label for="username">
+            Email or Username
+        </label>
 
-    <button type="submit" style="text-transform: uppercase;padding:8px ;border-radius: 8px;background:#ff6600;border: none;font-size: 14px;color: #fff;font-weight: 600;">Login</button>
-   </form>
+        <input
+            type="text"
+            name="username"
+            id="username"
+            required
+        >
+
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            name="password"
+            id="password"
+            required
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
 
 </div>
+
 {% endblock %}
+
