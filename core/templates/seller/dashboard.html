@@ -6,6 +6,11 @@
 {% block content %}
 
 <style>
+    /* =========================================================
+       WaziTrade Seller Dashboard
+       Mobile + Tablet + Desktop
+       ========================================================= */
+
     .seller-dashboard-page {
         min-height: calc(100vh - 120px);
         background: #f7f7f7;
@@ -18,7 +23,25 @@
         margin: 0 auto;
     }
 
-    /* Welcome Banner */
+    /* =========================================================
+       ALERTS
+       ========================================================= */
+
+    .seller-alert {
+        margin-bottom: 18px;
+        padding: 13px 16px;
+        border-radius: 9px;
+        background: #edf8ee;
+        border: 1px solid #c8e6c9;
+        color: #2e7d32;
+        font-size: 14px;
+        line-height: 1.45;
+    }
+
+    /* =========================================================
+       WELCOME BANNER
+       ========================================================= */
+
     .seller-welcome {
         background: #ffffff;
         border: 1px solid #e5e5e5;
@@ -63,7 +86,10 @@
         font-size: 14px;
     }
 
-    /* Dashboard Header */
+    /* =========================================================
+       DASHBOARD HEADER
+       ========================================================= */
+
     .dashboard-header {
         display: flex;
         align-items: center;
@@ -79,7 +105,10 @@
         font-weight: 700;
     }
 
-    /* Action Buttons */
+    /* =========================================================
+       DASHBOARD ACTIONS
+       ========================================================= */
+
     .dashboard-actions {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -96,11 +125,9 @@
         align-items: center;
         gap: 14px;
         box-sizing: border-box;
-        transition: transform 0.15s ease, box-shadow 0.2s ease;
-    font-size: 20px;
-    font-weight: 500;
-    
-    
+        transition:
+            transform 0.15s ease,
+            box-shadow 0.2s ease;
     }
 
     .dashboard-action:hover {
@@ -108,10 +135,14 @@
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
     }
 
+    /* Your WaziTrade brand orange */
+
     .add-product-action {
         background: #ff6600;
         color: #ffffff;
     }
+
+    /* Messages */
 
     .messages-action {
         background: #ffffff;
@@ -142,14 +173,21 @@
         font-size: 24px;
     }
 
+    .dashboard-action-text {
+        min-width: 0;
+    }
+
     .dashboard-action-text strong {
         display: block;
         font-size: 15px;
+        font-weight: 600;
         margin-bottom: 3px;
     }
 
     .dashboard-action-text small {
+        display: block;
         font-size: 12px;
+        line-height: 1.35;
         opacity: 0.8;
     }
 
@@ -157,6 +195,8 @@
         color: #777;
         opacity: 1;
     }
+
+    /* Unread message count */
 
     .unread-badge {
         display: inline-flex;
@@ -175,7 +215,10 @@
         box-sizing: border-box;
     }
 
-    /* Products */
+    /* =========================================================
+       PRODUCTS
+       ========================================================= */
+
     .products-card {
         background: #ffffff;
         border: 1px solid #e5e5e5;
@@ -247,7 +290,12 @@
         color: #c62828;
         font-size: 11px;
         font-weight: 600;
+        white-space: nowrap;
     }
+
+    /* =========================================================
+       EMPTY PRODUCTS
+       ========================================================= */
 
     .empty-products {
         padding: 35px 20px;
@@ -279,47 +327,185 @@
         font-weight: 600;
     }
 
-    /* Alerts */
-    .seller-alert {
-        margin-bottom: 18px;
-        padding: 13px 16px;
-        border-radius: 9px;
-        background: #edf8ee;
-        border: 1px solid #c8e6c9;
-        color: #2e7d32;
+
+/* =========================================================
+   TABLET
+   768px – 991px
+   ========================================================= */
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+    .seller-dashboard-page {
+        padding: 30px 28px 55px;
+    }
+
+    .seller-dashboard {
+        max-width: 850px;
+    }
+
+    /* Welcome */
+
+    .seller-welcome {
+        padding: 24px 26px;
+    }
+
+    .seller-welcome h2 {
+        font-size: 21px;
+    }
+
+    .seller-welcome p {
+        font-size: 16px;
+    }
+
+    /* Dashboard heading */
+
+    .dashboard-header h2 {
+        font-size: 26px;
+    }
+
+    /* Dashboard actions */
+
+    .dashboard-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 26px;
+    }
+
+    .dashboard-action {
+        min-height: 78px;
+        padding: 16px 19px;
+    }
+
+    .dashboard-action-icon {
+        width: 46px;
+        height: 46px;
+    }
+
+    .dashboard-action-icon .material-symbols-outlined {
+        font-size: 25px;
+    }
+
+    .dashboard-action-text strong {
+        font-size: 16px;
+    }
+
+    .dashboard-action-text small {
         font-size: 14px;
     }
 
-    @media (max-width: 650px) {
+    .unread-badge {
+        font-size: 12px;
+    }
+
+    /* Products */
+
+    .products-card {
+        border-radius: 15px;
+    }
+
+    .products-header {
+        padding: 19px 22px;
+    }
+
+    .products-header h3 {
+        font-size: 19px;
+    }
+
+    .products-header .material-symbols-outlined {
+        font-size: 25px;
+    }
+
+    .product-list {
+        padding: 8px 22px;
+    }
+
+    .product-item {
+        padding: 18px 2px;
+    }
+
+    .product-name {
+        font-size: 16px;
+    }
+
+    .product-price {
+        font-size: 15px;
+    }
+
+    .product-status {
+        padding: 7px 11px;
+        font-size: 12px;
+    }
+
+    /* Empty products */
+
+    .empty-products p {
+        font-size: 16px;
+    }
+
+    .empty-products a {
+        font-size: 14px;
+    }
+}
+
+
+    /* =========================================================
+       SMALL PHONES
+       Up to 380px
+       ========================================================= */
+
+    @media (max-width: 380px) {
+
         .seller-dashboard-page {
-            padding: 24px 12px 45px;
+            padding-left: 8px;
+            padding-right: 8px;
         }
 
         .seller-welcome {
-            padding: 20px;
+            padding: 14px 12px;
+        }
+
+        .seller-welcome-icon {
+            width: 40px;
+            height: 40px;
         }
 
         .seller-welcome h2 {
-            font-size: 17px;
+            font-size: 15px;
+        }
+
+        .seller-welcome p {
+            font-size: 12px;
         }
 
         .dashboard-header h2 {
-            font-size: 22px;
+            font-size: 19px;
         }
 
-        .dashboard-actions {
-            grid-template-columns: 1fr;
+        .dashboard-action {
+            min-height: 58px;
+            padding: 9px 10px;
         }
 
-        .product-item {
-            align-items: flex-start;
+        .dashboard-action-icon {
+            width: 36px;
+            height: 36px;
+        }
+
+        .dashboard-action-text strong {
+            font-size: 13.5px;
+        }
+
+        .dashboard-action-text small {
+            font-size: 11px;
         }
 
         .product-status {
-            font-size: 10px;
+            font-size: 9px;
+            padding: 4px 7px;
         }
     }
 </style>
+
 
 <div class="seller-dashboard-page">
 

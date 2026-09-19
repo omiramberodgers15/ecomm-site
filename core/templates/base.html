@@ -54,18 +54,18 @@
     <link rel="stylesheet" href="{% static 'core/styles.css' %}?v=10001">
   </head>
   <body class="{% block body_class %}{% endblock %}">
-    <!-- ======= BOOTSTRAP TOP NAVBAR (FULLY WORKING) ======= -->
-   {% block navbar %}
 
-<!-- =========================================================
+<!-- ========================================================
      WAZITRADE MARKETPLACE NAVBAR
 ========================================================= -->
+
+{% block navbar %}
 
 <nav class="wazitrade-navbar">
 
   <div class="wazitrade-navbar-container">
 
-    <!-- MENU -->
+    <!-- HAMBURGER -->
     <button
       class="wazitrade-menu-btn"
       type="button"
@@ -74,17 +74,12 @@
       aria-controls="mainMenu"
       aria-label="Open menu"
     >
-      <span class="material-symbols-outlined">
-        menu
-      </span>
+      <span class="material-symbols-outlined">menu</span>
     </button>
 
 
     <!-- LOGO -->
-    <a
-      class="wazitrade-logo"
-      href="/"
-    >
+    <a class="wazitrade-logo" href="/">
       WaziTrade
     </a>
 
@@ -96,41 +91,20 @@
       action="{% url 'core:search' %}"
     >
 
+      <span class="material-symbols-outlined wazitrade-search-icon">
+        search
+      </span>
+
       <input
         class="wazitrade-search-input"
         type="search"
         name="q"
-        placeholder="Search products, categories, brands . . ."
+        placeholder="Search products, brands and categories"
         value="{{ request.GET.q }}"
         aria-label="Search products"
       >
 
-      <button
-        class="wazitrade-search-btn"
-        type="submit"
-        aria-label="Search"
-      >
-        <span class="material-symbols-outlined">
-          search
-        </span>
-      </button>
-
     </form>
-
-
-    <!-- CART -->
-    <a
-      class="wazitrade-nav-action"
-      href="{% url 'cart:cart_detail' %}"
-      aria-label="Shopping cart"
-    >
-      <span class="material-symbols-outlined">
-        shopping_cart
-      </span>
-      <span class="wazitrade-nav-label">
-        Cart
-      </span>
-    </a>
 
 
     <!-- SELL -->
@@ -139,278 +113,291 @@
       href="{% url 'core:sell-on-wazitrade' %}"
       aria-label="Sell on WaziTrade"
     >
-      <span class="material-symbols-outlined">
-        how_to_reg
-      </span>
-      <span class="wazitrade-nav-label">
-        Sell
-      </span>
+      <span class="material-symbols-outlined">how_to_reg</span>
+      <span class="wazitrade-nav-label">Sell</span>
     </a>
 
-  </div>
 
-
-
-<!-- =========================================================
-     BOOTSTRAP SIDEBAR OFFCANVAS
-========================================================= -->
-
-<div
-  class="offcanvas offcanvas-start"
-  tabindex="-1"
-  id="mainMenu"
-  style="width: 85vw"
->
-
-  <div class="offcanvas-header">
-
-    <h5 class="offcanvas-title">
-      Menu
-    </h5>
-
-    <button
-      type="button"
-      class="btn-close text-reset"
-      data-bs-dismiss="offcanvas"
-    ></button>
-
-  </div>
-
-
-  <div class="offcanvas-body">
-
-    <!-- HOME -->
-
+    <!-- CART -->
     <a
-      class="help-card d-flex align-items-center mb-3"
-      href="/"
+      class="wazitrade-nav-action wazitrade-cart-action"
+      href="{% url 'cart:cart_detail' %}"
+      aria-label="Shopping cart"
     >
-      <span class="material-symbols-outlined me-2">
-        home
-      </span>
-
-      Home
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span class="wazitrade-nav-label">Cart</span>
     </a>
 
-
-    <hr />
-
-
-    <!-- CATEGORIES -->
-
-    <h5 class="mb-3">
-      Categories
-    </h5>
+  </div>
 
 
-    <div
-      class="accordion"
-      id="categoriesAccordion"
-    >
+  <!-- =====================================================
+       SIDEBAR MENU
+  ====================================================== -->
 
-      {% for cat in all_categories %}
+  <div
+    class="offcanvas offcanvas-start wazitrade-offcanvas"
+    tabindex="-1"
+    id="mainMenu"
+    aria-labelledby="mainMenuLabel"
+  >
 
-      <div class="accordion-item border-0">
+    <div class="offcanvas-header">
 
-        <h2
-          class="accordion-header"
-          id="heading-{{ cat.id }}"
-        >
+      <h5
+        class="offcanvas-title"
+        id="mainMenuLabel"
+      >
+        WaziTrade Menu
+      </h5>
 
-          <button
-            class="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapse-{{ cat.id }}"
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+
+    </div>
+
+
+    <div class="offcanvas-body">
+
+      <!-- HOME -->
+      <a
+        class="wazitrade-menu-link wazitrade-home-link"
+        href="/"
+      >
+        <span class="material-symbols-outlined">home</span>
+        <span>Home</span>
+      </a>
+
+
+      <div class="wazitrade-menu-divider"></div>
+
+
+      <!-- CATEGORIES -->
+      <div class="wazitrade-menu-heading">
+        Categories
+      </div>
+
+
+      <div
+        class="accordion wazitrade-category-accordion"
+        id="categoriesAccordion"
+      >
+
+        {% for cat in all_categories %}
+
+        <div class="accordion-item">
+
+          <h2
+            class="accordion-header"
+            id="heading-{{ cat.id }}"
           >
-            {{ cat.name }}
-          </button>
 
-        </h2>
-
-
-        <div
-          id="collapse-{{ cat.id }}"
-          class="accordion-collapse collapse"
-          data-bs-parent="#categoriesAccordion"
-        >
-
-          <div class="accordion-body">
-
-            <a
-              class="d-block mb-2"
-              href="{% url 'core:products_by_category' cat.id %}"
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapse-{{ cat.id }}"
+              aria-expanded="false"
+              aria-controls="collapse-{{ cat.id }}"
             >
-              All {{ cat.name }}
-            </a>
+              {{ cat.name }}
+            </button>
+
+          </h2>
 
 
-            {% for sub in cat.subcategories.all %}
+          <div
+            id="collapse-{{ cat.id }}"
+            class="accordion-collapse collapse"
+            data-bs-parent="#categoriesAccordion"
+          >
 
-            <a
-              class="d-block mb-2"
-              href="{% url 'core:products_by_subcategory' sub.id %}"
-            >
-              {{ sub.name }}
-            </a>
+            <div class="accordion-body">
 
-            {% endfor %}
+              <a
+                href="{% url 'core:products_by_category' cat.id %}"
+              >
+                All {{ cat.name }}
+              </a>
+
+              {% for sub in cat.subcategories.all %}
+
+              <a
+                href="{% url 'core:products_by_subcategory' sub.id %}"
+              >
+                {{ sub.name }}
+              </a>
+
+              {% endfor %}
+
+            </div>
 
           </div>
 
         </div>
 
+        {% endfor %}
+
       </div>
 
-      {% endfor %}
+
+      <div class="wazitrade-menu-divider"></div>
+
+
+      <!-- SHOP -->
+      <div class="wazitrade-menu-heading">
+        Shop
+      </div>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:deals-page' 'clearance' %}"
+      >
+        <span class="material-symbols-outlined">local_offer</span>
+        <span>Clearance</span>
+      </a>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:new-products' %}"
+      >
+        <span class="material-symbols-outlined">new_releases</span>
+        <span>New Arrivals</span>
+      </a>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:best-sellers' %}"
+      >
+        <span class="material-symbols-outlined">trending_up</span>
+        <span>Best Sellers</span>
+      </a>
+
+
+      <div class="wazitrade-menu-divider"></div>
+
+
+      <!-- SELLERS -->
+      <div class="wazitrade-menu-heading">
+        For Sellers
+      </div>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:sell-on-wazitrade' %}"
+      >
+        <span class="material-symbols-outlined">storefront</span>
+        <span>Sell on WaziTrade</span>
+      </a>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:seller-login' %}"
+      >
+        <span class="material-symbols-outlined">login</span>
+        <span>Seller Sign In</span>
+      </a>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:seller-register' %}"
+      >
+        <span class="material-symbols-outlined">person_add</span>
+        <span>Become a Seller</span>
+      </a>
+
+
+      {% if user.is_authenticated %}
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:seller-dashboard' %}"
+      >
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Seller Dashboard</span>
+      </a>
+
+      {% endif %}
+
+
+      <div class="wazitrade-menu-divider"></div>
+
+
+      <!-- CUSTOMER SERVICE -->
+      <div class="wazitrade-menu-heading">
+        Customer Service
+      </div>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:help-center' %}"
+      >
+        <span class="material-symbols-outlined">help</span>
+        <span>Help Center</span>
+      </a>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:contact' %}"
+      >
+        <span class="material-symbols-outlined">contact_support</span>
+        <span>Contact Us</span>
+      </a>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'chat:chat' %}"
+      >
+        <span class="material-symbols-outlined">chat</span>
+        <span>Chat with Us</span>
+      </a>
+
+
+      <div class="wazitrade-menu-divider"></div>
+
+
+      <!-- LEGAL -->
+      <div class="wazitrade-menu-heading">
+        Legal
+      </div>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:terms' %}"
+      >
+        <span>Terms &amp; Conditions</span>
+      </a>
+
+
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:privacy' %}"
+      >
+        <span>Privacy Policy</span>
+      </a>
 
     </div>
 
-
-    <hr />
-
-
-    <!-- SHOP -->
-
-    <h5>
-      Shop
-    </h5>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:deals-page' 'clearance' %}"
-    >
-      Clearance
-    </a>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:new-products' %}"
-    >
-      New Arrivals
-    </a>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:best-sellers' %}"
-    >
-      Best Sellers
-    </a>
-
-
-    <hr />
-
-
-    <!-- SELLERS -->
-
-    <h5>
-      For Sellers
-    </h5>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:sell-on-wazitrade' %}"
-    >
-      Sell on WaziTrade
-    </a>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:seller-login' %}"
-    >
-      Seller Sign In
-    </a>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:seller-register' %}"
-    >
-      Become a Seller
-    </a>
-
-
-    {% if user.is_authenticated %}
-
-    <a
-      class="help-card"
-      href="{% url 'core:seller-dashboard' %}"
-    >
-      Seller Dashboard
-    </a>
-
-    {% endif %}
-
-
-    <hr />
-
-
-    <!-- CUSTOMER SERVICE -->
-
-    <h5>
-      Customer Service
-    </h5>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:help-center' %}"
-    >
-      Help Center
-    </a>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:contact' %}"
-    >
-      Contact Us
-    </a>
-
-
-    <a
-      class="help-card"
-      href="{% url 'chat:chat' %}"
-    >
-      Chat with Us
-    </a>
-
-
-    <hr />
-
-
-    <!-- LEGAL -->
-
-    <h5>
-      Legal
-    </h5>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:terms' %}"
-    >
-      Terms & Conditions
-    </a>
-
-
-    <a
-      class="help-card"
-      href="{% url 'core:privacy' %}"
-    >
-      Privacy Policy
-    </a>
-
   </div>
 
-</div>
+</nav>
 
 {% endblock %}
+
 
     <div class="page-content">
       {% block content %}{% endblock %}
@@ -466,9 +453,9 @@
           </a>
         </div>
       </div>
-     
+
       <div class="footer-bottom">© {{ now|date:"Y" }} WaziTrade Uganda</div>
-      
+
     </footer>
     {% endblock %}
 

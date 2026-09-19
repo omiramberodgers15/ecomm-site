@@ -99,22 +99,7 @@ Home - WaziTrade
 
         {% if promotions|length > 1 %}
 
-        <button
-            type="button"
 
-            aria-label="Previous promotion"
-        >
-
-        </button>
-
-
-        <button
-            type="button"
-
-            aria-label="Next promotion"
-        >
-
-        </button>
 
 
         <div class="home-promo-featured-dots">
@@ -137,31 +122,28 @@ Home - WaziTrade
     </div>
 
 
-    <!-- =====================================================
-         ROW 2 — SCROLLABLE PROMOTIONAL CARDS
-    ====================================================== -->
 
-    <div class="home-promo-scroll-wrapper">
 
-        <div class="home-promo-scroll">
+<!-- =====================================================
+     ROW 2 — AMAZON-STYLE PROMOTIONAL CARDS
+====================================================== -->
 
-            {% for promotion in promotions %}
+<div class="home-promo-scroll-wrapper">
 
-            <a
-                href="{{ promotion.link|default:'#' }}"
-                class="home-promo-card"
-                aria-label="{{ promotion.title }}"
+    <div class="home-promo-scroll">
+
+        {% for promotion in promotions|slice:"0:3" %}
+
+        <a
+            href="{{ promotion.link|default:'#' }}"
+            class="home-promo-card"
+            aria-label="{{ promotion.title }}"
+        >
+
+            <div
+                class="home-promo-card-image"
+                style="background-image: url('{{ promotion.image.url }}');"
             >
-
-                <div class="home-promo-card-image">
-
-                    <img
-                        src="{{ promotion.image.url }}"
-                        alt="{{ promotion.title }}"
-                    >
-
-                </div>
-
 
                 <div class="home-promo-card-content">
 
@@ -183,19 +165,25 @@ Home - WaziTrade
 
                     <span class="home-promo-card-link">
 
-                        {{ promotion.button_text|default:"Shop Now" }}
+                        {{ promotion.button_text|default:"Shop Now" }} >
 
                     </span>
 
                 </div>
 
-            </a>
+            </div>
 
-            {% endfor %}
+        </a>
 
-        </div>
+        {% endfor %}
 
     </div>
+
+</div>
+
+
+
+
 
 </section>
 
@@ -591,75 +579,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showSlide(index) {
 
-    if (index >= slides.length) {
-        index = 0;
+        if (index >= slides.length) {
+            index = 0;
+        }
+
+        if (index < 0) {
+            index = slides.length - 1;
+        }
+
+        currentSlide = index;
+
+       const slideWidth = slides[0].getBoundingClientRect().width;
+
+       track.style.transform =
+       "translateX(-" +
+       (slideWidth * currentSlide) +
+       "px)";
+
+
+        dots.forEach(function (dot, dotIndex) {
+
+            dot.classList.toggle(
+                "active",
+                dotIndex === currentSlide
+            );
+
+        });
+
     }
 
-    if (index < 0) {
-        index = slides.length - 1;
-    }
-
-    currentSlide = index;
-
-    const slideWidth = slides[0].getBoundingClientRect().width;
-    const gap = parseFloat(getComputedStyle(track).gap) || 0;
-
-    track.style.transform =
-        "translateX(-" +
-        ((slideWidth + gap) * currentSlide) +
-        "px)";
-
-    dots.forEach(function (dot, dotIndex) {
-        dot.classList.toggle(
-            "active",
-            dotIndex === currentSlide
-        );
-    });
-}
-
-
-    /* =====================================================
-       NEXT
-    ===================================================== */
 
     function nextSlide() {
         showSlide(currentSlide + 1);
     }
 
 
-    /* =====================================================
-       PREVIOUS
-    ===================================================== */
-
     function previousSlide() {
         showSlide(currentSlide - 1);
     }
 
 
-    /* =====================================================
-       BUTTONS
-    ===================================================== */
-
     if (nextButton) {
+
         nextButton.addEventListener("click", function (event) {
+
             event.preventDefault();
+
             nextSlide();
+
             restartAutoSlide();
+
         });
+
     }
+
 
     if (prevButton) {
+
         prevButton.addEventListener("click", function (event) {
+
             event.preventDefault();
+
             previousSlide();
+
             restartAutoSlide();
+
         });
+
     }
 
-
-    /* =====================================================
-       DOTS
-    ===================================================== */
 
     dots.forEach(function (dot, index) {
 
@@ -670,19 +658,20 @@ document.addEventListener("DOMContentLoaded", function () {
             showSlide(index);
 
             restartAutoSlide();
+
         });
 
     });
 
 
-    /* =====================================================
-       AUTOMATIC SLIDING
-    ===================================================== */
-
     function startAutoSlide() {
 
+        clearInterval(autoSlide);
+
         autoSlide = setInterval(function () {
+
             nextSlide();
+
         }, 5000);
 
     }
@@ -698,30 +687,29 @@ document.addEventListener("DOMContentLoaded", function () {
     function restartAutoSlide() {
 
         stopAutoSlide();
+
         startAutoSlide();
 
     }
 
 
-    /* =====================================================
-       PAUSE WHILE MOUSE IS OVER CAROUSEL
-    ===================================================== */
-
     carousel.addEventListener("mouseenter", function () {
+
         stopAutoSlide();
+
     });
+
 
     carousel.addEventListener("mouseleave", function () {
+
         startAutoSlide();
+
     });
 
-
-    /* =====================================================
-       MOBILE TOUCH SWIPE
-    ===================================================== */
 
     let touchStartX = 0;
     let touchEndX = 0;
+
 
     carousel.addEventListener(
         "touchstart",
@@ -744,19 +732,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const difference = touchStartX - touchEndX;
 
-            /*
-             * Swipe LEFT
-             */
+
             if (difference > 50) {
+
                 nextSlide();
+
             }
 
-            /*
-             * Swipe RIGHT
-             */
             else if (difference < -50) {
+
                 previousSlide();
+
             }
+
 
             startAutoSlide();
 
@@ -765,15 +753,15 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* =====================================================
-       START
-    ===================================================== */
-
     showSlide(0);
+
     startAutoSlide();
 
 });
 </script>
+
+
+
 
 <!-- =========================================================
      EXISTING POPULAR PRODUCTS JAVASCRIPT
