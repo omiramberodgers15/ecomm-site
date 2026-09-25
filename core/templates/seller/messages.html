@@ -13,9 +13,9 @@
 
         <!-- Reply input and button -->
         <input type="text" id="reply-input-{{ msg.id }}" placeholder="Type your reply...">
-        <button class="reply-btn" data-product-id="{{ msg.product.id }}" data-receiver-id="{{ msg.sender.id }}">
-            Reply
-        </button>
+        <button class="reply-btn" data-session-id="{{ msg.session.id }}">
+    Reply
+</button>
 
     {% empty %}
         <p>No messages yet.</p>
@@ -25,48 +25,70 @@
 <script>
 const csrftoken = '{{ csrf_token }}';
 
-// Generic function to send a message
-function sendMessage(productId, messageContent, receiverId) {
+function sendMessage(sessionId, messageContent) {
     if (!messageContent) return;
 
-    fetch("{% url 'core:send_message' %}", {
+    fetch("{% url 'chat:send_message' %}", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "X-CSRFToken": csrftoken,
         },
         body: new URLSearchParams({
-            "product_id": productId,
-            "content": messageContent,
-            "receiver_id": receiverId
+            "session_id": sessionId,
+            "content": messageContent
         })
     })
     .then(response => response.json())
     .then(data => {
+
+        if (data.error) {
+            console.error("Message failed:", data.error);
+            return;
+        }
+
         console.log("Message sent:", data);
-        // Append the new message to the container
-        const container = document.getElementById('messages-container');
+
+        const container = document.getElementById(
+            'messages-container'
+        );
+
         const div = document.createElement('div');
-        div.innerHTML = `<b>${data.sender}:</b> ${data.content}`;
+
+        div.innerHTML = `
+            <b>${data.sender}:</b> ${data.content}
+        `;
+
         container.appendChild(div);
+    })
+    .catch(error => {
+        console.error("Error sending message:", error);
     });
 }
 
-// Attach click events to all reply buttons
-document.querySelectorAll(".reply-btn").forEach(btn => {
-    btn.addEventListener("click", function() {
-        const productId = this.dataset.productId;
-        const receiverId = this.dataset.receiverId;
 
-        // The input is the previous element sibling of the button
+document.querySelectorAll(".reply-btn").forEach(btn => {
+
+    btn.addEventListener("click", function() {
+
+        const sessionId = this.dataset.sessionId;
+
         const input = this.previousElementSibling;
+
         if (!input) return;
+
         const content = input.value.trim();
+
         if (!content) return;
 
-        sendMessage(productId, content, receiverId);
-        input.value = ""; // Clear the input after sending
+        sendMessage(
+            sessionId,
+            content
+        );
+
+        input.value = "";
     });
+
 });
 </script>
 {% endblock %}

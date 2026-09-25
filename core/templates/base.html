@@ -99,7 +99,7 @@
         class="wazitrade-search-input"
         type="search"
         name="q"
-        placeholder="Search products, brands and categories"
+        placeholder="Search products, brands, or categories..."
         value="{{ request.GET.q }}"
         aria-label="Search products"
       >
@@ -178,7 +178,7 @@
 
       <!-- CATEGORIES -->
       <div class="wazitrade-menu-heading">
-        Categories
+        Shop Categories
       </div>
 
 
@@ -252,32 +252,25 @@
       <div class="wazitrade-menu-heading">
         Shop
       </div>
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:best-sellers' %}"
+      >
+        <span>⭐ Best Sellers</span>
+      </a>
 
+       <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:new-products' %}"
+      >
+        <span>🎉 What's New</span>
+      </a>
 
       <a
         class="wazitrade-menu-link"
         href="{% url 'core:deals-page' 'clearance' %}"
       >
-        <span class="material-symbols-outlined">local_offer</span>
-        <span>Clearance</span>
-      </a>
-
-
-      <a
-        class="wazitrade-menu-link"
-        href="{% url 'core:new-products' %}"
-      >
-        <span class="material-symbols-outlined">new_releases</span>
-        <span>New Arrivals</span>
-      </a>
-
-
-      <a
-        class="wazitrade-menu-link"
-        href="{% url 'core:best-sellers' %}"
-      >
-        <span class="material-symbols-outlined">trending_up</span>
-        <span>Best Sellers</span>
+        <span>🔴 Daily Deals & Sale</span>
       </a>
 
 
@@ -294,28 +287,21 @@
         class="wazitrade-menu-link"
         href="{% url 'core:sell-on-wazitrade' %}"
       >
-        <span class="material-symbols-outlined">storefront</span>
         <span>Sell on WaziTrade</span>
       </a>
-
+      <a
+        class="wazitrade-menu-link"
+        href="{% url 'core:seller-register' %}"
+      >
+        <span> Become a Seller / Sign Up</span>
+      </a>
 
       <a
         class="wazitrade-menu-link"
         href="{% url 'core:seller-login' %}"
       >
-        <span class="material-symbols-outlined">login</span>
         <span>Seller Sign In</span>
       </a>
-
-
-      <a
-        class="wazitrade-menu-link"
-        href="{% url 'core:seller-register' %}"
-      >
-        <span class="material-symbols-outlined">person_add</span>
-        <span>Become a Seller</span>
-      </a>
-
 
       {% if user.is_authenticated %}
 
@@ -323,8 +309,7 @@
         class="wazitrade-menu-link"
         href="{% url 'core:seller-dashboard' %}"
       >
-        <span class="material-symbols-outlined">dashboard</span>
-        <span>Seller Dashboard</span>
+        <span> 📊 Seller Dashboard</span>
       </a>
 
       {% endif %}
@@ -335,7 +320,7 @@
 
       <!-- CUSTOMER SERVICE -->
       <div class="wazitrade-menu-heading">
-        Customer Service
+        Support & Help
       </div>
 
 
@@ -343,8 +328,7 @@
         class="wazitrade-menu-link"
         href="{% url 'core:help-center' %}"
       >
-        <span class="material-symbols-outlined">help</span>
-        <span>Help Center</span>
+        <span><span class="icon">🙋</span> Help Center & FAQs</span>
       </a>
 
 
@@ -352,8 +336,7 @@
         class="wazitrade-menu-link"
         href="{% url 'core:contact' %}"
       >
-        <span class="material-symbols-outlined">contact_support</span>
-        <span>Contact Us</span>
+        <span><span class="icon">📧</span> Contact Us</span>
       </a>
 
 
@@ -361,8 +344,7 @@
         class="wazitrade-menu-link"
         href="{% url 'chat:chat' %}"
       >
-        <span class="material-symbols-outlined">chat</span>
-        <span>Chat with Us</span>
+        <span><span class="icon">💬</span> Chat With Us</span>
       </a>
 
 
@@ -454,7 +436,7 @@
         </div>
       </div>
 
-      <div class="footer-bottom">© {{ now|date:"Y" }} WaziTrade Uganda</div>
+      <div class="footer-bottom">&copy; {% now "Y" %} Wazitrade. All rights reserved.</div>
 
     </footer>
     {% endblock %}

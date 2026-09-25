@@ -5,7 +5,13 @@
 {% block mobile_footer %}{% endblock %}
 {% block content %}
 
+
 <style>
+
+    /* =========================================================
+       BASE / MOBILE
+    ========================================================= */
+
     .seller-register-page {
         min-height: calc(100vh - 120px);
         background: #f7f7f7;
@@ -13,6 +19,7 @@
         display: flex;
         justify-content: center;
         align-items: flex-start;
+        box-sizing: border-box;
     }
 
     .seller-register-card {
@@ -23,6 +30,7 @@
         border-radius: 8px;
         padding: 32px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        box-sizing: border-box;
     }
 
     .seller-register-header {
@@ -43,13 +51,12 @@
         font-size: 28px;
     }
 
-    -header h2 {
+    .seller-register-header h2 {
         margin: 0;
         color: #222;
         font-size: 26px;
         font-weight: 700;
     }
-
 
     #register-form {
         margin: 0;
@@ -61,13 +68,11 @@
     }
 
     #register-form label {
-            display: block;
-    margin-bottom: 6px;
-    font-size: 16px;
-    font-weight: 500;
+        display: block;
+        margin-bottom: 6px;
+        font-size: 16px;
+        font-weight: 500;
     }
-
-
 
     #register-form ul.errorlist {
         margin: 6px 0 8px;
@@ -83,6 +88,18 @@
         color: #888;
         font-size: 12px;
         line-height: 1.4;
+    }
+
+    #register-form button[type="submit"] {
+        width: 100%;
+        border: none;
+        border-radius: 6px;
+        background: #d99923;
+        color: #ffffff;
+        padding: 13px 18px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
     }
 
     #register-form button[type="submit"]:hover {
@@ -119,7 +136,14 @@
         text-align: center;
     }
 
+
+    /* =========================================================
+       MOBILE
+       EXISTING MOBILE DESIGN KEPT
+    ========================================================= */
+
     @media (max-width: 600px) {
+
         .seller-register-page {
             padding: 24px 12px 40px;
         }
@@ -130,17 +154,181 @@
         }
 
         .seller-register-header h2 {
-                   margin: 18px auto 6px;
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: .15px;
-    color: #222;
-    text-align: center;
+            margin: 18px auto 6px;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 24px;
+            letter-spacing: .15px;
+            color: #222;
+            text-align: center;
         }
     }
-</style>
 
+
+    /* =========================================================
+       LAPTOP
+       1024px – 1439px
+    ========================================================= */
+
+    @media (min-width: 1024px) and (max-width: 1439px) {
+
+        .seller-register-page {
+            width: 100%;
+            min-height: calc(100vh - 120px);
+            padding: 55px 30px 75px;
+            box-sizing: border-box;
+        }
+
+        /*
+           Override the inline max-width:520px
+           on the wrapper inside seller-register-page.
+        */
+        .seller-register-page > div {
+            width: 100% !important;
+            max-width: 560px !important;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .seller-register-header {
+            margin-bottom: 32px;
+        }
+
+        .seller-register-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            font-size: 30px;
+        }
+
+        .seller-register-header h2 {
+            margin: 0 0 10px;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .seller-register-header p {
+            margin: 0 auto;
+            max-width: 540px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .seller-register-card {
+            width: 100%;
+            max-width: 560px;
+            padding: 40px;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        #register-form p {
+            margin-bottom: 20px;
+        }
+
+        #register-form label {
+            font-size: 16px;
+        }
+
+        #register-form button[type="submit"] {
+            min-height: 50px;
+            font-size: 16px;
+        }
+
+        .seller-register-note {
+            font-size: 13px;
+        }
+
+        .seller-message {
+            max-width: 560px;
+        }
+    }
+
+
+    /* =========================================================
+       DESKTOP
+       1440px+
+    ========================================================= */
+
+    @media (min-width: 1440px) {
+
+        .seller-register-page {
+            width: 100%;
+            min-height: calc(100vh - 120px);
+            padding: 70px 40px 90px;
+            box-sizing: border-box;
+        }
+
+        /*
+           Desktop registration content width.
+           Overrides the inline 520px width.
+        */
+        .seller-register-page > div {
+            width: 100% !important;
+            max-width: 600px !important;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .seller-register-header {
+            margin-bottom: 36px;
+        }
+
+        .seller-register-icon {
+            width: 68px;
+            height: 68px;
+            margin-bottom: 18px;
+            font-size: 32px;
+        }
+
+        .seller-register-header h2 {
+            margin: 0 0 12px;
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .seller-register-header p {
+            max-width: 580px;
+            margin: 0 auto;
+            font-size: 17px;
+            line-height: 1.65;
+            color: #666;
+        }
+
+        .seller-register-card {
+            width: 100%;
+            max-width: 600px;
+            padding: 46px;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        #register-form p {
+            margin-bottom: 22px;
+        }
+
+        #register-form label {
+            font-size: 16px;
+        }
+
+        #register-form button[type="submit"] {
+            min-height: 52px;
+            font-size: 17px;
+        }
+
+        .seller-register-note {
+            font-size: 13px;
+        }
+
+        .seller-message {
+            max-width: 600px;
+        }
+    }
+
+</style>
 <div class="seller-register-page">
 
     <div style="width:100%;max-width:520px;">
@@ -196,3 +384,7 @@
 </div>
 
 {% endblock %}
+
+
+
+

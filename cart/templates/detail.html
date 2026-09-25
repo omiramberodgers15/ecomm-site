@@ -1,25 +1,85 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Your Cart</title>
+    <title>Your Cart</title>
+
+    <link rel="stylesheet" href="{% static 'cart/cart.css' %}">
 </head>
+
 <body>
-  <h1>Your Cart</h1>
-  {% if cart %}
-    <ul>
-      {% for item in cart %}
-        <li>
-          <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}" width="80">
-          {{ item.product.name }} — {{ item.quantity }} × Ush {{ item.price }} = Ush {{ item.total_price }}
-          <a href="{% url 'cart_remove' item.product.id %}">Remove</a>
-        </li>
-      {% endfor %}
-    </ul>
-    <h3>Total: Ush {{ cart.get_total_price }}</h3>
-  {% else %}
-    <p>Your cart is empty.</p>
-  {% endif %}
+
+    <h1>Your Cart</h1>
+
+    {% if items %}
+
+        <ul>
+
+            {% for item in items %}
+
+                <li>
+
+                    {{ item.product.name }}
+                    -
+                    {{ item.quantity }}
+                    x UGX {{ item.price|floatformat:2 }}
+
+                    <!-- Remove button -->
+                    <form
+                        method="POST"
+                        action="{% url 'cart:cart_remove' item.product.id %}"
+                        style="display:inline;"
+                    >
+                        {% csrf_token %}
+
+                        <button type="submit">
+                            Remove
+                        </button>
+                    </form>
+
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+        <p>
+            <strong>Total:</strong>
+            UGX {{ total|floatformat:2 }}
+        </p>
+
+        <!-- Proceed to Checkout button with login redirect -->
+
+        {% if user.is_authenticated %}
+
+            <p>
+                <a
+                    href="{% url 'cart:dpo_pay' %}"
+                    class="btn btn-primary"
+                >
+                    Proceed to Checkout
+                </a>
+            </p>
+
+        {% else %}
+
+            <p>
+                <a
+                    href="{% url 'account_login' %}?next={% url 'cart:dpo_pay' %}"
+                    class="btn btn-primary"
+                >
+                    Sign in to Checkout
+                </a>
+            </p>
+
+        {% endif %}
+
+    {% else %}
+
+        <p>Your cart is empty.</p>
+
+    {% endif %}
+
 </body>
 </html>

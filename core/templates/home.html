@@ -25,7 +25,7 @@ Home - WaziTrade
     <div class="home-promotions-header">
 
         <div>
-            <h2>Featured Deals & Promotions</h2>
+            <h2>Today's Featured Deals</h2>
         </div>
 
     </div>
@@ -98,10 +98,7 @@ Home - WaziTrade
 
 
         {% if promotions|length > 1 %}
-
-
-
-
+        
         <div class="home-promo-featured-dots">
 
             {% for promotion in promotions %}
@@ -122,7 +119,7 @@ Home - WaziTrade
     </div>
 
 
-
+    
 
 <!-- =====================================================
      ROW 2 — AMAZON-STYLE PROMOTIONAL CARDS
@@ -198,15 +195,15 @@ Home - WaziTrade
 
 <div class="home-section-header">
     <div>
-        <h2>Popular Products</h2>
-        <p>What shoppers are viewing now</p>
+        <h2>Popular Items</h2>
+        <p>Trending right now.</p>
     </div>
 
     <a
         href="{% url 'core:search' %}?sort=popular"
         class="view-all-link"
     >
-        View All
+        See What's Popular →
     </a>
 </div>
 
@@ -281,15 +278,15 @@ Home - WaziTrade
     <div class="home-section-header">
 
         <div>
-            <h2>🔥 Trending Products</h2>
-            <p>Products shoppers are viewing most this week</p>
+            <h2>🔥 Trending This Week</h2>
+            <p>This week's hottest tech.</p>
         </div>
 
         <a
             href="{% url 'core:search' %}?sort=trending"
             class="view-all-link"
         >
-            View All
+            See What's Trending →
         </a>
 
     </div>
@@ -378,14 +375,14 @@ Home - WaziTrade
 
     <div>
         <h2>New Arrivals</h2>
-        <p>Fresh products added to WaziTrade</p>
+        <p>Freshly added gear.</p>
     </div>
 
     <a
         href="{% url 'core:new-products' %}"
         class="view-all-link"
     >
-        View All
+       Shop New Arrivals →
     </a>
 
 </div>
@@ -453,7 +450,7 @@ Home - WaziTrade
 </section>
 
 <!-- =========================================================
-     TOP SELLERS
+     BEST SELLERS
 ========================================================= -->
 
 <section class="home-section top-sellers-section">
@@ -462,15 +459,15 @@ Home - WaziTrade
 <div class="home-section-header">
 
     <div>
-        <h2>Top Sellers</h2>
-        <p>Popular choices from our marketplace</p>
+        <h2>Best Sellers</h2>
+        <p>Our top-rated choices.</p>
     </div>
 
     <a
         href="{% url 'core:best-sellers' %}"
         class="view-all-link"
     >
-        View All
+        Explore Best Sellers →
     </a>
 
 </div>

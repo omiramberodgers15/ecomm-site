@@ -6,45 +6,99 @@
 
 {% block content %}
 
-<div class="page-heading" >
-    <h2 style="font-size: 16px;">{{ current_category.name }}</h2>
+<div class="category-page">
+    
+<!-- =====================================================
+     CATEGORY CONTENT
+====================================================== -->
+
+<div class="category-page-layout">
+
+    <!-- =================================================
+         LEFT SIDEBAR
+    ================================================== -->
+
+    {% if subcategories %}
+    <aside class="category-sidebar">
+
+        <div class="category-sidebar-title" style="padding-left:16px;">
+            <h3>{{ current_category.name }}</h3>
+        </div>
+
+        <div class="category-sidebar-heading" style="padding-left:16px;">
+            Browse Subcategories
+        </div>
+
+        <ul class="category-sidebar-list">
+
+            {% for sub in subcategories %}
+            <li>
+                <a href="{% url 'core:products_by_subcategory' sub.id %}">
+                    {{ sub.name }}
+                </a>
+            </li>
+            {% endfor %}
+
+        </ul>
+
+    </aside>
+    {% endif %}
+
+
+    <!-- =================================================
+         RIGHT PRODUCT AREA
+    ================================================== -->
+
+    <main class="category-products">
+
+        <div class="product-grid">
+
+            {% for product in products %}
+
+            <div class="product-card">
+
+                <a href="{% url 'core:product_detail' product.id %}">
+
+                    {% if product.main_image %}
+
+                        <img
+                            src="{{ product.main_image.url }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% else %}
+
+                        <img
+                            src="{% static 'core/default-category.jpg' %}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% endif %}
+
+                </a>
+
+                <p>{{ product.name }}</p>
+
+                <p class="product-price">
+                    UGX {{ product.base_price }}
+                </p>
+
+            </div>
+
+            {% empty %}
+
+            <p class="no-products">
+                No products found in this category.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+
 </div>
 
-<!-- Subcategories section -->
-{% if subcategories %}
-<div class="subcategory-list">
-    <h3 style="font-size: 14px;padding-left: 16px;text-decoration: none;">Browse Subcategories</h3>
-    <ul style="font-size: 12px;">
-        {% for sub in subcategories %}
-        <li>
-            <a href="{% url 'core:products_by_subcategory' sub.id %}" style="text-decoration: none;">
-                {{ sub.name }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-
-<!-- Products Grid -->
-<div class="product-grid">
-    {% for product in products %}
-    <div class="product-card">
-        <a href="{% url 'core:product_detail' product.id %}">
-            {% if product.main_image %}
-                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
-            {% else %}
-                <img src="{% static 'core/default-category.jpg' %}" alt="{{ product.name }}">
-            {% endif %}
-        </a>
-        <p>{{ product.name }}</p>
-        <p style="color: #111; display: block;font-size: 14px; font-weight: 700; line-height: 20px; margin-bottom: 2px;">UGX {{ product.base_price }}</p>
-        
-    </div>
-
-    {% empty %}
-    <p>No products found in this category.</p>
-    {% endfor %}
 </div>
 
 {% endblock %}
