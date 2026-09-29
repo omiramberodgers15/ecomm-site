@@ -377,6 +377,34 @@ class Promotion(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     image = models.ImageField(upload_to="promotions/")
-    button_text = models.CharField(max_length=30, default="Shop Now")
-    link = models.URLField(blank=True)
-    active = models.BooleanField(default=True)
+
+    button_text = models.CharField(
+        max_length=30,
+        default="Shop Now"
+    )
+
+    link = models.URLField(
+        blank=True
+    )
+
+    active = models.BooleanField(
+        default=True
+    )
+
+    # =====================================================
+    # ROW 2 — JUMIA-STYLE PROMOTIONAL CARD
+    # =====================================================
+
+    row2_image = models.ImageField(
+        upload_to="promotions/row2/",
+        blank=True,
+        null=True
+    )
+
+    row2_text = models.CharField(
+        max_length=100,
+        blank=True
+    )
+
+    def __str__(self):
+        return self.title    

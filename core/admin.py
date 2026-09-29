@@ -397,5 +397,37 @@ class HelpArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Promotion)
 class PromotionAdmin(admin.ModelAdmin):
-    list_display = ("title", "active")
-    list_filter = ("active",)
+
+    list_display = (
+        "title",
+        "active",
+    )
+
+    list_filter = (
+        "active",
+    )
+
+    fieldsets = (
+        (
+            "Row 1 — Featured Promotion",
+            {
+                "fields": (
+                    "title",
+                    "description",
+                    "image",
+                    "button_text",
+                    "link",
+                    "active",
+                )
+            },
+        ),
+        (
+            "Row 2 — Promotional Card",
+            {
+                "fields": (
+                    "row2_image",
+                    "row2_text",
+                )
+            },
+        ),
+    )

@@ -31,148 +31,118 @@ Home - WaziTrade
     </div>
 
 
-    <!-- =====================================================
-         ROW 1 — ANIMATED PROMOTIONAL CAROUSEL
-    ====================================================== -->
-
-    <div class="home-promo-featured">
-
-        <div class="home-promo-featured-track">
-
-            {% for promotion in promotions %}
-
-            <a
-                href="{{ promotion.link|default:'#' }}"
-                class="home-promo-featured-slide {% if forloop.first %}active{% endif %}"
-                data-promo-slide="{{ forloop.counter0 }}"
-                aria-label="{{ promotion.title }}"
-            >
-
-                <div class="home-promo-featured-image">
-
-                    <img
-                        src="{{ promotion.image.url }}"
-                        alt="{{ promotion.title }}"
-                    >
-
-                    <div class="home-promo-featured-overlay"></div>
-
-                </div>
-
-
-                <div class="home-promo-featured-content">
-
-                    <span class="home-promo-sponsored">
-                        Featured Promotion
-                    </span>
-
-                    <h3>
-                        {{ promotion.title }}
-                    </h3>
-
-                    {% if promotion.description %}
-
-                    <p>
-                        {{ promotion.description }}
-                    </p>
-
-                    {% endif %}
-
-                    <span class="home-promo-featured-button">
-
-                        {{ promotion.button_text|default:"Shop Now" }}
-
-                        <span class="material-symbols-outlined">
-                            arrow_forward
-                        </span>
-
-                    </span>
-
-                </div>
-
-            </a>
-
-            {% endfor %}
-
-        </div>
-
-
-        {% if promotions|length > 1 %}
-        
-        <div class="home-promo-featured-dots">
-
-            {% for promotion in promotions %}
-
-            <button
-                type="button"
-                class="home-promo-featured-dot {% if forloop.first %}active{% endif %}"
-                data-promo-slide="{{ forloop.counter0 }}"
-                aria-label="Show promotion {{ forloop.counter }}"
-            ></button>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-    </div>
-
-
     
-
 <!-- =====================================================
-     ROW 2 — AMAZON-STYLE PROMOTIONAL CARDS
+     ROW 1 — ANIMATED PROMOTIONAL CAROUSEL
 ====================================================== -->
 
-<div class="home-promo-scroll-wrapper">
+<div class="home-promo-featured">
 
-    <div class="home-promo-scroll">
+    <div class="home-promo-featured-track">
 
-        {% for promotion in promotions|slice:"0:3" %}
+        {% for promotion in promotions %}
 
         <a
             href="{{ promotion.link|default:'#' }}"
-            class="home-promo-card"
+            class="home-promo-featured-slide {% if forloop.first %}active{% endif %}"
+            data-promo-slide="{{ forloop.counter0 }}"
             aria-label="{{ promotion.title }}"
         >
 
-            <div
-                class="home-promo-card-image"
-                style="background-image: url('{{ promotion.image.url }}');"
-            >
+            <div class="home-promo-featured-image">
 
-                <div class="home-promo-card-content">
-
-                    <span class="home-promo-card-label">
-                        Featured
-                    </span>
-
-                    <strong>
-                        {{ promotion.title }}
-                    </strong>
-
-                    {% if promotion.description %}
-
-                    <span class="home-promo-card-description">
-                        {{ promotion.description|truncatechars:55 }}
-                    </span>
-
-                    {% endif %}
-
-                    <span class="home-promo-card-link">
-
-                        {{ promotion.button_text|default:"Shop Now" }} >
-
-                    </span>
-
-                </div>
+                <img
+                    src="{{ promotion.image.url }}"
+                    alt="{{ promotion.title }}"
+                >
 
             </div>
 
         </a>
 
         {% endfor %}
+
+    </div>
+
+
+    {% if promotions|length > 1 %}
+
+    <div class="home-promo-featured-dots">
+
+        {% for promotion in promotions %}
+
+        <button
+            type="button"
+            class="home-promo-featured-dot {% if forloop.first %}active{% endif %}"
+            data-promo-slide="{{ forloop.counter0 }}"
+            aria-label="Show promotion {{ forloop.counter }}"
+        ></button>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =====================================================
+     ROW 2 — ESSENTIALS
+====================================================== -->
+
+<div class="home-promo-row2">
+
+    <div class="home-promo-row2-header">
+
+        <h2>
+            Everything You Need, All in One Place
+        </h2>
+
+    </div>
+
+
+    <div class="home-promo-row2-wrapper">
+
+        <div class="home-promo-row2-track">
+
+            {% for promotion in promotions|slice:"0:3" %}
+
+                {% if promotion.row2_image %}
+
+                    <a
+                        href="{{ promotion.link|default:'#' }}"
+                        class="home-promo-row2-card"
+                        aria-label="{{ promotion.row2_text|default:promotion.title }}"
+                    >
+
+                        <div class="home-promo-row2-image">
+
+                            <img
+                                src="{{ promotion.row2_image.url }}"
+                                alt="{{ promotion.row2_text|default:promotion.title }}"
+                            >
+
+                        </div>
+
+
+                        {% if promotion.row2_text %}
+
+                            <div class="home-promo-row2-text">
+
+                                {{ promotion.row2_text }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </a>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
 
     </div>
 
