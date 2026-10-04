@@ -35,7 +35,8 @@ from .models import Message
 from django.views.decorators.csrf import csrf_exempt
 
 from django.db.models import F, Count
-
+from django.db.models import Avg
+from django.db.models import ExpressionWrapper, DecimalField
 
 from django.db.models import Sum, Q
 from django.core.cache import cache
@@ -54,24 +55,16 @@ from .models import HelpCategory, HelpArticle
 from django.http import HttpResponse
 
 
-# ---------- HOME & PRODUCTS ----------
 def home(request):
-    all_categories = Category.objects.all()
+    all_categories = (
+    Category.objects
+    .filter(products__approved=True)
+    .distinct()
+)
 
     # =========================================================
-    # NEW ARRIVALS
-    # Only approved products, newest first
-    # =========================================================
-    new_arrivals = (
-        Product.objects
-        .filter(approved=True)
-        .select_related("category", "subcategory", "seller")
-        .order_by("-created_at")[:10]
-    )
-
-    # =========================================================
-    # TOP DEALS
-    # Products whose original price is higher than current price
+    # TODAY'S DEALS
+    # Products with the biggest genuine discount percentage
     # =========================================================
     top_deals = (
         Product.objects
@@ -80,62 +73,286 @@ def home(request):
             initial_price__isnull=False,
             initial_price__gt=F("base_price"),
         )
+        .annotate(
+            discount_percentage=ExpressionWrapper(
+                (
+                    (F("initial_price") - F("base_price")) * 100
+                ) / F("initial_price"),
+                output_field=DecimalField(
+                    max_digits=6,
+                    decimal_places=2,
+                ),
+            )
+        )
         .select_related("category", "subcategory", "seller")
-        .order_by("-created_at")[:10]
+        .order_by(
+            "-discount_percentage",
+            "-created_at",
+        )[:10]
     )
 
-    # =========================================================
-    # BEST SELLERS
-    # Rank products by REAL PAID SALES, not review count.
-    # =========================================================
-    # =========================================================
-# BEST SELLERS
-# Only products with at least one paid sale.
-# Rank by real paid sales, then reviews, then newest.
-# =========================================================
-    best_sellers = (
+    # RECOMMENDED FOR YOU
+    thirty_days_ago = timezone.now() - timezone.timedelta(days=30)
+
+    if request.user.is_authenticated:
+
+        recent_viewed_products = (
+            ProductView.objects
+            .filter(
+                user=request.user,
+                viewed_at__gte=thirty_days_ago,
+            )
+            .select_related("product")
+            .order_by("-viewed_at")
+        )
+
+        viewed_product_ids = list(
+            recent_viewed_products.values_list(
+                "product_id",
+                flat=True,
+            )
+        )
+
+        viewed_category_ids = list(
+            recent_viewed_products.values_list(
+                "product__category_id",
+                flat=True,
+            ).distinct()
+        )
+
+        viewed_subcategory_ids = list(
+            recent_viewed_products
+            .exclude(product__subcategory_id__isnull=True)
+            .values_list(
+                "product__subcategory_id",
+                flat=True,
+            )
+            .distinct()
+        )
+
+        # =====================================================
+        # LEVEL 1 — PERSONALIZED RECOMMENDATIONS
+        # =====================================================
+
+        personalized_products = Product.objects.none()
+
+        if viewed_category_ids:
+
+            personalized_products = (
+                Product.objects
+                .filter(
+                    approved=True,
+                )
+                .filter(
+                    Q(category_id__in=viewed_category_ids)
+                    |
+                    Q(subcategory_id__in=viewed_subcategory_ids)
+                )
+                .exclude(
+                    id__in=viewed_product_ids,
+                )
+                .annotate(
+                    recent_views=Count(
+                        "view_events",
+                        filter=Q(
+                            view_events__viewed_at__gte=thirty_days_ago
+                        ),
+                        distinct=True,
+                    ),
+                    reviews_count=Count(
+                        "reviews",
+                        distinct=True,
+                    ),
+                )
+                .select_related(
+                    "category",
+                    "subcategory",
+                    "seller",
+                )
+                .order_by(
+                    "-recent_views",
+                    "-reviews_count",
+                    "-created_at",
+                )[:10]
+            )
+
+        recommended_products = list(
+            personalized_products
+        )
+
+        recommended_ids = [
+            product.id
+            for product in recommended_products
+        ]
+
+        # =====================================================
+        # LEVEL 2 — GENERAL RECOMMENDATIONS
+        # =====================================================
+
+        remaining_count = 10 - len(recommended_products)
+
+        if remaining_count > 0:
+
+            fallback_products = (
+                Product.objects
+                .filter(
+                    approved=True,
+                )
+                .exclude(
+                    id__in=viewed_product_ids + recommended_ids,
+                )
+                .annotate(
+                    recent_views=Count(
+                        "view_events",
+                        filter=Q(
+                            view_events__viewed_at__gte=thirty_days_ago
+                        ),
+                        distinct=True,
+                    ),
+                    reviews_count=Count(
+                        "reviews",
+                        distinct=True,
+                    ),
+                )
+                .select_related(
+                    "category",
+                    "subcategory",
+                    "seller",
+                )
+                .order_by(
+                    "-recent_views",
+                    "-reviews_count",
+                    "-created_at",
+                )[:remaining_count]
+            )
+
+            recommended_products.extend(
+                list(fallback_products)
+            )
+
+        # =====================================================
+        # LEVEL 3 — RECENTLY VIEWED PRODUCTS
+        # FINAL FALLBACK SO SECTION NEVER GOES EMPTY
+        # =====================================================
+
+        remaining_count = 10 - len(recommended_products)
+
+        if remaining_count > 0:
+
+            final_fallback_ids = set(
+                recommended_ids
+            )
+
+            final_fallback_products = []
+
+            for viewed_product in recent_viewed_products:
+
+                product = viewed_product.product
+
+                if (
+                    product.approved
+                    and product.id not in final_fallback_ids
+                ):
+                    final_fallback_products.append(product)
+                    final_fallback_ids.add(product.id)
+
+                if len(final_fallback_products) >= remaining_count:
+                    break
+
+            recommended_products.extend(
+                final_fallback_products
+            )
+
+    else:
+
+        # =====================================================
+        # VISITOR / NOT LOGGED IN — GENERAL RECOMMENDATIONS
+        # =====================================================
+
+        recommended_products = list(
+            Product.objects
+            .filter(
+                approved=True,
+            )
+            .annotate(
+                recent_views=Count(
+                    "view_events",
+                    filter=Q(
+                        view_events__viewed_at__gte=thirty_days_ago
+                    ),
+                    distinct=True,
+                ),
+                reviews_count=Count(
+                    "reviews",
+                    distinct=True,
+                ),
+            )
+            .select_related(
+                "category",
+                "subcategory",
+                "seller",
+            )
+            .order_by(
+                "-recent_views",
+                "-reviews_count",
+                "-created_at",
+            )[:10]
+        )
+    
+    # TOP RATED
+    top_rated_products = (
         Product.objects
         .filter(approved=True)
         .annotate(
-            sold_count=Sum(
-                "cart_items__quantity",
-                filter=Q(cart_items__orders__paid=True),
+            average_rating=Avg("reviews__rating"),
+            reviews_count=Count(
+                "reviews",
+                distinct=True,
             ),
-            reviews_count=Count("reviews", distinct=True),
         )
-        .filter(sold_count__gt=0)
+        .filter(
+            reviews_count__gte=2,
+            average_rating__isnull=False,
+        )
+        .select_related(
+            "category",
+            "subcategory",
+            "seller",
+        )
+        .order_by(
+            "-average_rating",
+            "-reviews_count",
+            "-created_at",
+        )[:10]
+    )
+
+
+
+    # =========================================================
+    # POPULAR ITEMS
+    # Products with the highest overall views
+    # =========================================================
+    popular_products = (
+        Product.objects
+        .filter(approved=True)
+        .annotate(
+            reviews_count=Count(
+                "reviews",
+                distinct=True,
+            )
+        )
         .select_related("category", "subcategory", "seller")
         .order_by(
-            "-sold_count",
+            "-views",
             "-reviews_count",
             "-created_at",
         )[:10]
     )
 
     # =========================================================
-    # POPULAR PRODUCTS
-    # For now, use products that have customer reviews.
-    # This is temporary until we add proper activity tracking.
+    # TRENDING THIS WEEK
+    # Products receiving the most recent attention
     # =========================================================
-
-    popular_products = (
-    Product.objects
-    .filter(approved=True)
-    .annotate(
-        reviews_count=Count("reviews", distinct=True),
-    )
-    .select_related("category", "subcategory", "seller")
-    .order_by(
-        "-views",
-        "-reviews_count",
-        "-created_at",
-    )[:10]
-  )
-
-    # =========================================================
-# TRENDING PRODUCTS
-# Rank by views received in the last 7 days.
-# =========================================================
     seven_days_ago = timezone.now() - timezone.timedelta(days=7)
 
     trending_products = (
@@ -147,10 +364,15 @@ def home(request):
         .annotate(
             recent_views=Count(
                 "view_events",
-                filter=Q(view_events__viewed_at__gte=seven_days_ago),
+                filter=Q(
+                    view_events__viewed_at__gte=seven_days_ago
+                ),
                 distinct=True,
             ),
-            reviews_count=Count("reviews", distinct=True),
+            reviews_count=Count(
+                "reviews",
+                distinct=True,
+            ),
         )
         .select_related("category", "subcategory", "seller")
         .order_by(
@@ -159,6 +381,50 @@ def home(request):
             "-created_at",
         )[:10]
     )
+
+
+    # =========================================================
+    # NEW ARRIVALS
+    # Approved products added within the last 30 days
+    # =========================================================
+    new_arrivals = (
+        Product.objects
+        .filter(
+            approved=True,
+            created_at__gte=thirty_days_ago,
+        )
+        .select_related("category", "subcategory", "seller")
+        .order_by("-created_at")[:10]
+    )
+
+    # =========================================================
+    # BEST SELLERS
+    # Products with confirmed paid sales
+    # =========================================================
+    best_sellers = (
+        Product.objects
+        .filter(approved=True)
+        .annotate(
+            sold_count=Sum(
+                "cart_items__quantity",
+                filter=Q(
+                    cart_items__orders__paid=True
+                ),
+            ),
+            reviews_count=Count(
+                "reviews",
+                distinct=True,
+            ),
+        )
+        .filter(sold_count__gt=0)
+        .select_related("category", "subcategory", "seller")
+        .order_by(
+            "-sold_count",
+            "-reviews_count",
+            "-created_at",
+        )[:10]
+    )
+
     # =========================================================
     # PROMOTIONS
     # =========================================================
@@ -170,11 +436,13 @@ def home(request):
 
     context = {
         "all_categories": all_categories,
-        "new_arrivals": new_arrivals,
         "top_deals": top_deals,
-        "best_sellers": best_sellers,
+        "recommended_products": recommended_products,
+        "top_rated_products": top_rated_products,
         "popular_products": popular_products,
         "trending_products": trending_products,
+        "new_arrivals": new_arrivals,
+        "best_sellers": best_sellers,
         "promotions": promotions,
     }
 
@@ -207,7 +475,10 @@ def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     product.views += 1
     product.save(update_fields=["views"])
-    ProductView.objects.create(product=product)
+    ProductView.objects.create(
+    product=product,
+    user=request.user if request.user.is_authenticated else None,
+)
     color_images = {}
     for img in product.images.all():
         color_images.setdefault(img.color or "default", []).append(img.image.url)

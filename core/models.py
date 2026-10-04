@@ -132,6 +132,13 @@ class Product(models.Model):
         return self.reviews.count()
 
 class ProductView(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="product_views",
+    )
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,

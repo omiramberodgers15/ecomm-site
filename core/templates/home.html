@@ -3,7 +3,7 @@
 {% load humanize %}
 
 {% block title %}
-Home - WaziTrade
+WaziTrade
 {% endblock %}
 
 {% block content %}
@@ -96,7 +96,8 @@ Home - WaziTrade
     <div class="home-promo-row2-header">
 
         <h2>
-            Everything You Need, All in One Place
+            Smart Shopping. Powerful Trade.
+            
         </h2>
 
     </div>
@@ -157,6 +158,337 @@ Home - WaziTrade
 {% endif %}
 
 <!-- =========================================================
+     TODAY'S DEALS
+========================================================= -->
+
+<section class="home-section todays-deals-section">
+
+    <div class="home-section-header">
+
+        <div>
+            <h2>Today's Deals</h2>
+            <p>Great products at prices worth grabbing.</p>
+        </div>
+
+        <a
+            href="{% url 'core:search' %}?sort=deals"
+            class="view-all-link"
+        >
+            Shop Today's Deals →
+        </a>
+
+    </div>
+
+
+    <div class="home-product-grid">
+
+        {% for product in top_deals|slice:"0:8" %}
+
+        <article class="home-product-card">
+
+            <a
+                href="{% url 'core:product_detail' product.id %}"
+                class="home-product-image-link"
+            >
+
+                {% if product.main_image %}
+
+                <img
+                    src="{{ product.main_image.url }}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% elif product.images.exists %}
+
+                <img
+                    src="{{ product.images.first.image.url }}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% else %}
+
+                <img
+                    src="{% static 'core/default-product.jpg' %}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% endif %}
+
+            </a>
+
+
+            <div class="home-product-info">
+
+                <p class="home-product-name">
+                    {{ product.name }}
+                </p>
+
+                <div class="home-product-price">
+                    Ush {{ product.base_price|floatformat:0|intcomma }}
+                </div>
+
+                {% if product.initial_price and product.initial_price > product.base_price %}
+
+                <div class="home-product-old-price">
+                    Ush {{ product.initial_price|floatformat:0|intcomma }}
+                </div>
+
+                <div class="home-product-discount">
+                    {{ product.discount_percentage|floatformat:0 }}% OFF
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </article>
+
+        {% empty %}
+
+        <div class="home-empty">
+
+            <span class="material-symbols-outlined">
+                local_offer
+            </span>
+
+            <p>No deals available yet.</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SHOP BY CATEGORY
+========================================================= -->
+
+<section class="home-section shop-category-section">
+
+    <div class="home-section-header">
+
+        <div>
+            <h2>Shop by Category</h2>
+            <p>Shop by category and find what you need faster.</p>
+        </div>
+
+    </div>
+
+
+    <div class="shop-category-grid">
+
+        {% for category in all_categories|slice:"0:8" %}
+
+        <a
+            href="{% url 'core:products_by_category' category.id %}"
+            class="shop-category-card"
+        >
+
+            <div class="shop-category-image">
+
+                {% if category.image %}
+
+                <img
+                    src="{{ category.image.url }}"
+                    alt="{{ category.name }}"
+                >
+
+                {% else %}
+
+                <div class="shop-category-placeholder">
+                    <span class="material-symbols-outlined">
+                        category
+                    </span>
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="shop-category-name">
+                {{ category.name }}
+            </div>
+
+        </a>
+
+        {% empty %}
+
+        <div class="home-empty">
+
+            <span class="material-symbols-outlined">
+                category
+            </span>
+
+            <p>No categories available yet.</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     RECOMMENDED FOR YOU
+========================================================= -->
+
+<section class="home-section recommended-section">
+
+    <div class="home-section-header">
+
+        <div>
+            <h2>Recommended for You</h2>
+            <p>Popular picks based on recent shopper interest.</p>
+        </div>
+
+        <a href="{% url 'core:search' %}" class="view-all-link">
+            View All →
+        </a>
+
+    </div>
+
+    <div class="home-product-grid">
+
+        {% for product in recommended_products|slice:"0:8" %}
+
+            <div class="home-product-card">
+
+                <a href="{% url 'core:product_detail' product.id %}">
+
+                    {% if product.main_image %}
+                <img
+                 src="{{ product.main_image.url }}"
+                 alt="{{ product.name }}"
+                >
+                {% else %}
+                <div class="home-product-image-placeholder">
+                    <span class="material-symbols-outlined">
+                    image
+                    </span>
+                </div>
+                {% endif %}
+
+                </a>
+
+                <div class="home-product-info">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <div class="home-product-price">
+                        Ush {{ product.base_price|floatformat:0 }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="home-empty">
+                <p>No recommendations available yet.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     TOP RATED
+========================================================= -->
+{% if top_rated_products %}
+<section class="home-section top-rated-section">
+
+    <div class="home-section-header">
+
+        <div>
+            <h2>Top Rated</h2>
+            <p>Loved by shoppers like you.</p>
+        </div>
+
+        <a href="{% url 'core:search' %}?sort=rating" class="view-all-link">
+            View All →
+        </a>
+
+    </div>
+
+    <div class="home-product-grid">
+
+        {% for product in top_rated_products|slice:"0:8" %}
+
+            <div class="home-product-card">
+
+                <a href="{% url 'core:product_detail' product.id %}">
+
+                    {% if product.main_image %}
+
+                        <img
+                            src="{{ product.main_image.url }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="home-product-image-placeholder">
+                            <span class="material-symbols-outlined">
+                                image
+                            </span>
+                        </div>
+
+                    {% endif %}
+
+                </a>
+
+                <div class="home-product-info">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <div class="home-product-price">
+                        Ush {{ product.base_price|floatformat:0 }}
+                    </div>
+
+                    <div class="top-rated-stars">
+
+                        <span class="material-symbols-outlined">
+                            star
+                        </span>
+
+                        {{ product.average_rating|floatformat:1 }}
+
+                        <span class="top-rated-review-count">
+                            ({{ product.reviews_count }})
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="home-empty">
+                <p>No highly rated products available yet.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+{% endif %}
+
+<!-- =========================================================
      POPULAR PRODUCTS
 ========================================================= -->
 
@@ -166,7 +498,7 @@ Home - WaziTrade
 <div class="home-section-header">
     <div>
         <h2>Popular Items</h2>
-        <p>Trending right now.</p>
+        <p>Most viewed by shoppers.</p>
     </div>
 
     <a
@@ -249,7 +581,7 @@ Home - WaziTrade
 
         <div>
             <h2>🔥 Trending This Week</h2>
-            <p>This week's hottest tech.</p>
+            <p>Products getting the most attention this week.</p>
         </div>
 
         <a
@@ -345,7 +677,7 @@ Home - WaziTrade
 
     <div>
         <h2>New Arrivals</h2>
-        <p>Freshly added gear.</p>
+        <p>The latest products on WaziTrade.</p>
     </div>
 
     <a
@@ -360,7 +692,7 @@ Home - WaziTrade
 
 <div class="home-product-grid">
 
-    {% for product in new_arrivals %}
+    {% for product in new_arrivals|slice:"0:8" %}
 
     <article class="home-product-card">
 
@@ -369,6 +701,7 @@ Home - WaziTrade
             class="home-product-image-link"
         >
 
+            <span class="new-arrival-badge">NEW</span>
             {% if product.main_image %}
 
             <img
@@ -425,97 +758,96 @@ Home - WaziTrade
 
 <section class="home-section top-sellers-section">
 
+    <div class="home-section-header">
 
-<div class="home-section-header">
-
-    <div>
-        <h2>Best Sellers</h2>
-        <p>Our top-rated choices.</p>
-    </div>
-
-    <a
-        href="{% url 'core:best-sellers' %}"
-        class="view-all-link"
-    >
-        Explore Best Sellers →
-    </a>
-
-</div>
-
-
-<div class="home-product-grid">
-
-    {% for product in best_sellers %}
-
-    <article class="home-product-card">
-
-        <a
-            href="{% url 'core:product_detail' product.id %}"
-            class="home-product-image-link"
-        >
-
-            {% if product.main_image %}
-
-            <img
-                src="{{ product.main_image.url }}"
-                alt="{{ product.name }}"
-                class="home-product-image"
-            >
-
-            {% else %}
-
-            <img
-                src="{% static 'core/default-product.jpg' %}"
-                alt="{{ product.name }}"
-                class="home-product-image"
-            >
-
-            {% endif %}
-
-        </a>
-
-
-        <div class="home-product-info">
-
-            <div class="home-product-price">
-                Ush {{ product.base_price|floatformat:0|intcomma }}
-            </div>
-
-            <p class="home-product-name">
-                {{ product.name }}
-            </p>
-
-            <div class="home-product-rating">
-
-                <span class="rating-stars">
-                    ★
-                </span>
-
-                <span>
-                    {{ product.review_count }} reviews
-                </span>
-
-            </div>
-
+        <div>
+            <h2>Best Sellers</h2>
+            <p>Products shoppers are buying most.</p>
         </div>
 
-    </article>
+        <a
+            href="{% url 'core:best-sellers' %}"
+            class="view-all-link"
+        >
+            Explore Best Sellers →
+        </a>
 
-    {% empty %}
-
-    <div class="home-empty">
-        <span class="material-symbols-outlined">
-            trending_up
-        </span>
-        <p>No best sellers yet.</p>
     </div>
 
-    {% endfor %}
+    <div class="home-product-grid">
 
-</div>
+        {% for product in best_sellers %}
 
+        <article class="home-product-card">
+
+            <a
+                href="{% url 'core:product_detail' product.id %}"
+                class="home-product-image-link"
+            >
+
+                <span class="best-seller-badge">
+                    BEST SELLER
+                </span>
+
+                {% if product.main_image %}
+
+                <img
+                    src="{{ product.main_image.url }}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% else %}
+
+                <img
+                    src="{% static 'core/default-product.jpg' %}"
+                    alt="{{ product.name }}"
+                    class="home-product-image"
+                >
+
+                {% endif %}
+
+            </a>
+
+            <div class="home-product-info">
+
+                <div class="home-product-price">
+                    Ush {{ product.base_price|floatformat:0|intcomma }}
+                </div>
+
+                <p class="home-product-name">
+                    {{ product.name }}
+                </p>
+
+                <div class="best-seller-count">
+                    <span class="material-symbols-outlined">
+                        shopping_bag
+                    </span>
+
+                    <span>
+                        {{ product.sold_count }} sold
+                    </span>
+                </div>
+
+            </div>
+
+        </article>
+
+        {% empty %}
+
+        <div class="home-empty">
+            <span class="material-symbols-outlined">
+                trending_up
+            </span>
+            <p>No best sellers yet. Check back soon!</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </section>
+
 
 {% endblock %}
 

@@ -3788,20 +3788,223 @@ font-size: 13px;
 }
 
 /* =========================================================
-NEW ARRIVALS BACKGROUND
-========================================================= */
-
-.new-arrivals-section {
-background: #ffffff;
-}
-
-/* =========================================================
-TOP SELLERS
+   BEST SELLERS
 ========================================================= */
 
 .top-sellers-section {
-background: #fff;
+    width: 100%;
+    background: #ffffff;
 }
+
+/* PRODUCT GRID */
+
+.top-sellers-section .home-product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 10px;
+}
+
+/* PRODUCT CARD */
+
+.top-sellers-section .home-product-card {
+    min-width: 0;
+}
+
+/* BEST SELLER BADGE */
+
+.top-sellers-section .home-product-image-link {
+    position: relative;
+}
+
+.top-sellers-section .best-seller-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 7px;
+
+    background: #ff6600;
+    color: #ffffff;
+
+    border-radius: 4px;
+
+    font-family: "Rubik", system-ui, sans-serif;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+}
+
+/* SOLD COUNT */
+
+.top-sellers-section .best-seller-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    margin-top: 7px;
+
+    color: #666666;
+
+    font-family: "Rubik", system-ui, sans-serif;
+    font-size: 11px;
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+.top-sellers-section .best-seller-count .material-symbols-outlined {
+    color: #ff6600;
+    font-size: 15px;
+    line-height: 1;
+}
+
+/* =========================================================
+   MOBILE
+   390px — ABOUT 2½ CARDS
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .top-sellers-section .home-product-grid {
+        display: flex;
+        gap: 10px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 0 10px 4px;
+
+        scroll-snap-type: x proximity;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .top-sellers-section .home-product-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .top-sellers-section .home-product-card {
+        flex: 0 0 42%;
+        width: 42%;
+        min-width: 0;
+
+        scroll-snap-align: start;
+    }
+
+    .top-sellers-section .best-seller-badge {
+        top: 7px;
+        left: 7px;
+        padding: 4px 6px;
+        font-size: 8px;
+    }
+
+    .top-sellers-section .best-seller-count {
+        font-size: 11px;
+    }
+}
+
+/* =========================================================
+   TABLET
+   577px – 991px — 3 CARDS
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .top-sellers-section .home-product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        padding: 0 12px;
+    }
+
+    .top-sellers-section .home-product-card {
+        min-width: 0;
+    }
+
+    .top-sellers-section .home-product-name {
+        font-size: 15px;
+    }
+
+    .top-sellers-section .home-product-price {
+        font-size: 16px;
+    }
+
+    .top-sellers-section .best-seller-badge {
+        top: 9px;
+        left: 9px;
+        padding: 5px 7px;
+        font-size: 10px;
+    }
+
+    .top-sellers-section .best-seller-count {
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+   LAPTOP
+   992px – 1439px — 4 CARDS
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .top-sellers-section .home-product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        padding: 0 14px;
+    }
+
+    .top-sellers-section .home-product-card {
+        min-width: 0;
+    }
+
+    .top-sellers-section .best-seller-badge {
+        top: 9px;
+        left: 9px;
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+}
+
+/* =========================================================
+   DESKTOP
+   1440px+ — 5 CARDS
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .top-sellers-section .home-product-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+        padding: 0 16px;
+    }
+
+    .top-sellers-section .home-product-card {
+        min-width: 0;
+    }
+
+    .top-sellers-section .best-seller-badge {
+        top: 10px;
+        left: 10px;
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+
+    .top-sellers-section .best-seller-count {
+        font-size: 12px;
+    }
+}
+
 
 /* =========================================================
 MOBILE
@@ -3897,28 +4100,31 @@ MOBILE
 }
 
 /* =========================================================
-   TABLET
-   577px - 991px
+   TRENDING THIS WEEK
 ========================================================= */
 
-@media (min-width: 577px) and (max-width: 991px) {
+.trending-section {
+    width: 100%;
+}
 
-    /* -----------------------------------------------------
-       TRENDING PRODUCTS
-       JUMIA-STYLE — ABOUT 2½ CARDS VISIBLE
-    ----------------------------------------------------- */
+
+/* =========================================================
+   MOBILE — 390px
+========================================================= */
+
+@media (max-width: 576px) {
 
     .trending-section .home-product-grid {
         display: flex;
 
-        gap: 12px;
+        gap: 10px;
 
         overflow-x: auto;
         overflow-y: hidden;
 
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-bottom: 6px;
+        padding: 0 10px 4px;
+
+        scroll-snap-type: x proximity;
 
         scrollbar-width: none;
         -ms-overflow-style: none;
@@ -3929,36 +4135,84 @@ MOBILE
     }
 
     .trending-section .home-product-card {
-        flex: 0 0 calc((100vw - 44px) / 2.5);
+        flex: 0 0 42%;
+        min-width: 0;
 
-        width: calc((100vw - 44px) / 2.5);
+        scroll-snap-align: start;
+    }
+}
 
+
+/* =========================================================
+   TABLET — 577px to 991px
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .trending-section .home-product-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        gap: 12px;
+
+        padding: 0 12px;
+    }
+
+    .trending-section .home-product-card {
         min-width: 0;
     }
 
+    .trending-section .home-product-name {
+        font-size: 15px;
+    }
 
-    /* NEW ARRIVALS — ABOUT 2½ CARDS ON TABLET */
-.new-arrivals-section .home-product-grid {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 6px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    .trending-section .home-product-price {
+        font-size: 16px;
+    }
 }
 
-.new-arrivals-section .home-product-grid::-webkit-scrollbar {
-    display: none;
+
+/* =========================================================
+   LAPTOP — 992px to 1439px
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .trending-section .home-product-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        gap: 14px;
+
+        padding: 0 14px;
+    }
+
+    .trending-section .home-product-card {
+        min-width: 0;
+    }
 }
 
-.new-arrivals-section .home-product-card {
-    flex: 0 0 calc((100vw - 44px) / 2.5);
-    width: calc((100vw - 44px) / 2.5);
-    min-width: 0;
+
+/* =========================================================
+   DESKTOP — 1440px+
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .trending-section .home-product-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+
+        gap: 16px;
+
+        padding: 0 16px;
+    }
+
+    .trending-section .home-product-card {
+        min-width: 0;
+    }
 }
+
+
 
     /* -----------------------------------------------------
        POPULAR PRODUCTS
@@ -6527,16 +6781,28 @@ TABLET
     text-decoration: underline;
 }
 
+/* =========================================================
+   POPULAR ITEMS
+========================================================= */
+
+.popular-section {
+    width: 100%;
+}
+
 
 /* =========================================================
-   POPULAR PRODUCTS
+   POPULAR SLIDER
 ========================================================= */
 
 .popular-slider {
     width: 100%;
     overflow-x: auto;
-    scrollbar-width: none;
+    overflow-y: hidden;
+
     scroll-behavior: smooth;
+    scrollbar-width: none;
+
+    padding: 0 10px 4px;
 }
 
 .popular-slider::-webkit-scrollbar {
@@ -6546,17 +6812,25 @@ TABLET
 .popular-slider-track {
     display: flex;
     gap: 12px;
-    width: max-content;
+    width: 100%;
 }
 
+
+/* =========================================================
+   POPULAR PRODUCT CARD
+========================================================= */
+
 .popular-product-card {
-    flex: 0 0 190px;
+    min-width: 0;
+
     overflow: hidden;
-    
+
     border-radius: 13px;
-    background: #fff;
+
+    background: #ffffff;
     color: inherit;
     text-decoration: none;
+
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
@@ -6564,37 +6838,207 @@ TABLET
 
 .popular-product-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.07);
+
+    box-shadow:
+        0 7px 18px rgba(0, 0, 0, 0.07);
 }
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
 
 .popular-image {
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     width: 100%;
-    height: 185px;
-    padding: 12px;
-    background: #fff;
+    height: 160px;
+
+    padding: 0 7px;
+
+    background: #ffffff;
 }
 
 .popular-image img {
+    display: block;
+
     width: 100%;
     height: 100%;
+
     object-fit: contain;
 }
 
+
+/* =========================================================
+   PRODUCT NAME
+========================================================= */
+
 .popular-product-name {
     display: block;
-    
+
+    min-height: 38px;
+
+    padding: 7px 9px 9px;
+
     overflow: hidden;
+
     color: #111827;
-    font-size: 14px;
+
+    font-family: "Rubik", system-ui, sans-serif;
+    font-size: 13px;
     line-height: 1.35;
     font-weight: 400;
+
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
+
+/* =========================================================
+   MOBILE — 390px
+   2½ CARDS VISIBLE + HORIZONTAL SCROLL
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .popular-slider {
+        padding: 0 10px 4px;
+    }
+
+    .popular-slider-track {
+        width: max-content;
+        gap: 10px;
+    }
+
+    .popular-product-card {
+        flex: 0 0 calc((100vw - 30px) / 2.5);
+        width: calc((100vw - 30px) / 2.5);
+    }
+
+    .popular-image {
+        height: 160px;
+        padding: 0 7px;
+    }
+
+    .popular-product-name {
+        min-height: 38px;
+
+        padding: 7px 9px 9px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================================
+   TABLET — 577px to 991px
+   3 BALANCED CARDS VISIBLE
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .popular-slider {
+        padding: 0 12px 4px;
+    }
+
+    .popular-slider-track {
+        width: 100%;
+        gap: 12px;
+    }
+
+    .popular-product-card {
+        flex: 0 0 calc((100% - 24px) / 3);
+        width: calc((100% - 24px) / 3);
+    }
+
+    .popular-image {
+        height: 180px;
+        padding: 0 8px;
+    }
+
+    .popular-product-name {
+        min-height: 42px;
+
+        padding: 8px 10px 10px;
+
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   LAPTOP — 992px to 1439px
+   4 BALANCED CARDS VISIBLE
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .popular-slider {
+        padding: 0 14px 4px;
+    }
+
+    .popular-slider-track {
+        width: 100%;
+        gap: 14px;
+    }
+
+    .popular-product-card {
+        flex: 0 0 calc((100% - 42px) / 4);
+        width: calc((100% - 42px) / 4);
+    }
+
+    .popular-image {
+        height: 195px;
+        padding: 0 9px;
+    }
+
+    .popular-product-name {
+        min-height: 44px;
+
+        padding: 9px 10px 10px;
+
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   DESKTOP — 1440px+
+   5 BALANCED CARDS VISIBLE
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .popular-slider {
+        padding: 0 16px 4px;
+    }
+
+    .popular-slider-track {
+        width: 100%;
+        gap: 16px;
+    }
+
+    .popular-product-card {
+        flex: 0 0 calc((100% - 64px) / 5);
+        width: calc((100% - 64px) / 5);
+    }
+
+    .popular-image {
+        height: 215px;
+        padding: 0 10px;
+    }
+
+    .popular-product-name {
+        min-height: 46px;
+
+        padding: 10px 11px 11px;
+
+        font-size: 16px;
+    }
+}
 
 /* =========================================================
    PRODUCT GRID
@@ -10259,5 +10703,787 @@ body > p:last-child {
 
     body > p {
         font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   SHOP BY CATEGORY
+========================================================= */
+
+.shop-category-section {
+    width: 100%;
+}
+
+.shop-category-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+}
+
+.shop-category-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-decoration: none;
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.shop-category-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
+}
+
+.shop-category-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #f7f7f7;
+    overflow: hidden;
+}
+
+.shop-category-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.shop-category-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff1e8;
+    color: #ff6600;
+}
+
+.shop-category-placeholder .material-symbols-outlined {
+    font-size: 38px;
+}
+
+.shop-category-name {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #222222;
+}
+
+
+/* =========================================================
+   MOBILE — 390px
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .shop-category-grid {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 4px;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .shop-category-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .shop-category-card {
+        flex: 0 0 calc((100% - 12px) / 2.5);
+        min-width: 0;
+        scroll-snap-align: start;
+    }
+
+    .shop-category-name {
+        min-height: 44px;
+        font-size: 15px;
+        padding: 8px 5px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET — 577px to 991px
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .shop-category-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .shop-category-name {
+        min-height: 46px;
+        font-size: 16px;
+    }
+
+}
+
+
+/* =========================================================
+   LAPTOP — 992px to 1439px
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .shop-category-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP — 1440px+
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .shop-category-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 18px;
+        max-width: 1250px;
+        margin: 0 auto;
+    }
+
+}
+
+
+/* =========================================================
+   RECOMMENDED FOR YOU
+   Horizontal Discovery Section
+========================================================= */
+
+.recommended-section {
+    width: 100%;
+}
+
+.recommended-section .home-product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+}
+
+.recommended-section .home-product-card {
+    min-width: 0;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+}
+
+.recommended-section .home-product-card > a {
+    display: block;
+    width: 100%;
+    background: #f7f7f7;
+    overflow: hidden;
+}
+
+.recommended-section .home-product-card img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+}
+
+.recommended-section .home-product-info {
+    padding: 12px 12px 14px;
+}
+
+.recommended-section .home-product-info h3 {
+    margin: 0 0 7px;
+    color: #222222;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.recommended-section .home-product-price {
+    color: #ff6600;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .recommended-section .home-product-grid {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 4px;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .recommended-section .home-product-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .recommended-section .home-product-card {
+        flex: 0 0 calc((100% - 12px) / 2.5);
+        scroll-snap-align: start;
+    }
+
+    .recommended-section .home-product-card img {
+        height: 160px;
+    }
+
+    .recommended-section .home-product-info {
+        padding: 9px 8px 11px;
+    }
+
+    .recommended-section .home-product-info h3 {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .recommended-section .home-product-price {
+        font-size: 15px;
+    }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .recommended-section .home-product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .recommended-section .home-product-card img {
+        height: 190px;
+    }
+
+    .recommended-section .home-product-info h3 {
+        font-size: 16px;
+    }
+}
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .recommended-section .home-product-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .recommended-section .home-product-card img {
+        height: 210px;
+    }
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .recommended-section .home-product-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .recommended-section .home-product-card img {
+        height: 240px;
+    }
+}
+
+
+
+/* =========================================================
+   TOP RATED — RESPONSIVE LAYOUT
+========================================================= */
+
+.top-rated-section .home-product-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 10px;
+}
+
+
+/* =========================================================
+   TOP RATED — RATING
+========================================================= */
+
+.top-rated-section .top-rated-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    margin-top: 7px;
+
+    color: #f6a800;
+
+    font-family: "Rubik", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.top-rated-section .top-rated-stars .material-symbols-outlined {
+    color: #f6a800;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.top-rated-section .top-rated-review-count {
+    color: #777777;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   MOBILE — 390px
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .top-rated-section .home-product-grid {
+
+        display: flex;
+
+        gap: 10px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 0 10px 4px;
+
+        scroll-snap-type: x proximity;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .top-rated-section .home-product-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .top-rated-section .home-product-card {
+
+        flex: 0 0 42%;
+
+        scroll-snap-align: start;
+    }
+
+    .top-rated-section .top-rated-stars {
+        margin-top: 6px;
+        font-size: 11px;
+    }
+
+    .top-rated-section .top-rated-stars .material-symbols-outlined {
+        font-size: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET — 577px to 991px
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .top-rated-section .home-product-grid {
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        gap: 12px;
+
+        padding: 0 12px;
+    }
+
+    .top-rated-section .top-rated-stars {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   LAPTOP — 992px to 1439px
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .top-rated-section .home-product-grid {
+
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        gap: 14px;
+
+        padding: 0 14px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP — 1440px+
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .top-rated-section .home-product-grid {
+
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+
+        gap: 16px;
+
+        padding: 0 16px;
+    }
+
+}
+
+
+/* =========================================================
+   TODAY'S DEALS — DISCOUNT BADGE
+========================================================= */
+
+.todays-deals-section .home-product-discount {
+
+    display: inline-block;
+
+    margin-top: 3px;
+    padding: 3px 7px;
+
+    background: #fff1e8;
+    color: #ff6600;
+
+    border-radius: 4px;
+
+    font-family: "Rubik", system-ui, sans-serif;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+
+ /* =========================================================
+    TODAY'S DEALS — RESPONSIVE LAYOUT
+ ========================================================= */
+
+.todays-deals-section .home-product-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 10px;
+}
+
+
+/* =========================================================
+   MOBILE — 390px
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .todays-deals-section .home-product-grid {
+
+        display: flex;
+
+        gap: 10px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 0 10px 4px;
+
+        scroll-snap-type: x proximity;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .todays-deals-section .home-product-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .todays-deals-section .home-product-card {
+
+        flex: 0 0 42%;
+
+        scroll-snap-align: start;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET — 577px to 991px
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .todays-deals-section .home-product-grid {
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        gap: 12px;
+
+        padding: 0 12px;
+    }
+
+}
+
+
+/* =========================================================
+   LAPTOP — 992px to 1439px
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .todays-deals-section .home-product-grid {
+
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        gap: 14px;
+
+        padding: 0 14px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP — 1440px+
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .todays-deals-section .home-product-grid {
+
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+
+        gap: 16px;
+
+        padding: 0 16px;
+    }
+
+}
+
+
+
+/* =========================================================
+   NEW ARRIVALS
+========================================================= */
+
+.new-arrivals-section {
+    width: 100%;
+}
+
+/* PRODUCT GRID */
+
+.new-arrivals-section .home-product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 10px;
+}
+
+/* PRODUCT CARD */
+
+.new-arrivals-section .home-product-card {
+    min-width: 0;
+    position: relative;
+}
+
+/* NEW BADGE */
+
+.new-arrivals-section .home-product-image-link {
+    position: relative;
+}
+
+.new-arrivals-section .new-arrival-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 7px;
+
+    background: #ff6600;
+    color: #ffffff;
+
+    border-radius: 4px;
+
+    font-family: "Rubik", system-ui, sans-serif;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+}
+
+/* =========================================================
+   MOBILE
+   390px — ABOUT 2½ CARDS
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .new-arrivals-section .home-product-grid {
+        display: flex;
+        gap: 10px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 0 10px 4px;
+
+        scroll-snap-type: x proximity;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .new-arrivals-section .home-product-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .new-arrivals-section .home-product-card {
+        flex: 0 0 42%;
+        width: 42%;
+        min-width: 0;
+
+        scroll-snap-align: start;
+    }
+
+    .new-arrivals-section .new-arrival-badge {
+        top: 7px;
+        left: 7px;
+        padding: 4px 6px;
+        font-size: 9px;
+    }
+}
+
+/* =========================================================
+   TABLET
+   577px – 991px — 3 CARDS
+========================================================= */
+
+@media (min-width: 577px) and (max-width: 991px) {
+
+    .new-arrivals-section .home-product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        padding: 0 12px;
+    }
+
+    .new-arrivals-section .home-product-card {
+        min-width: 0;
+    }
+
+    .new-arrivals-section .home-product-name {
+        font-size: 15px;
+    }
+
+    .new-arrivals-section .home-product-price {
+        font-size: 16px;
+    }
+
+    .new-arrivals-section .new-arrival-badge {
+        top: 9px;
+        left: 9px;
+        padding: 5px 7px;
+        font-size: 10px;
+    }
+}
+
+/* =========================================================
+   LAPTOP
+   992px – 1439px — 4 CARDS
+========================================================= */
+
+@media (min-width: 992px) and (max-width: 1439px) {
+
+    .new-arrivals-section .home-product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        padding: 0 14px;
+    }
+
+    .new-arrivals-section .home-product-card {
+        min-width: 0;
+    }
+
+    .new-arrivals-section .new-arrival-badge {
+        top: 9px;
+        left: 9px;
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+}
+
+/* =========================================================
+   DESKTOP
+   1440px+ — 5 CARDS
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .new-arrivals-section .home-product-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+        padding: 0 16px;
+    }
+
+    .new-arrivals-section .home-product-card {
+        min-width: 0;
+    }
+
+    .new-arrivals-section .new-arrival-badge {
+        top: 10px;
+        left: 10px;
+        padding: 5px 8px;
+        font-size: 10px;
     }
 }
