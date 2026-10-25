@@ -17,7 +17,7 @@ Help Center
         margin-bottom: unset;
       "
     >
-      Help Center
+      Welcome to the Wazi Trade Help Center!
     </h3>
     <p
       style="
@@ -25,7 +25,9 @@ Help Center
         margin-bottom: unset;
       "
     >
-      Do you still need help ?
+     Need help with an order, payment, delivery, or your account? You'll find answers to common questions below.
+
+If you still need assistance, contact us by phone or WhatsApp at +256 789 199 289, or email **omirambe81@gmail.com**.
     </p>
     <form action="{% url 'core:search_help' %}" method="GET">
       <input
@@ -101,7 +103,7 @@ Help Center
         sans-serif;
       align-items: center;
       display: flex;
-      
+
     "
   >
     {{ article.title }}
@@ -112,7 +114,7 @@ Help Center
   <h5
     class="help-section-title"
     style="font-size: 16px; color: rgba(0, 0, 0, 0.65); padding-top: 8px"
-  > 
+  >
     Legal
   </h5>
   <div class="legal-container">
@@ -125,14 +127,14 @@ Help Center
   </a>
     </div>
 
-  <h5 class="help-section-title">Need More Help?</h5>
+  <h5 class="help-section-title">Still Need Help?</h5>
   <div class="legal-card">
      <a class="help-card" href="{% url 'core:contact' %}" style="background-color:#ff6600;color: #fff;padding: 12px;border-radius: 4px;">
     Contact Customer Support →
   </a>
   </div>
-  
-  
+
+
   </div>
 </div>
 
